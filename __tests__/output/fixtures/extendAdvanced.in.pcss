@@ -1,0 +1,19 @@
+%wide-button {
+  @responsive xs {
+    color: pink;
+  }
+  @responsive >xs {
+    color: blue;
+  }
+  @space padding md;
+}
+
+.button-one {
+  font-family: Arial;
+  @extend %wide-button;
+}
+
+.button-two {
+  font-family: Helvetica;
+  @extend %wide-button;
+}

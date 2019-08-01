@@ -1,0 +1,34 @@
+ul {
+  color: pink;
+}
+
+@media (min-width: 1024px) {
+  ul {
+    width: 100%;
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 0) and (max-width: 1023px) {
+  ul {
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 1024px) {
+  ul > li {
+    color: transparent;
+    line-height: 1;
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  ul > li.test {
+    color: blue;
+  }
+
+  ul > li:not(:last-of-type) {
+    margin-right: 2vw;
+  }
+}

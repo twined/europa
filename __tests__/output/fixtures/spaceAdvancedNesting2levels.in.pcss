@@ -1,0 +1,23 @@
+figure {
+  @column 7/12@>sm;
+  @responsive >=md {
+    &:first-of-type {
+      @space margin-right -2;
+      @space padding-left 3;
+      @space padding-top 7;
+    }
+
+    &:last-of-type {
+      @space margin-top -4;
+      @space margin-left -2;
+      @space margin-right 2;
+      @space padding-right 1;
+    }
+
+    &.center {
+      @column 12/12;
+      @space padding-x 8;
+      @space margin-top -4;
+    }
+  }
+}

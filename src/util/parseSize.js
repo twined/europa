@@ -1,0 +1,69 @@
+import _ from 'lodash'
+import renderCalcWithRounder from './renderCalcWithRounder'
+import splitUnit from './splitUnit'
+
+export default function parseSize (node, config, size, bp) {
+  if (size === '0') {
+    return '0'
+  }
+
+  if (size === 'container') {
+    // get size from container.padding
+    if (!_.has(config.theme.container.padding, bp)) {
+      throw node.error(`SPACING: No \`${bp}\` breakpoint found in \`theme.container.padding\`.`, { name: bp })
+    }
+    return config.theme.container.padding[bp]
+  }
+
+  if (!_.has(config.theme.spacing, size)) {
+    // size is not found in spacingMap, treat it as a value
+    if (size.indexOf('/') !== -1) {
+      // it's a fraction, check if the first part is a breakpoint key
+      const [head, tail] = size.split('/')
+
+      if (!_.has(config.theme.spacing, head)) {
+        return renderCalcWithRounder(size)
+      }
+
+      if (!_.has(config.theme.spacing[head], bp)) {
+        throw node.error(`SPACING: No \`${bp}\` breakpoint found in spacing map for \`${head}\`.`)
+      }
+
+      return `calc(${config.theme.spacing[head][bp]}/${tail})`
+    }
+
+    if (size.indexOf('vertical-rhythm(') !== -1) {
+      const params = size.match(/vertical-rhythm\((.*)\)/)[1]
+      const [key, lineHeight = config.theme.typography.lineHeight[bp]] = params.split(',').map(p => p.trim())
+      const obj = _.get(config, key.split('.'))
+
+      // does it exist?
+      if (!obj) {
+        throw node.error(`SPACING: No \`${key}\` size key theme object.`)
+      }
+
+      return `calc(${obj[bp]} * ${lineHeight})`
+    }
+
+    // it's a number. we treat regular numbers as a multiplier of col gutter.
+    return renderColGutterMultiplier(node, size, bp, config)
+  }
+
+  if (!_.has(config.theme.spacing[size], bp)) {
+    throw node.error(`SPACING: No \`${bp}\` breakpoint found in spacing map for \`${size}\`.`)
+  }
+
+  return config.theme.spacing[size][bp]
+}
+
+function renderColGutterMultiplier (node, multiplier, bp, { theme }) {
+  // grab gutter for this breakpoint
+  if (!_.has(theme.columns.gutters, bp)) {
+    throw node.error(`parseSize: No \`${bp}\` breakpoint found in gutter map.`, { name: bp })
+  }
+
+  const gutter = theme.columns.gutters[bp]
+  const [val, unit] = splitUnit(gutter)
+
+  return `${(val * multiplier) / 2}${unit}`
+}

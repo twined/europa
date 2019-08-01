@@ -1,0 +1,180 @@
+@media (min-width: 1024px) and (max-width: 1398px){
+  figure:first-of-type{
+    margin-right: -50px;
+  }
+}
+
+@media (min-width: 1399px) and (max-width: 1899px){
+  figure:first-of-type{
+    margin-right: -50px;
+  }
+}
+
+@media (min-width: 1900px){
+  figure:first-of-type{
+    margin-right: -60px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1398px){
+  figure:first-of-type{
+    padding-left: 75px;
+  }
+}
+
+@media (min-width: 1399px) and (max-width: 1899px){
+  figure:first-of-type{
+    padding-left: 75px;
+  }
+}
+
+@media (min-width: 1900px){
+  figure:first-of-type{
+    padding-left: 90px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1398px){
+  figure:first-of-type{
+    padding-top: 175px;
+  }
+}
+
+@media (min-width: 1399px) and (max-width: 1899px){
+  figure:first-of-type{
+    padding-top: 175px;
+  }
+}
+
+@media (min-width: 1900px){
+  figure:first-of-type{
+    padding-top: 210px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1398px){
+  figure:last-of-type{
+    margin-top: -100px;
+  }
+}
+
+@media (min-width: 1399px) and (max-width: 1899px){
+  figure:last-of-type{
+    margin-top: -100px;
+  }
+}
+
+@media (min-width: 1900px){
+  figure:last-of-type{
+    margin-top: -120px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1398px){
+  figure:last-of-type{
+    margin-left: -50px;
+  }
+}
+
+@media (min-width: 1399px) and (max-width: 1899px){
+  figure:last-of-type{
+    margin-left: -50px;
+  }
+}
+
+@media (min-width: 1900px){
+  figure:last-of-type{
+    margin-left: -60px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1398px){
+  figure:last-of-type{
+    margin-right: 50px;
+  }
+}
+
+@media (min-width: 1399px) and (max-width: 1899px){
+  figure:last-of-type{
+    margin-right: 50px;
+  }
+}
+
+@media (min-width: 1900px){
+  figure:last-of-type{
+    margin-right: 60px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1398px){
+  figure:last-of-type{
+    padding-right: 25px;
+  }
+}
+
+@media (min-width: 1399px) and (max-width: 1899px){
+  figure:last-of-type{
+    padding-right: 25px;
+  }
+}
+
+@media (min-width: 1900px){
+  figure:last-of-type{
+    padding-right: 30px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1398px){
+  figure.center{
+    padding-left: 200px;
+    padding-right: 200px;
+  }
+}
+
+@media (min-width: 1399px) and (max-width: 1899px){
+  figure.center{
+    padding-left: 200px;
+    padding-right: 200px;
+  }
+}
+
+@media (min-width: 1900px){
+  figure.center{
+    padding-left: 240px;
+    padding-right: 240px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1398px){
+  figure.center{
+    margin-top: -100px;
+  }
+}
+
+@media (min-width: 1399px) and (max-width: 1899px){
+  figure.center{
+    margin-top: -100px;
+  }
+}
+
+@media (min-width: 1900px){
+  figure.center{
+    margin-top: -120px;
+  }
+}
+
+@media (min-width: 1024px){
+  figure{
+    position: relative;
+    flex: 0 0 58.3333333333%;
+    max-width: 58.3333333333%;
+  }
+}
+
+@media (min-width: 1024px){
+  figure.center {
+    position: relative;
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}

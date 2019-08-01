@@ -1,0 +1,80 @@
+{
+  "name": "europacss",
+  "version": "0.1.0",
+  "description": "Europa CSS system",
+  "main": "lib/index.js",
+  "keywords": [
+    "postcss",
+    "css",
+    "postcss-plugin",
+    "helpers"
+  ],
+  "scripts": {
+    "test": "jest __tests__ && eslint src/*.js",
+    "coverage": "jest __tests__ --coverage",
+    "build": "babel src --out-dir lib --copy-files",
+    "prepare": "yarn run test"
+  },
+  "author": "T. Mjoen <trond@twined.net>",
+  "license": "MIT",
+  "repository": "twined/europa",
+  "bugs": {
+    "url": "https://github.com/twined/europa/issues"
+  },
+  "homepage": "https://github.com/twined/europa",
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "normalize.css": "^8.0.1",
+    "postcss": "^7.0.6",
+    "postcss-functions": "twined/postcss-functions"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/node": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "babel-jest": "^24.9.0",
+    "eslint": "^6.2.2",
+    "eslint-config-standard": "^14.0.1",
+    "eslint-plugin-es5": "^1.3.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.15.2",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-prefer-let": "^1.0.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-security": "^1.4.0",
+    "eslint-plugin-standard": "^4.0.1",
+    "jest": "^24.9.0",
+    "postcss-extend-rule": "^3.0.0",
+    "postcss-nested": "^4.1.2",
+    "postcss-reporter": "^6.0.1",
+    "reduce-css-calc": "^2.1.6"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest/customMatchers.js"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/__tests__/fixtures/"
+    ]
+  },
+  "engines": {
+    "node": ">=8.9.0"
+  },
+  "browserslist": [
+    "> 1%"
+  ],
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "8.9.0"
+          }
+        }
+      ]
+    ]
+  }
+}
