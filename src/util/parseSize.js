@@ -18,8 +18,38 @@ export default function parseSize (node, config, size, bp) {
   if (!_.has(config.theme.spacing, size)) {
     // size is not found in spacingMap, treat it as a value
     if (size.indexOf('/') !== -1) {
-      // it's a fraction, check if the first part is a breakpoint key
+      // it's a fraction, check if the first part is a spacing key
       const [head, tail] = size.split('/')
+      if (!_.has(config.theme.spacing, head)) {
+        if (head.indexOf(':') !== -1) {
+          // we have a gutter indicator (@column 6:1/12) -- meaning we want X times the gutter to be added
+          // first split the fraction
+          const splitFractions = size.split('/')
+          const colCount = splitFractions[1]
+          const wantedSizeAndGutterMultiplier = splitFractions[0].split(':')
+          const fraction = wantedSizeAndGutterMultiplier[0]
+          const gutterMultiplier = wantedSizeAndGutterMultiplier[1]
+
+          const gutterSize = config.theme.columns.gutters[bp]
+          const [val, unit] = splitUnit(gutterSize)
+          const gutterval = `${(val / 2) * gutterMultiplier}${unit}`
+
+          return renderCalcWithRounder(`${fraction}/${colCount} + ${gutterval}`)
+        } else {
+          return renderCalcWithRounder(size)
+        }
+      }
+
+      if (!_.has(config.theme.spacing[head], bp)) {
+        throw node.error(`SPACING: No \`${bp}\` breakpoint found in spacing map for \`${head}\`.`)
+      }
+
+      return `calc(${config.theme.spacing[head][bp]}/${tail})`
+    }
+
+    if (size.indexOf('*') !== -1) {
+      // it's *, check if the first part is a spacing key
+      const [head, tail] = size.split('*')
 
       if (!_.has(config.theme.spacing, head)) {
         return renderCalcWithRounder(size)
@@ -29,7 +59,7 @@ export default function parseSize (node, config, size, bp) {
         throw node.error(`SPACING: No \`${bp}\` breakpoint found in spacing map for \`${head}\`.`)
       }
 
-      return `calc(${config.theme.spacing[head][bp]}/${tail})`
+      return `calc(${config.theme.spacing[head][bp]}*${tail})`
     }
 
     if (size.indexOf('vertical-rhythm(') !== -1) {
@@ -42,7 +72,9 @@ export default function parseSize (node, config, size, bp) {
         throw node.error(`SPACING: No \`${key}\` size key theme object.`)
       }
 
-      return `calc(${obj[bp]} * ${lineHeight})`
+      const fs = _.isObject(obj[bp]) ? obj[bp]['font-size'] : obj[bp]
+
+      return `calc(${fs} * ${lineHeight})`
     }
 
     // it's a number. we treat regular numbers as a multiplier of col gutter.

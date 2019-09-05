@@ -165,6 +165,51 @@ it('parses @space for fraction', () => {
   })
 })
 
+it('parses @space for fraction with gutter multiplier', () => {
+  const input = `
+    article {
+      @space margin-top 6:-1/12;
+      font-size: 18px;
+    }
+  `
+
+  const output = `
+    article {
+      font-size: 18px;
+    }
+    @media (min-width: 0){
+      article {
+        margin-top: calc(50% + -12.5px);
+      }
+    }
+    @media (min-width: 740px){
+      article {
+        margin-top: calc(50% + -17.5px);
+      }
+    }
+    @media (min-width: 1024px){
+      article {
+        margin-top: calc(50% + -25px);
+      }
+    }
+    @media (min-width: 1399px){
+      article {
+        margin-top: calc(50% + -25px);
+      }
+    }
+    @media (min-width: 1900px){
+      article {
+        margin-top: calc(50% + -30px);
+      }
+    }
+  `
+
+  return run(input).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
 it('parses @space for fraction of breakpoint key', () => {
   const input = `
     article {

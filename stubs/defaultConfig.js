@@ -236,7 +236,7 @@ module.exports = {
       },
 
       families: {
-        sans: [
+        main: [
           '-apple-system',
           'BlinkMacSystemFont',
           '"Segoe UI"',

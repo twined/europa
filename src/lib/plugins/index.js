@@ -12,6 +12,7 @@ import substituteRFSAtRules from './substituteRFSAtRules'
 import substituteColumnAtRules from './substituteColumnAtRules'
 import substituteColumnTypographyAtRules from './substituteColumnTypographyAtRules'
 import substituteResponsiveAtRules from './substituteResponsiveAtRules'
+import substituteEmbedResponsiveAtRules from './substituteEmbedResponsiveAtRules'
 
 export default [
   lintAtRules,
@@ -25,6 +26,7 @@ export default [
   substituteSpaceAtRules,
   substituteFontsizeAtRules,
   substituteRFSAtRules,
+  substituteEmbedResponsiveAtRules,
   substituteColumnAtRules,
   substituteColumnTypographyAtRules,
   substituteResponsiveAtRules

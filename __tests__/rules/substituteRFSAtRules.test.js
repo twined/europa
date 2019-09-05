@@ -102,6 +102,32 @@ it('parses regular @rfs for single breakpoint', () => {
   })
 })
 
+it('parses regular @rfs for double breakpoint', () => {
+  const input = `
+    article {
+      @rfs base sm/md;
+    }
+  `
+
+  const output = `
+    @media (min-width: 740px) and (max-width: 1048px){
+      article{
+        font-size: calc(12px + 4 * ((100vw - 740px) / 308))
+      }
+    }
+    @media (min-width: 1049px){
+      article{
+        font-size: calc(14px + 6 * ((100vw - 1049px) / 200))
+      }
+    }
+  `
+
+  return run(input, cfg).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
 it('parses regular @rfs for single breakpoint with line-height', () => {
   const input = `
     article {

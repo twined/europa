@@ -24,8 +24,20 @@ export default function parseRFS (node, theme, size, breakpoint) {
     throw node.error(`RFS: No breakpoint \`${breakpoint}\` found in theme.typography.rfs.minimum.${size}`)
   }
 
-  const minSize = theme.typography.rfs.minimum[size][breakpoint]
-  const maxSize = theme.typography.sizes[size][breakpoint]
+  let minSize
+  let maxSize
+
+  if (_.isObject(theme.typography.rfs.minimum[size][breakpoint])) {
+    minSize = theme.typography.rfs.minimum[size][breakpoint]['font-size']
+  } else {
+    minSize = theme.typography.rfs.minimum[size][breakpoint]
+  }
+
+  if (_.isObject(theme.typography.sizes[size][breakpoint])) {
+    maxSize = theme.typography.sizes[size][breakpoint]['font-size']
+  } else {
+    maxSize = theme.typography.sizes[size][breakpoint]
+  }
 
   const sizeUnit = getUnit(minSize)
   const maxSizeUnit = getUnit(maxSize)

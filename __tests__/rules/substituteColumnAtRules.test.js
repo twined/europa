@@ -37,6 +37,57 @@ it('parses regular @column', () => {
   })
 })
 
+it('parses regular @column + gutter', () => {
+  const input = `
+    article {
+      @column 3:1/4;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0) {
+      article {
+        position: relative;
+        flex: 0 0 calc(75% + 12.5px);
+        max-width: calc(75% + 12.5px)
+      }
+    }
+    @media (min-width: 740px) {
+      article {
+        position: relative;
+        flex: 0 0 calc(75% + 17.5px);
+        max-width: calc(75% + 17.5px)
+      }
+    }
+    @media (min-width: 1024px) {
+      article {
+        position: relative;
+        flex: 0 0 calc(75% + 25px);
+        max-width: calc(75% + 25px)
+      }
+    }
+    @media (min-width: 1399px) {
+      article {
+        position: relative;
+        flex: 0 0 calc(75% + 25px);
+        max-width: calc(75% + 25px)
+      }
+    }
+    @media (min-width: 1900px) {
+      article {
+        position: relative;
+        flex: 0 0 calc(75% + 30px);
+        max-width: calc(75% + 30px)
+      }
+    }
+  `
+
+  return run(input).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
 it('parses regular @column centered', () => {
   const input = `
     article {

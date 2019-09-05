@@ -12,6 +12,9 @@ export default function sizeNeedsBreakpoints (spacingMap, size) {
     if (_.has(spacingMap, head)) {
       return true
     }
+    if (head.indexOf(':') !== -1) {
+      return true
+    }
     return false
   }
 

@@ -1,12 +1,7 @@
 import fs from 'fs'
 import _ from 'lodash'
 import postcss from 'postcss'
-
-function updateSource(nodes, source) {
-  return _.tap(Array.isArray(nodes) ? postcss.root({ nodes }) : nodes, tree => {
-    tree.walk(node => (node.source = source))
-  })
-}
+import updateSource from '../../util/updateSource'
 
 export default postcss.plugin('europacss-europa', getConfig => {
   return function (css) {

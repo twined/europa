@@ -12,7 +12,7 @@ export default function parseFontSizeQuery (node, theme, fontSizeQuery, breakpoi
   }
 
   if (fontSizeQuery.indexOf('(') !== -1) {
-    // we have a modifier
+    // we have a modifier xs(1.6) --> multiplies the size with 1.6
     modifier = fontSizeQuery.match(/\((.*)\)/)[1]
     fontSizeQuery = fontSizeQuery.split('(')[0]
   }
