@@ -460,25 +460,21 @@ it('parses multiple space tags inside reponsive', () => {
         padding-left: 50px
       }
     }
-
     @media (min-width: 1900px){
       .v-module[data-v="body+center"]{
         padding-left: 60px
       }
     }
-
     @media (min-width: 1399px) and (max-width: 1899px){
       .v-module[data-v="body+center"]{
-        margin-left: 25%
+        margin-left: calc(25% - 37.5px)
       }
     }
-
     @media (min-width: 1900px){
       .v-module[data-v="body+center"]{
-        margin-left: 25%
+        margin-left: calc(25% - 45px)
       }
     }
-
     @media (min-width: 1399px){
       .v-module[data-v="body+center"]{
         position: relative;

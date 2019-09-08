@@ -6,16 +6,9 @@ export default function sizeNeedsBreakpoints (spacingMap, size) {
     return false
   }
 
-  // Fractions are the same across all breakpoints
+  // Fractions should have breakpoints cause of gutters
   if (size.indexOf('/') !== -1) {
-    const head = size.split('/')[0]
-    if (_.has(spacingMap, head)) {
-      return true
-    }
-    if (head.indexOf(':') !== -1) {
-      return true
-    }
-    return false
+    return true
   }
 
   // Size is in spacing map, we need breakpoints

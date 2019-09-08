@@ -5,6 +5,30 @@ function run (input, opts) {
   return postcss([plugin(opts)]).process(input, { from: undefined })
 }
 
+const DEFAULT_CFG = {
+  theme: {
+    breakpoints: {
+      xs: '0',
+      sm: '740px',
+      md: '1024px'
+    },
+    spacing: {
+      md: {
+        xs: '25px',
+        sm: '50px',
+        md: '75px'
+      }
+    },
+    columns: {
+      gutters: {
+        xs: '20px',
+        sm: '30px',
+        md: '50px'
+      }
+    }
+  }
+}
+
 it('fails on root', () => {
   const input = `
     @column 3/4;
@@ -24,14 +48,30 @@ it('parses regular @column', () => {
   `
 
   const output = `
-    article {
-      position: relative;
-      flex: 0 0 75%;
-      max-width: 75%;
+    @media (min-width: 0) {
+      article {
+        position: relative;
+        flex: 0 0 calc(75% - 5px);
+        max-width: calc(75% - 5px)
+      }
+    }
+    @media (min-width: 740px) {
+      article {
+        position: relative;
+        flex: 0 0 calc(75% - 7.5px);
+        max-width: calc(75% - 7.5px)
+      }
+    }
+    @media (min-width: 1024px) {
+      article {
+        position: relative;
+        flex: 0 0 calc(75% - 12.5px);
+        max-width: calc(75% - 12.5px)
+      }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -48,41 +88,27 @@ it('parses regular @column + gutter', () => {
     @media (min-width: 0) {
       article {
         position: relative;
-        flex: 0 0 calc(75% + 12.5px);
-        max-width: calc(75% + 12.5px)
+        flex: 0 0 calc(75% + 15px);
+        max-width: calc(75% + 15px)
       }
     }
     @media (min-width: 740px) {
       article {
         position: relative;
-        flex: 0 0 calc(75% + 17.5px);
-        max-width: calc(75% + 17.5px)
+        flex: 0 0 calc(75% + 22.5px);
+        max-width: calc(75% + 22.5px)
       }
     }
     @media (min-width: 1024px) {
       article {
         position: relative;
-        flex: 0 0 calc(75% + 25px);
-        max-width: calc(75% + 25px)
-      }
-    }
-    @media (min-width: 1399px) {
-      article {
-        position: relative;
-        flex: 0 0 calc(75% + 25px);
-        max-width: calc(75% + 25px)
-      }
-    }
-    @media (min-width: 1900px) {
-      article {
-        position: relative;
-        flex: 0 0 calc(75% + 30px);
-        max-width: calc(75% + 30px)
+        flex: 0 0 calc(75% + 37.5px);
+        max-width: calc(75% + 37.5px)
       }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -96,16 +122,36 @@ it('parses regular @column centered', () => {
   `
 
   const output = `
-    article {
-      position: relative;
-      flex: 0 0 75%;
-      max-width: 75%;
-      margin-left: auto;
-      margin-right: auto;
+        @media (min-width: 0) {
+      article {
+        position: relative;
+        flex: 0 0 calc(75% - 5px);
+        max-width: calc(75% - 5px);
+        margin-left: auto;
+        margin-right: auto
+      }
+    }
+    @media (min-width: 740px) {
+      article {
+        position: relative;
+        flex: 0 0 calc(75% - 7.5px);
+        max-width: calc(75% - 7.5px);
+        margin-left: auto;
+        margin-right: auto
+      }
+    }
+    @media (min-width: 1024px) {
+      article {
+        position: relative;
+        flex: 0 0 calc(75% - 12.5px);
+        max-width: calc(75% - 12.5px);
+        margin-left: auto;
+        margin-right: auto
+      }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -119,16 +165,36 @@ it('parses regular @column right', () => {
   `
 
   const output = `
-    article {
-      position: relative;
-      flex: 0 0 75%;
-      max-width: 75%;
-      margin-left: auto;
-      margin-right: 0;
+    @media (min-width: 0) {
+      article {
+        position: relative;
+        flex: 0 0 calc(75% - 5px);
+        max-width: calc(75% - 5px);
+        margin-left: auto;
+        margin-right: 0
+      }
+    }
+    @media (min-width: 740px) {
+      article {
+        position: relative;
+        flex: 0 0 calc(75% - 7.5px);
+        max-width: calc(75% - 7.5px);
+        margin-left: auto;
+        margin-right: 0
+      }
+    }
+    @media (min-width: 1024px) {
+      article {
+        position: relative;
+        flex: 0 0 calc(75% - 12.5px);
+        max-width: calc(75% - 12.5px);
+        margin-left: auto;
+        margin-right: 0
+      }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -145,13 +211,13 @@ it('parses @column for single bp', () => {
     @media (min-width: 0) and (max-width: 739px) {
       article {
         position: relative;
-        flex: 0 0 75%;
-        max-width: 75%
+        flex: 0 0 calc(75% - 5px);
+        max-width: calc(75% - 5px)
       }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -168,15 +234,15 @@ it('parses @column for single bp centered', () => {
     @media (min-width: 0) and (max-width: 739px) {
       article {
         position: relative;
-        flex: 0 0 75%;
-        max-width: 75%;
+        flex: 0 0 calc(75% - 5px);
+        max-width: calc(75% - 5px);
         margin-left: auto;
         margin-right: auto
       }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -187,7 +253,7 @@ it('parses multiple @column for different bp', () => {
     article {
       @column 3/4@xs;
       @column 3/5@sm;
-      @column 1/1@>=md;
+      @column 1/1@md;
     }
   `
 
@@ -195,20 +261,18 @@ it('parses multiple @column for different bp', () => {
     @media (min-width: 0) and (max-width: 739px) {
       article {
         position: relative;
-        flex: 0 0 75%;
-        max-width: 75%
+        flex: 0 0 calc(75% - 6.25px);
+        max-width: calc(75% - 6.25px)
       }
     }
-
     @media (min-width: 740px) and (max-width: 1023px) {
       article {
         position: relative;
-        flex: 0 0 60%;
-        max-width: 60%
+        flex: 0 0 calc(60% - 14px);
+        max-width: calc(60% - 14px)
       }
     }
-
-    @media (min-width: 1024px) {
+    @media (min-width: 1024px) and (max-width: 1398px) {
       article {
         position: relative;
         flex: 0 0 100%;
@@ -236,13 +300,13 @@ it('runs correctly inside @responsive', () => {
     @media (min-width: 0) and (max-width: 739px) {
       article {
         position: relative;
-        flex: 0 0 50%;
-        max-width: 50%
+        flex: 0 0 calc(50% - 10px);
+        max-width: calc(50% - 10px)
       }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(1)
   })
@@ -278,42 +342,75 @@ it('fails with wrong syntax', () => {
   })
 })
 
+it('parses 12/12', () => {
+  const input = `
+    article {
+      @column 12/12;
+    }
+  `
+  const output = `
+    @media (min-width: 0) {
+      article {
+        position: relative;
+        flex: 0 0 100%;
+        max-width: 100%
+      }
+    }
+    @media (min-width: 740px) {
+      article {
+        position: relative;
+        flex: 0 0 100%;
+        max-width: 100%
+      }
+    }
+    @media (min-width: 1024px) {
+      article {
+        position: relative;
+        flex: 0 0 100%;
+        max-width: 100%
+      }
+    }
+  `
+
+  return run(input, DEFAULT_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
 it('parses properly with multiple @column in a row', () => {
   const input = `
     article {
-      @column 12/12@<=sm;
-      @column 6/12@md;
-      @column 8/12@>=lg;
+      @column 12/12@xs;
+      @column 6/12@sm/md;
     }
   `
 
   const output = `
-  @media (min-width: 0) and (max-width: 1023px) {
-    article {
-      position: relative;
-      flex: 0 0 100%;
-      max-width: 100%
+    @media (min-width: 0) and (max-width: 739px) {
+      article {
+        position: relative;
+        flex: 0 0 100%;
+        max-width: 100%
+      }
     }
-  }
-
-  @media (min-width: 1024px) and (max-width: 1398px) {
-    article {
-      position: relative;
-      flex: 0 0 50%;
-      max-width: 50%
+    @media (min-width: 740px) and (max-width: 1023px) {
+      article {
+        position: relative;
+        flex: 0 0 calc(50% - 15px);
+        max-width: calc(50% - 15px)
+      }
     }
-  }
-
-  @media (min-width: 1399px) {
-    article {
-      position: relative;
-      flex: 0 0 66.6666666667%;
-      max-width: 66.6666666667%
+    @media (min-width: 1024px) {
+      article {
+        position: relative;
+        flex: 0 0 calc(50% - 25px);
+        max-width: calc(50% - 25px)
+      }
     }
-  }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })

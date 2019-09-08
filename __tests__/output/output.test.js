@@ -21,10 +21,10 @@ it('parses advanced @space nesting under @responsive', () => {
   return run('spaceAdvancedNesting')
 })
 
-it('parses advanced @extend with at-rules', () => {
-  return run('extendAdvanced')
-})
-
 it('parses advanced nesting 2 levels under @responsive', () => {
   return run('spaceAdvancedNesting2levels')
+})
+
+it('parses advanced @extend with at-rules', () => {
+  return run('extendAdvanced')
 })

@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import renderCalcWithRounder from './renderCalcWithRounder'
 import splitUnit from './splitUnit'
+import advancedBreakpointQuery from './advancedBreakpointQuery'
 
 export default function parseSize (node, config, size, bp) {
   if (size === '0') {
@@ -21,22 +22,38 @@ export default function parseSize (node, config, size, bp) {
       // it's a fraction, check if the first part is a spacing key
       const [head, tail] = size.split('/')
       if (!_.has(config.theme.spacing, head)) {
-        if (head.indexOf(':') !== -1) {
+        if (!bp) {
+          throw node.error('SPACING: Fractions need a breakpoint due to gutter calculations', { name: bp })
+        }
+
+        if (advancedBreakpointQuery(bp)) {
+          throw node.error('SPACING: No support for advanced breakpoints when using fractions (due to gutter calculations)', { name: bp })
+        }
+
+        let gutterMultiplier
+        let sizeMath
+        let [wantedColumns, totalColumns] = size.split('/')
+
+        if (wantedColumns.indexOf(':') !== -1) {
           // we have a gutter indicator (@column 6:1/12) -- meaning we want X times the gutter to be added
           // first split the fraction
-          const splitFractions = size.split('/')
-          const colCount = splitFractions[1]
-          const wantedSizeAndGutterMultiplier = splitFractions[0].split(':')
-          const fraction = wantedSizeAndGutterMultiplier[0]
-          const gutterMultiplier = wantedSizeAndGutterMultiplier[1]
+          [wantedColumns, gutterMultiplier] = wantedColumns.split(':')
+        }
 
-          const gutterSize = config.theme.columns.gutters[bp]
-          const [val, unit] = splitUnit(gutterSize)
-          const gutterval = `${(val / 2) * gutterMultiplier}${unit}`
+        const gutterSize = config.theme.columns.gutters[bp]
+        const [gutterValue, gutterUnit] = splitUnit(gutterSize)
 
-          return renderCalcWithRounder(`${fraction}/${colCount} + ${gutterval}`)
+        if (wantedColumns / totalColumns === 1) {
+          sizeMath = '100%'
         } else {
-          return renderCalcWithRounder(size)
+          sizeMath = `${wantedColumns}/${totalColumns} - (${gutterValue}${gutterUnit} - 1/${totalColumns} * ${gutterValue * wantedColumns}${gutterUnit})`
+        }
+
+        if (gutterMultiplier) {
+          const gutterMultiplierValue = gutterValue * gutterMultiplier
+          return renderCalcWithRounder(`${sizeMath} + ${gutterMultiplierValue}${gutterUnit}`)
+        } else {
+          return sizeMath === '100%' ? sizeMath : renderCalcWithRounder(sizeMath)
         }
       }
 
