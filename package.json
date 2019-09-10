@@ -17,7 +17,7 @@
   },
   "author": "T. Mjoen <trond@twined.net>",
   "license": "MIT",
-  "repository": "univers-agency/europacss",
+  "repository": "https://github.com/univers-agency/europacss.git",
   "bugs": {
     "url": "https://github.com/univers-agency/europacss/issues"
   },
@@ -30,7 +30,11 @@
     "lodash": "^4.17.15",
     "normalize.css": "^8.0.1",
     "postcss": "^7.0.6",
-    "postcss-functions": "twined/postcss-functions"
+    "postcss-functions": "twined/postcss-functions",
+    "postcss-extend-rule": "^3.0.0",
+    "postcss-nested": "^4.1.2",
+    "postcss-reporter": "^6.0.1",
+    "reduce-css-calc": "^2.1.6"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
@@ -48,11 +52,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-security": "^1.4.0",
     "eslint-plugin-standard": "^4.0.1",
-    "jest": "^24.9.0",
-    "postcss-extend-rule": "^3.0.0",
-    "postcss-nested": "^4.1.2",
-    "postcss-reporter": "^6.0.1",
-    "reduce-css-calc": "^2.1.6"
+    "jest": "^24.9.0"
   },
   "jest": {
     "testEnvironment": "node",
