@@ -12,7 +12,7 @@ export default function parseFontSizeQuery (node, theme, fontSizeQuery, breakpoi
   }
 
   if (fontSizeQuery.indexOf('(') !== -1) {
-    // we have a modifier
+    // we have a modifier xs(1.6) --> multiplies the size with 1.6
     modifier = fontSizeQuery.match(/\((.*)\)/)[1]
     fontSizeQuery = fontSizeQuery.split('(')[0]
   }
@@ -40,7 +40,13 @@ export default function parseFontSizeQuery (node, theme, fontSizeQuery, breakpoi
       }
     }
   } else {
-    const [val, unit] = splitUnit(theme.typography.sizes[fontSize][breakpoint])
+    let fs
+    if (_.isObject(theme.typography.sizes[fontSize][breakpoint])) {
+      fs = theme.typography.sizes[fontSize][breakpoint]['font-size']
+    } else {
+      fs = theme.typography.sizes[fontSize][breakpoint]
+    }
+    const [val, unit] = splitUnit(fs)
     renderedFontSize = `${val * modifier}${unit}`
 
     return {

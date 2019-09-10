@@ -6,6 +6,30 @@ function run (input, opts) {
   return postcss([plugin(opts)]).process(input, { from: undefined })
 }
 
+const DEFAULT_CFG = {
+  theme: {
+    breakpoints: {
+      xs: '0',
+      sm: '740px',
+      md: '1024px'
+    },
+    spacing: {
+      md: {
+        xs: '25px',
+        sm: '50px',
+        md: '75px'
+      }
+    },
+    columns: {
+      gutters: {
+        xs: '20px',
+        sm: '30px',
+        md: '50px'
+      }
+    }
+  }
+}
+
 it('parses @space per mq size', () => {
   const input = `
     body article .test {
@@ -151,15 +175,49 @@ it('parses @space for fraction', () => {
     article {
       font-size: 18px;
     }
-
     @media (min-width: 0) and (max-width: 739px){
       article {
-        margin-top: 50%;
+        margin-top: calc(50% - 12.5px);
       }
     }
   `
 
   return run(input).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @space for fraction with gutter multiplier', () => {
+  const input = `
+    article {
+      @space margin-top 6:-1/12;
+      font-size: 18px;
+    }
+  `
+
+  const output = `
+    article {
+      font-size: 18px;
+    }
+    @media (min-width: 0){
+      article {
+        margin-top: calc(50% - 30px);
+      }
+    }
+    @media (min-width: 740px){
+      article {
+        margin-top: calc(50% - 45px);
+      }
+    }
+    @media (min-width: 1024px){
+      article {
+        margin-top: calc(50% - 75px);
+      }
+    }
+  `
+
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -241,22 +299,36 @@ it('parses @space for fraction of breakpoint key for all breakpoints', () => {
   })
 })
 
-it('creates no media queries for @space with fraction and no breakpointQuery', () => {
+it('@space with fraction and no breakpointQuery', () => {
   const input = `
     article {
-      @space margin-top 6/12;
+      @space margin-left 6/12;
       font-size: 18px;
     }
   `
 
   const output = `
     article {
-      margin-top: 50%;
       font-size: 18px;
+    }
+    @media (min-width: 0){
+      article {
+        margin-left: calc(50% - 10px);
+      }
+    }
+    @media (min-width: 740px){
+      article {
+        margin-left: calc(50% - 15px);
+      }
+    }
+    @media (min-width: 1024px){
+      article {
+        margin-left: calc(50% - 25px);
+      }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -518,6 +590,63 @@ it('parses @space with q', () => {
     @media (min-width: 740px) and (max-width: 1023px){
       body article .test {
         margin-top: 100px;
+      }
+    }
+  `
+
+  return run(input).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @space with > *', () => {
+  const input = `
+    article {
+      display: flex;
+      flex-wrap: nowrap;
+
+      > * {
+        @space margin-left 2;
+
+        &:first-of-type {
+          margin-left: 0;
+        }
+      }
+    }
+  `
+
+  const output = `
+    article {
+      display: flex;
+      flex-wrap: nowrap;
+    }
+    article > *:first-of-type {
+      margin-left: 0;
+    }
+    @media (min-width: 0){
+      article > * {
+        margin-left: 25px;
+      }
+    }
+    @media (min-width: 740px){
+      article > * {
+        margin-left: 35px;
+      }
+    }
+    @media (min-width: 1024px){
+      article > * {
+        margin-left: 50px;
+      }
+    }
+    @media (min-width: 1399px){
+      article > * {
+        margin-left: 50px;
+      }
+    }
+    @media (min-width: 1900px){
+      article > * {
+        margin-left: 60px;
       }
     }
   `

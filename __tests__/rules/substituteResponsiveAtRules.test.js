@@ -460,25 +460,21 @@ it('parses multiple space tags inside reponsive', () => {
         padding-left: 50px
       }
     }
-
     @media (min-width: 1900px){
       .v-module[data-v="body+center"]{
         padding-left: 60px
       }
     }
-
     @media (min-width: 1399px) and (max-width: 1899px){
       .v-module[data-v="body+center"]{
-        margin-left: 25%
+        margin-left: calc(25% - 37.5px)
       }
     }
-
     @media (min-width: 1900px){
       .v-module[data-v="body+center"]{
-        margin-left: 25%
+        margin-left: calc(25% - 45px)
       }
     }
-
     @media (min-width: 1399px){
       .v-module[data-v="body+center"]{
         position: relative;
@@ -490,6 +486,107 @@ it('parses multiple space tags inside reponsive', () => {
   `
 
   return run(input).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses multiple breakpoints slashed', () => {
+  const DEFAULT_CFG = {
+    theme: {
+      breakpoints: {
+        iphone: '0',
+        mobile: '480px',
+        ipad_portrait: '768px',
+        ipad_landscape: '1024px',
+        desktop_md: '1200px',
+        desktop_lg: '1560px',
+        desktop_xl: '1920px'
+      },
+      columns: {
+        count: {
+          iphone: 2,
+          mobile: 2,
+          ipad_portrait: 6,
+          ipad_landscape: 6,
+          desktop_md: 6,
+          desktop_lg: 6,
+          desktop_xl: 6
+        },
+        gutters: {
+          iphone: '40px',
+          mobile: '40px',
+          ipad_portrait: '35px',
+          ipad_landscape: '70px',
+          desktop_md: '80px',
+          desktop_lg: '100px',
+          desktop_xl: '120px'
+        }
+      }
+    }
+  }
+
+  const input = `
+    article {
+      @responsive ipad_landscape/desktop_md/desktop_lg/desktop_xl {
+        @column 2/6;
+        @column-offset 3:1/6;
+      }
+    }
+  `
+
+  const output = `
+    @media (min-width: 1024px) and (max-width: 1199px){
+      article{
+        margin-left: calc(50% + 35px)
+      }
+    }
+    @media (min-width: 1200px) and (max-width: 1559px){
+      article{
+        margin-left: calc(50% + 40px)
+      }
+    }
+    @media (min-width: 1560px) and (max-width: 1919px){
+      article{
+        margin-left: calc(50% + 50px)
+      }
+    }
+    @media (min-width: 1920px){
+      article{
+        margin-left: calc(50% + 60px)
+      }
+    }
+    @media (min-width: 1024px) and (max-width: 1199px){
+      article{
+        position: relative;
+        flex: 0 0 calc(33.3333333333% - 46.6666666667px);
+        max-width: calc(33.3333333333% - 46.6666666667px)
+      }
+    }
+    @media (min-width: 1200px) and (max-width: 1559px){
+      article{
+        position: relative;
+        flex: 0 0 calc(33.3333333333% - 53.3333333333px);
+        max-width: calc(33.3333333333% - 53.3333333333px)
+      }
+    }
+    @media (min-width: 1560px) and (max-width: 1919px){
+      article{
+        position: relative;
+        flex: 0 0 calc(33.3333333333% - 66.6666666667px);
+        max-width: calc(33.3333333333% - 66.6666666667px)
+      }
+    }
+    @media (min-width: 1920px){
+      article{
+        position: relative;
+        flex: 0 0 calc(33.3333333333% - 80px);
+        max-width: calc(33.3333333333% - 80px)
+      }
+    }
+  `
+
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })

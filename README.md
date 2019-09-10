@@ -26,11 +26,60 @@ module.exports = {
     require('europacss'),
     require('autoprefixer')({ grid: 'on' }),
     require('css-mqgroup')({ sort: true }),
-    require('postcss-reporter')({
-      throwError: true
-    })
   ]
 }
+```
+
+## NOTES
+
+- Remember to keep your `@import` statements at the top of your `.pcss` file
+- Add
+
+    @europa arrows;
+    @europa base;
+
+  to your main stylesheet
+
+
+## CONFIG
+
+TODO
+
+### Typography
+#### Sizes
+
+`typography`
+  `sizes`
+    `size_name`
+      `breakpoint_name`: `value`
+
+**Examples**
+
+A regular setup:
+
+```
+  typography: {
+    sizes: {
+      base: {
+        mobile: '16px'
+      }
+    }
+  }
+```
+
+If `value` is an object, all properties will be added to the selector, i.e:
+
+```
+  typography: {
+    sizes: {
+      base: {
+        mobile: {
+          'font-size': '16px',
+          'line-height': 1.25
+        }
+      }
+    }
+  }
 ```
 
 
@@ -41,6 +90,14 @@ todo
 ### `@responsive {breakpointQuery} block`
 
 todo
+
+### `@embed-responsive {aspectRatio}
+
+**PARAMS**:
+
+`{aspectRatio}`
+  - 16/9
+
 
 ### `@space {decl} {sizeQuery} [breakpointQuery]`
 
@@ -54,6 +111,7 @@ todo
   - `xs` > Gets XS from `theme.spacing` map.
   - `2` > Gets `2` times the gutter padding.
   - `1/3` > Calcs a fraction.
+  - `3:1/6` > Calcs a 3/6 fraction but with 1 added gutter unit
   - `xs/2` > Gets half of the XS from `theme.spacing` map.
   - `container` > Gets value from `theme.container.padding` for breakpoint.
   - `vertical-rhythm(theme.typography.sizes.xl)` > Grabs object for breakpoint and multiplies with default line-height.
@@ -147,6 +205,7 @@ Creates a flex column inside rule.
 
 `{columnQuery}`
   - `1/3` > Takes up one third of container, across all breakpoints
+  - `3:1/6` > Takes up one third of container, across all breakpoints, with 1 unit of gutter
   - `1/3@xs` > Takes up one third of container, only for `xs` breakpoint
   - `1/3@>md` > Takes up one third of container, for breakpoints larger than `md`
 

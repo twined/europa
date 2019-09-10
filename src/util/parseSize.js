@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import renderCalcWithRounder from './renderCalcWithRounder'
 import splitUnit from './splitUnit'
+import advancedBreakpointQuery from './advancedBreakpointQuery'
 
 export default function parseSize (node, config, size, bp) {
   if (size === '0') {
@@ -18,8 +19,54 @@ export default function parseSize (node, config, size, bp) {
   if (!_.has(config.theme.spacing, size)) {
     // size is not found in spacingMap, treat it as a value
     if (size.indexOf('/') !== -1) {
-      // it's a fraction, check if the first part is a breakpoint key
+      // it's a fraction, check if the first part is a spacing key
       const [head, tail] = size.split('/')
+      if (!_.has(config.theme.spacing, head)) {
+        if (!bp) {
+          throw node.error('SPACING: Fractions need a breakpoint due to gutter calculations', { name: bp })
+        }
+
+        if (advancedBreakpointQuery(bp)) {
+          throw node.error('SPACING: No support for advanced breakpoints when using fractions (due to gutter calculations)', { name: bp })
+        }
+
+        let gutterMultiplier
+        let sizeMath
+        let [wantedColumns, totalColumns] = size.split('/')
+
+        if (wantedColumns.indexOf(':') !== -1) {
+          // we have a gutter indicator (@column 6:1/12) -- meaning we want X times the gutter to be added
+          // first split the fraction
+          [wantedColumns, gutterMultiplier] = wantedColumns.split(':')
+        }
+
+        const gutterSize = config.theme.columns.gutters[bp]
+        const [gutterValue, gutterUnit] = splitUnit(gutterSize)
+
+        if (wantedColumns / totalColumns === 1) {
+          sizeMath = '100%'
+        } else {
+          sizeMath = `${wantedColumns}/${totalColumns} - (${gutterValue}${gutterUnit} - 1/${totalColumns} * ${gutterValue * wantedColumns}${gutterUnit})`
+        }
+
+        if (gutterMultiplier) {
+          const gutterMultiplierValue = gutterValue * gutterMultiplier
+          return renderCalcWithRounder(`${sizeMath} + ${gutterMultiplierValue}${gutterUnit}`)
+        } else {
+          return sizeMath === '100%' ? sizeMath : renderCalcWithRounder(sizeMath)
+        }
+      }
+
+      if (!_.has(config.theme.spacing[head], bp)) {
+        throw node.error(`SPACING: No \`${bp}\` breakpoint found in spacing map for \`${head}\`.`)
+      }
+
+      return `calc(${config.theme.spacing[head][bp]}/${tail})`
+    }
+
+    if (size.indexOf('*') !== -1) {
+      // it's *, check if the first part is a spacing key
+      const [head, tail] = size.split('*')
 
       if (!_.has(config.theme.spacing, head)) {
         return renderCalcWithRounder(size)
@@ -29,7 +76,7 @@ export default function parseSize (node, config, size, bp) {
         throw node.error(`SPACING: No \`${bp}\` breakpoint found in spacing map for \`${head}\`.`)
       }
 
-      return `calc(${config.theme.spacing[head][bp]}/${tail})`
+      return `calc(${config.theme.spacing[head][bp]}*${tail})`
     }
 
     if (size.indexOf('vertical-rhythm(') !== -1) {
@@ -42,7 +89,9 @@ export default function parseSize (node, config, size, bp) {
         throw node.error(`SPACING: No \`${key}\` size key theme object.`)
       }
 
-      return `calc(${obj[bp]} * ${lineHeight})`
+      const fs = _.isObject(obj[bp]) ? obj[bp]['font-size'] : obj[bp]
+
+      return `calc(${fs} * ${lineHeight})`
     }
 
     // it's a number. we treat regular numbers as a multiplier of col gutter.

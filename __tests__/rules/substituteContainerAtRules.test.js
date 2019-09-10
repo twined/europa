@@ -209,6 +209,6 @@ it('runs correctly inside @responsive', () => {
 
   return run(input).then(result => {
     expect(result.css).toMatchCSS(output)
-    expect(result.warnings().length).toBe(1)
+    expect(result.warnings().length).toBe(0)
   })
 })

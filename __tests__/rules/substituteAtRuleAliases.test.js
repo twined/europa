@@ -13,8 +13,30 @@ it('aliases @column-offset', () => {
   `
 
   const output = `
-    article {
-      margin-left: 8.3333333333%;
+    @media (min-width: 0){
+      article{
+        margin-left: calc(8.3333333333% - 22.9166666667px)
+      }
+    }
+    @media (min-width: 740px){
+      article{
+        margin-left: calc(8.3333333333% - 32.0833333333px)
+      }
+    }
+    @media (min-width: 1024px){
+      article{
+        margin-left: calc(8.3333333333% - 45.8333333333px)
+      }
+    }
+    @media (min-width: 1399px){
+      article{
+        margin-left: calc(8.3333333333% - 45.8333333333px)
+      }
+    }
+    @media (min-width: 1900px){
+      article{
+        margin-left: calc(8.3333333333% - 55px)
+      }
     }
   `
 
@@ -32,8 +54,30 @@ it('aliases @column-offset negative value', () => {
   `
 
   const output = `
-    article {
-      margin-left: -8.3333333333%;
+    @media (min-width: 0){
+      article{
+        margin-left: calc(-8.3333333333% - 27.0833333333px)
+      }
+    }
+    @media (min-width: 740px){
+      article{
+        margin-left: calc(-8.3333333333% - 37.9166666667px)
+      }
+    }
+    @media (min-width: 1024px){
+      article{
+        margin-left: calc(-8.3333333333% - 54.1666666667px)
+      }
+    }
+    @media (min-width: 1399px){
+      article{
+        margin-left: calc(-8.3333333333% - 54.1666666667px)
+      }
+    }
+    @media (min-width: 1900px){
+      article{
+        margin-left: calc(-8.3333333333% - 65px)
+      }
     }
   `
 
@@ -53,7 +97,7 @@ it('aliases @column-offset for single bp', () => {
   const output = `
     @media (min-width: 0) and (max-width: 739px){
       article{
-        margin-left: 8.3333333333%
+        margin-left: calc(8.3333333333% - 22.9166666667px)
       }
     }
   `

@@ -10,6 +10,7 @@ import registerConfigAsDependency from './lib/registerConfigAsDependency'
 import formatCSS from './lib/formatCSS'
 import resolveConfigPath from './util/resolveConfigPath'
 import plugins from './lib/plugins'
+import substituteRowAtRules from './lib/plugins/substituteRowAtRules'
 
 const getConfigFunction = config => () => {
   if (_.isUndefined(config) && !_.isObject(config)) {
@@ -24,24 +25,25 @@ const getConfigFunction = config => () => {
 }
 
 const plugin = postcss.plugin('europacss', config => {
-  const preEuropaPlugins = [
+  const preludium = [
+    substituteRowAtRules(),
     postcssNested(),
     postcssExtend()
   ]
 
-  const afterEuropaPlugins = [
+  const postludium = [
     postcssNested(),
     formatCSS
   ]
 
   const resolvedConfigPath = resolveConfigPath(config)
   const cfgFunction = getConfigFunction(resolvedConfigPath || config)
-  const europaPlugins = plugins.map(plug => plug(cfgFunction))
+  const configuredEuropaPlugins = plugins.map(plug => plug(cfgFunction))
 
   const pipeline = [
-    ...preEuropaPlugins,
-    ...europaPlugins,
-    ...afterEuropaPlugins
+    ...preludium,
+    ...configuredEuropaPlugins,
+    ...postludium
   ]
 
   if (!_.isUndefined(resolvedConfigPath)) {

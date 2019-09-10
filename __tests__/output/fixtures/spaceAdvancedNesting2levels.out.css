@@ -1,180 +1,152 @@
 @media (min-width: 1024px) and (max-width: 1398px){
   figure:first-of-type{
-    margin-right: -50px;
+    margin-right: -50px
   }
 }
-
 @media (min-width: 1399px) and (max-width: 1899px){
   figure:first-of-type{
-    margin-right: -50px;
+    margin-right: -50px
   }
 }
-
 @media (min-width: 1900px){
   figure:first-of-type{
-    margin-right: -60px;
+    margin-right: -60px
   }
 }
-
 @media (min-width: 1024px) and (max-width: 1398px){
   figure:first-of-type{
-    padding-left: 75px;
+    padding-left: 75px
   }
 }
-
 @media (min-width: 1399px) and (max-width: 1899px){
   figure:first-of-type{
-    padding-left: 75px;
+    padding-left: 75px
   }
 }
-
 @media (min-width: 1900px){
   figure:first-of-type{
-    padding-left: 90px;
+    padding-left: 90px
   }
 }
-
 @media (min-width: 1024px) and (max-width: 1398px){
   figure:first-of-type{
-    padding-top: 175px;
+    padding-top: 175px
   }
 }
-
 @media (min-width: 1399px) and (max-width: 1899px){
   figure:first-of-type{
-    padding-top: 175px;
+    padding-top: 175px
   }
 }
-
 @media (min-width: 1900px){
   figure:first-of-type{
-    padding-top: 210px;
+    padding-top: 210px
   }
 }
-
 @media (min-width: 1024px) and (max-width: 1398px){
   figure:last-of-type{
-    margin-top: -100px;
+    margin-top: -100px
   }
 }
-
 @media (min-width: 1399px) and (max-width: 1899px){
   figure:last-of-type{
-    margin-top: -100px;
+    margin-top: -100px
   }
 }
-
 @media (min-width: 1900px){
   figure:last-of-type{
-    margin-top: -120px;
+    margin-top: -120px
   }
 }
-
 @media (min-width: 1024px) and (max-width: 1398px){
   figure:last-of-type{
-    margin-left: -50px;
+    margin-left: -50px
   }
 }
-
 @media (min-width: 1399px) and (max-width: 1899px){
   figure:last-of-type{
-    margin-left: -50px;
+    margin-left: -50px
   }
 }
-
 @media (min-width: 1900px){
   figure:last-of-type{
-    margin-left: -60px;
+    margin-left: -60px
   }
 }
-
 @media (min-width: 1024px) and (max-width: 1398px){
   figure:last-of-type{
-    margin-right: 50px;
+    margin-right: 50px
   }
 }
-
 @media (min-width: 1399px) and (max-width: 1899px){
   figure:last-of-type{
-    margin-right: 50px;
+    margin-right: 50px
   }
 }
-
 @media (min-width: 1900px){
   figure:last-of-type{
-    margin-right: 60px;
+    margin-right: 60px
   }
 }
-
 @media (min-width: 1024px) and (max-width: 1398px){
   figure:last-of-type{
-    padding-right: 25px;
+    padding-right: 25px
   }
 }
-
 @media (min-width: 1399px) and (max-width: 1899px){
   figure:last-of-type{
-    padding-right: 25px;
+    padding-right: 25px
   }
 }
-
 @media (min-width: 1900px){
   figure:last-of-type{
-    padding-right: 30px;
+    padding-right: 30px
   }
 }
-
 @media (min-width: 1024px) and (max-width: 1398px){
   figure.center{
     padding-left: 200px;
-    padding-right: 200px;
+    padding-right: 200px
   }
 }
-
 @media (min-width: 1399px) and (max-width: 1899px){
   figure.center{
     padding-left: 200px;
-    padding-right: 200px;
+    padding-right: 200px
   }
 }
-
 @media (min-width: 1900px){
   figure.center{
     padding-left: 240px;
-    padding-right: 240px;
+    padding-right: 240px
   }
 }
-
 @media (min-width: 1024px) and (max-width: 1398px){
   figure.center{
-    margin-top: -100px;
+    margin-top: -100px
   }
 }
-
 @media (min-width: 1399px) and (max-width: 1899px){
   figure.center{
-    margin-top: -100px;
+    margin-top: -100px
   }
 }
-
 @media (min-width: 1900px){
   figure.center{
-    margin-top: -120px;
+    margin-top: -120px
   }
 }
-
-@media (min-width: 1024px){
+@media (min-width: 740px) and (max-width: 1023px){
   figure{
     position: relative;
-    flex: 0 0 58.3333333333%;
-    max-width: 58.3333333333%;
+    flex: 0 0 calc(58.3333333333% - 14.5833333333px);
+    max-width: calc(58.3333333333% - 14.5833333333px)
   }
 }
-
-@media (min-width: 1024px){
-  figure.center {
+@media (min-width: 1024px) and (max-width: 1398px){
+  figure{
     position: relative;
-    flex: 0 0 100%;
-    max-width: 100%;
+    flex: 0 0 calc(58.3333333333% - 20.8333333333px);
+    max-width: calc(58.3333333333% - 20.8333333333px)
   }
 }

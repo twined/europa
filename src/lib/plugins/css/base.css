@@ -24,7 +24,7 @@ html {
 }
 
 body {
-  font-family: theme('typography.families.sans');
+  font-family: theme('typography.families.main');
   font-size: theme('typography.base');
   @iterate theme.typography.lineHeight {
     @responsive $key {
