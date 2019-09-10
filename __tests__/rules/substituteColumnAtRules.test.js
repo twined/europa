@@ -308,7 +308,99 @@ it('runs correctly inside @responsive', () => {
 
   return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
-    expect(result.warnings().length).toBe(1)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('runs nested under advanced breakpoint', () => {
+  const ADVANCED_CFG = {
+    theme: {
+      breakpoints: {
+        xs: '0',
+        sm: '740px',
+        md: '1024px',
+        lg: '1250px',
+        xl: '1920px'
+      },
+      spacing: {
+        md: {
+          xs: '25px',
+          sm: '50px',
+          md: '75px',
+          lg: '95px',
+          xl: '115px'
+        }
+      },
+      columns: {
+        gutters: {
+          xs: '20px',
+          sm: '30px',
+          md: '50px',
+          lg: '70px',
+          xl: '90px'
+        }
+      }
+    }
+  }
+
+  const input = `
+    article {
+      @responsive >=md {
+        @column 2:1/4;
+      }
+    }
+  `
+
+  const output = `
+    @media (min-width: 1024px) and (max-width: 1249px) {
+      article {
+        position: relative;
+        flex: 0 0 calc(50% + 25px);
+        max-width: calc(50% + 25px)
+      }
+    }
+    @media (min-width: 1250px) and (max-width: 1919px) {
+      article {
+        position: relative;
+        flex: 0 0 calc(50% + 35px);
+        max-width: calc(50% + 35px)
+      }
+    }
+    @media (min-width: 1920px) {
+      article {
+        position: relative;
+        flex: 0 0 calc(50% + 45px);
+        max-width: calc(50% + 45px)
+      }
+    }
+  `
+
+  return run(input, ADVANCED_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('runs with gutters and breakpoint', () => {
+  const input = `
+    article {
+      @column 2:1/4@xs;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0) and (max-width: 739px) {
+      article {
+        position: relative;
+        flex: 0 0 calc(50% + 10px);
+        max-width: calc(50% + 10px)
+      }
+    }
+  `
+
+  return run(input, DEFAULT_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
   })
 })
 

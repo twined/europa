@@ -40,7 +40,13 @@ export default function parseFontSizeQuery (node, theme, fontSizeQuery, breakpoi
       }
     }
   } else {
-    const [val, unit] = splitUnit(theme.typography.sizes[fontSize][breakpoint])
+    let fs
+    if (_.isObject(theme.typography.sizes[fontSize][breakpoint])) {
+      fs = theme.typography.sizes[fontSize][breakpoint]['font-size']
+    } else {
+      fs = theme.typography.sizes[fontSize][breakpoint]
+    }
+    const [val, unit] = splitUnit(fs)
     renderedFontSize = `${val * modifier}${unit}`
 
     return {

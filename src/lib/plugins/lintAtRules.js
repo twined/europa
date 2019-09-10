@@ -17,28 +17,28 @@ export default postcss.plugin('europacss-lint', () => {
         return
       }
 
-      if (nodes.length === 1) {
-        /* at-rules that should not be nested under @responsive as an only child */
-        switch (nodes[0].name) {
-          case 'space':
-          case 'space!':
-          case 'column':
-          case 'column-typography':
-          case 'column-offset':
-          case 'rfs':
-          case 'fontsize':
-          case 'container':
-            atRule.warn(
-              result,
-              `RESPONSIVE: @${nodes[0].name} shouldn't be an only child under @responsive. Use the rule directly with a breakpoint query instead.`,
-              {
-                name: nodes[0].name,
-                plugin: 'europacss'
-              }
-            )
-            break
-        }
-      }
+      // if (nodes.length === 1) {
+      //   /* at-rules that should not be nested under @responsive as an only child */
+      //   switch (nodes[0].name) {
+      //     case 'space':
+      //     case 'space!':
+      //     case 'column':
+      //     case 'column-typography':
+      //     case 'column-offset':
+      //     case 'rfs':
+      //     case 'fontsize':
+      //     case 'container':
+      //       atRule.warn(
+      //         result,
+      //         `RESPONSIVE: @${nodes[0].name} shouldn't be an only child under @responsive. Use the rule directly with a breakpoint query instead.`,
+      //         {
+      //           name: nodes[0].name,
+      //           plugin: 'europacss'
+      //         }
+      //       )
+      //       break
+      //   }
+      // }
 
       atRule.walkAtRules(childNode => {
         switch (childNode.name) {

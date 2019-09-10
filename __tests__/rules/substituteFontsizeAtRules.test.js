@@ -176,6 +176,68 @@ it('parses regular @fontsize for all breakpoints with line-height and modifier',
   })
 })
 
+it('parses regular @fontsize for all breakpoints with modifier and no line-height', () => {
+  const input = `
+    article {
+      @fontsize lg(2.0);
+    }
+  `
+
+  const output = `
+    @media (min-width: 0){
+      article{
+        font-size: 38px
+      }
+    }
+    @media (min-width: 740px){
+      article{
+        font-size: 42px
+      }
+    }
+    @media (min-width: 1024px){
+      article{
+        font-size: 42px
+      }
+    }
+    @media (min-width: 1399px){
+      article{
+        font-size: 42px
+      }
+    }
+    @media (min-width: 1900px){
+      article{
+        font-size: 44px
+      }
+    }
+  `
+
+  return run(input).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses regular @fontsize for single breakpoint with modifier and no line-height', () => {
+  const input = `
+    article {
+      @fontsize lg(2.0) xs;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0) and (max-width: 739px){
+      article{
+        font-size: 38px
+      }
+    }
+  `
+
+  return run(input).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
 it('parses object @fontsize for single breakpoint', () => {
   const cfg = {
     theme: {
@@ -247,7 +309,7 @@ it('runs correctly inside @responsive', () => {
 
   return run(input).then(result => {
     expect(result.css).toMatchCSS(output)
-    expect(result.warnings().length).toBe(1)
+    expect(result.warnings().length).toBe(0)
   })
 })
 

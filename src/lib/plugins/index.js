@@ -18,7 +18,6 @@ import postcssExtend from 'postcss-extend-rule'
 
 export default [
   lintAtRules,
-  // substituteRowAtRules,
   substituteEuropaAtRules,
   substituteIfAtRules,
   evaluateEuropaFunctions,

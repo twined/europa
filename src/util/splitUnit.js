@@ -3,6 +3,13 @@
  * @param {string} str
  */
 export default function splitUnit (str) {
+  if (!str) {
+    return [-9999, 'px']
+  }
+
   const string = String(str)
-  return [parseFloat(string, 10), string.match(/[\d.\-+]*\s*(.*)/)[1] || '']
+  const val = parseFloat(string, 10)
+  const unit = string.match(/[\d.\-+]*\s*(.*)/)[1] || ''
+
+  return [val, unit]
 }

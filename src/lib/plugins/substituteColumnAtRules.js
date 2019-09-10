@@ -66,6 +66,8 @@ export default postcss.plugin('europacss-column', getConfig => {
       }
 
       const parent = atRule.parent
+      const grandParent = atRule.parent.parent
+
       // Check if we're nested under a @responsive rule.
       // If so, we don't create a media query, and we also won't
       // accept a query param for @space
@@ -75,11 +77,19 @@ export default postcss.plugin('europacss-column', getConfig => {
         }
         // try to grab the breakpoint
         if (advancedBreakpointQuery(parent.params)) {
-          throw atRule.error(`COLUMN: @column nested under @responsive can't have an advanced breakpoint query. \`xs\` or \`xs/sm\` type queries are allowed`, { name: suppliedBreakpoint })
+          // parse the breakpoints
+          suppliedBreakpoint = extractBreakpointKeys(breakpoints, parent.params).join('/')
+          console.log(suppliedBreakpoint)
+        } else {
+          suppliedBreakpoint = parent.params
         }
 
-        suppliedBreakpoint = parent.params
-        alreadyResponsive = true
+        if (parent.params.indexOf('/')) {
+          // multiple breakpoints, we can't use the breakpoints
+          alreadyResponsive = false
+        } else {
+          alreadyResponsive = true
+        }
       }
 
       if (!suppliedBreakpoint) {
@@ -88,11 +98,13 @@ export default postcss.plugin('europacss-column', getConfig => {
 
       // what if the parent's parent is @responsive?
       if (!['atrule', 'root'].includes(parent.type)
-          && parent.parent.type === 'atrule'
-          && parent.parent.name === 'responsive') {
+          && grandParent.type === 'atrule'
+          && grandParent.name === 'responsive') {
         if (suppliedBreakpoint) {
           throw atRule.error(`COLUMN: When nesting @column under @responsive, we do not accept a breakpoints query.`, { name: suppliedBreakpoint })
         }
+
+        suppliedBreakpoint = grandParent.params
       }
 
       if (suppliedBreakpoint && advancedBreakpointQuery(suppliedBreakpoint)) {
@@ -144,14 +156,23 @@ export default postcss.plugin('europacss-column', getConfig => {
         // has suppliedBreakpoint, either from a @responsive parent, or a supplied bpQuery
         if (alreadyResponsive) {
           flexDecls = []
+          let columnMath
           let gutterSize = columns.gutters[suppliedBreakpoint]
           let [gutterValue, gutterUnit] = splitUnit(gutterSize)
 
           if (wantedColumns / totalColumns === 1) {
-            flexSize = '100%'
+            columnMath = '100%'
           } else {
-            flexSize = renderCalcWithRounder(`${wantedColumns}/${totalColumns} - (${gutterValue}${gutterUnit} - 1/${totalColumns} * ${gutterValue * wantedColumns}${gutterUnit})`)
+            columnMath = `${wantedColumns}/${totalColumns} - (${gutterValue}${gutterUnit} - 1/${totalColumns} * ${gutterValue * wantedColumns}${gutterUnit})`
           }
+
+          if (gutterMultiplier) {
+            let gutterMultiplierValue = gutterValue * gutterMultiplier
+            flexSize = renderCalcWithRounder(`${columnMath} + ${gutterMultiplierValue}${gutterUnit}`)
+          } else {
+            flexSize = columnMath === '100%' ? columnMath : renderCalcWithRounder(columnMath)
+          }
+
           createFlexDecls(flexDecls, flexSize)
           maybeAddAlign(flexDecls, align)
 
@@ -159,19 +180,38 @@ export default postcss.plugin('europacss-column', getConfig => {
         } else {
           splitBreakpoints(suppliedBreakpoint).forEach(bp => {
             flexDecls = []
+            let columnMath
             let gutterSize = columns.gutters[bp]
+
+            if (!gutterSize) {
+              throw atRule.error(`COLUMN: no \`columns.gutters\` found for breakpoint \`${bp}\``)
+            }
+
             let [gutterValue, gutterUnit] = splitUnit(gutterSize)
 
             if (wantedColumns / totalColumns === 1) {
-              flexSize = '100%'
+              columnMath = '100%'
             } else {
-              flexSize = renderCalcWithRounder(`${wantedColumns}/${totalColumns} - (${gutterValue}${gutterUnit} - 1/${totalColumns} * ${gutterValue * wantedColumns}${gutterUnit})`)
+              columnMath = `${wantedColumns}/${totalColumns} - (${gutterValue}${gutterUnit} - 1/${totalColumns} * ${gutterValue * wantedColumns}${gutterUnit})`
+            }
+
+            if (gutterMultiplier) {
+              let gutterMultiplierValue = gutterValue * gutterMultiplier
+              flexSize = renderCalcWithRounder(`${columnMath} + ${gutterMultiplierValue}${gutterUnit}`)
+            } else {
+              flexSize = columnMath === '100%' ? columnMath : renderCalcWithRounder(columnMath)
             }
 
             createFlexDecls(flexDecls, flexSize)
             maybeAddAlign(flexDecls, align)
 
-            const originalRule = postcss.rule({ selector: parent.selector })
+            let originalRule
+
+            if (parent.selector) {
+              originalRule = postcss.rule({ selector: parent.selector })
+            } else {
+              originalRule = postcss.rule({ selector: grandParent.selector })
+            }
             originalRule.append(...flexDecls)
 
             const mediaRule = postcss.atRule({ name: 'media', params: buildMediaQueryQ(breakpoints, bp) })
@@ -183,9 +223,16 @@ export default postcss.plugin('europacss-column', getConfig => {
 
       atRule.remove()
 
-      if (!parent.nodes.length) {
+      // check if parent has anything
+      if (parent && !parent.nodes.length) {
         parent.remove()
       }
+
+      // check if grandparent has anything
+      if (grandParent && !grandParent.nodes.length) {
+        grandParent.remove()
+      }
+
 
       if (finalRules.length) {
         css.append(finalRules)
