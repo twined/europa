@@ -79,7 +79,6 @@ export default postcss.plugin('europacss-column', getConfig => {
         if (advancedBreakpointQuery(parent.params)) {
           // parse the breakpoints
           suppliedBreakpoint = extractBreakpointKeys(breakpoints, parent.params).join('/')
-          console.log(suppliedBreakpoint)
         } else {
           suppliedBreakpoint = parent.params
         }
