@@ -17,11 +17,11 @@
   },
   "author": "T. Mjoen <trond@twined.net>",
   "license": "MIT",
-  "repository": "twined/europa",
+  "repository": "univers-agency/europacss",
   "bugs": {
-    "url": "https://github.com/twined/europa/issues"
+    "url": "https://github.com/univers-agency/europacss/issues"
   },
-  "homepage": "https://github.com/twined/europa",
+  "homepage": "https://github.com/univers-agency/europacss",
   "files": [
     "lib",
     "stubs"
