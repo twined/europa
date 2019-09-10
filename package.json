@@ -22,6 +22,10 @@
     "url": "https://github.com/twined/europa/issues"
   },
   "homepage": "https://github.com/twined/europa",
+  "files": [
+    "lib",
+    "stubs"
+  ],
   "dependencies": {
     "lodash": "^4.17.15",
     "normalize.css": "^8.0.1",
