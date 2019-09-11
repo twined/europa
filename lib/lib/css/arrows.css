@@ -11,12 +11,12 @@ a:hover {
   }
 
   span.arrow-l {
-    transform: translateX(theme('arrows.travel') * -1);
+    transform: translateX(calc(theme('arrows.travel') * -1));
     backface-visibility: hidden;
   }
 
   span.arrow-u {
-    transform: translateY(theme('arrows.travel') * -1);
+    transform: translateY(calc(theme('arrows.travel') * -1));
     backface-visibility: hidden;
   }
 
@@ -26,7 +26,7 @@ a:hover {
   }
 
   span.arrow-ne {
-    transform: translateY(theme('arrows.travel') * -1) translateX(theme('arrows.travel'));
+    transform: translateY(calc(theme('arrows.travel') * -1)) translateX(theme('arrows.travel'));
     backface-visibility: hidden;
   }
 }
