@@ -26,6 +26,7 @@ export default function parseSize (node, config, size, bp) {
           throw node.error('SPACING: Fractions need a breakpoint due to gutter calculations', { name: bp })
         }
 
+        // TODO: Deprecate after testing -- should not be neccessary after bp parsing
         if (advancedBreakpointQuery(bp)) {
           throw node.error('SPACING: No support for advanced breakpoints when using fractions (due to gutter calculations)', { name: bp })
         }

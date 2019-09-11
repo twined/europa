@@ -223,6 +223,83 @@ it('parses @space for fraction with gutter multiplier', () => {
   })
 })
 
+it('parses advanced @responsive @space for fraction with gutter multiplier', () => {
+  const CFG = {
+    theme: {
+      breakpoints: {
+        iphone: '0',
+        mobile: '480px',
+        ipad_portrait: '768px',
+        ipad_landscape: '1024px',
+        desktop_md: '1200px',
+        desktop_lg: '1560px',
+        desktop_xl: '1920px'
+      },
+      columns: {
+        count: {
+          iphone: 2,
+          mobile: 2,
+          ipad_portrait: 6,
+          ipad_landscape: 6,
+          desktop_md: 6,
+          desktop_lg: 6,
+          desktop_xl: 6
+        },
+        gutters: {
+          iphone: '40px',
+          mobile: '40px',
+          ipad_portrait: '35px',
+          ipad_landscape: '70px',
+          desktop_md: '80px',
+          desktop_lg: '100px',
+          desktop_xl: '120px'
+        }
+      }
+    }
+  }
+
+  const input = `
+    article {
+      @responsive >=ipad_portrait {
+        @space margin-top 1:1/6;
+      }
+    }
+  `
+
+  const output = `
+    @media (min-width: 768px) and (max-width: 1023px){
+      article{
+        margin-top: calc(16.6666666667% + 5.8333333333px)
+      }
+    }
+    @media (min-width: 1024px) and (max-width: 1199px){
+      article{
+        margin-top: calc(16.6666666667% + 11.6666666667px)
+      }
+    }
+    @media (min-width: 1200px) and (max-width: 1559px){
+      article{
+        margin-top: calc(16.6666666667% + 13.3333333333px)
+      }
+    }
+    @media (min-width: 1560px) and (max-width: 1919px){
+      article{
+        margin-top: calc(16.6666666667% + 16.6666666667px)
+      }
+    }
+    @media (min-width: 1920px){
+      article{
+        margin-top: calc(16.6666666667% + 20px)
+      }
+    }
+  `
+
+  return run(input, CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
 it('parses @space for fraction of breakpoint key', () => {
   const input = `
     article {
