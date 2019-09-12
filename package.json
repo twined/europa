@@ -1,5 +1,5 @@
 {
-  "name": "europacss",
+  "name": "@univers-agency/europacss",
   "version": "0.1.0",
   "description": "Europa CSS system",
   "main": "lib/index.js",
