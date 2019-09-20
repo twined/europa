@@ -33,6 +33,14 @@ module.exports = {
         md: '50px',
         lg: '50px',
         xl: '60px'
+      },
+
+      count: {
+        xs: 2,
+        sm: 2,
+        md: 6,
+        lg: 6,
+        xl: 6
       }
     },
 
