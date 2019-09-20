@@ -107,7 +107,7 @@ export default postcss.plugin('europacss-column', getConfig => {
       }
 
       if (suppliedBreakpoint && advancedBreakpointQuery(suppliedBreakpoint)) {
-        throw atRule.error(`COLUMN: Column only accepts simple breakpoints, not advanced queries. This is due to gutter calculations`, { name: suppliedBreakpoint })
+        suppliedBreakpoint = extractBreakpointKeys(breakpoints, suppliedBreakpoint).join('/')
       }
 
       if (!['left', 'center', 'right'].includes(align)) {
