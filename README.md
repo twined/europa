@@ -197,22 +197,20 @@ article {
 }
 ```
 
-### `@column {columnQuery} [align]`
+### `@column {sizeQuery} [breakpointQuery] `
 
 Creates a flex column inside rule.
 
 **PARAMS**:
 
-`{columnQuery}`
+`{sizeQuery}`
   - `1/3` > Takes up one third of container, across all breakpoints
   - `3:1/6` > Takes up one third of container, across all breakpoints, with 1 unit of gutter
-  - `1/3@xs` > Takes up one third of container, only for `xs` breakpoint
-  - `1/3@>md` > Takes up one third of container, for breakpoints larger than `md`
 
-`[align]`
-  - `left` > Default/standard if `align` is not supplied.
-  - `center` > Sets `margin-left` and `margin-right` to `auto`
-  - `right` > Sets `margin-left` to `auto`, and `margin-right` to `0`
+`[breakpointQuery]`
+  - `xs` > For xs breakpoint only
+  - `xs/sm/xl` > For xs, sm and xl breakpoints
+  - `<=md` > Less and equal to the md breakpoint
 
 
 **EXAMPLES**:
@@ -220,7 +218,7 @@ Creates a flex column inside rule.
 ```postcss
 article {
   @column 1/3;
-  @column 3/3@xs;
+  @column 3/3 xs;
 }
 /* Column is 1/3 wide on all devices, except xs, which is 3/3. */
 ```
