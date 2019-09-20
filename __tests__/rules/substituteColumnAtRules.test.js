@@ -114,96 +114,23 @@ it('parses regular @column + gutter', () => {
   })
 })
 
-it('parses regular @column centered', () => {
+it('fails on old format', () => {
   const input = `
     article {
-      @column 3/4 center;
+      @column 3/4@xs;
     }
   `
 
-  const output = `
-        @media (min-width: 0) {
-      article {
-        position: relative;
-        flex: 0 0 calc(75% - 5px);
-        max-width: calc(75% - 5px);
-        margin-left: auto;
-        margin-right: auto
-      }
-    }
-    @media (min-width: 740px) {
-      article {
-        position: relative;
-        flex: 0 0 calc(75% - 7.5px);
-        max-width: calc(75% - 7.5px);
-        margin-left: auto;
-        margin-right: auto
-      }
-    }
-    @media (min-width: 1024px) {
-      article {
-        position: relative;
-        flex: 0 0 calc(75% - 12.5px);
-        max-width: calc(75% - 12.5px);
-        margin-left: auto;
-        margin-right: auto
-      }
-    }
-  `
-
-  return run(input, DEFAULT_CFG).then(result => {
-    expect(result.css).toMatchCSS(output)
-    expect(result.warnings().length).toBe(0)
-  })
-})
-
-it('parses regular @column right', () => {
-  const input = `
-    article {
-      @column 3/4 right;
-    }
-  `
-
-  const output = `
-    @media (min-width: 0) {
-      article {
-        position: relative;
-        flex: 0 0 calc(75% - 5px);
-        max-width: calc(75% - 5px);
-        margin-left: auto;
-        margin-right: 0
-      }
-    }
-    @media (min-width: 740px) {
-      article {
-        position: relative;
-        flex: 0 0 calc(75% - 7.5px);
-        max-width: calc(75% - 7.5px);
-        margin-left: auto;
-        margin-right: 0
-      }
-    }
-    @media (min-width: 1024px) {
-      article {
-        position: relative;
-        flex: 0 0 calc(75% - 12.5px);
-        max-width: calc(75% - 12.5px);
-        margin-left: auto;
-        margin-right: 0
-      }
-    }
-  `
-
-  return run(input, DEFAULT_CFG).then(result => {
-    expect(result.css).toMatchCSS(output)
-    expect(result.warnings().length).toBe(0)
+  expect.assertions(1)
+  return run(input).catch(e => {
+    expect(e).toMatchObject({ name: 'CssSyntaxError' })
   })
 })
 
 it('parses @column for single bp', () => {
   const input = `
     article {
-      @column 3/4@xs;
+      @column 3/4 xs;
     }
   `
 
@@ -223,37 +150,12 @@ it('parses @column for single bp', () => {
   })
 })
 
-it('parses @column for single bp centered', () => {
-  const input = `
-    article {
-      @column 3/4@xs center;
-    }
-  `
-
-  const output = `
-    @media (min-width: 0) and (max-width: 739px) {
-      article {
-        position: relative;
-        flex: 0 0 calc(75% - 5px);
-        max-width: calc(75% - 5px);
-        margin-left: auto;
-        margin-right: auto
-      }
-    }
-  `
-
-  return run(input, DEFAULT_CFG).then(result => {
-    expect(result.css).toMatchCSS(output)
-    expect(result.warnings().length).toBe(0)
-  })
-})
-
 it('parses multiple @column for different bp', () => {
   const input = `
     article {
-      @column 3/4@xs;
-      @column 3/5@sm;
-      @column 1/1@md;
+      @column 3/4 xs;
+      @column 3/5 sm;
+      @column 1/1 md;
     }
   `
 
@@ -414,7 +316,7 @@ it('runs with advanced breakpoint', () => {
 
   const input = `
     article {
-      @column 2:1/4@>=md;
+      @column 2:1/4 >=md;
     }
   `
 
@@ -451,7 +353,7 @@ it('runs with advanced breakpoint', () => {
 it('runs with gutters and breakpoint', () => {
   const input = `
     article {
-      @column 2:1/4@xs;
+      @column 2:1/4 xs;
     }
   `
 
@@ -475,23 +377,8 @@ it('fails inside @responsive with own breakpointQuery', () => {
   const input = `
     article {
       @responsive xs {
-        @column 2/4@sm;
+        @column 2/4 sm;
       }
-    }
-  `
-
-  expect.assertions(1)
-  return run(input).catch(e => {
-    expect(e).toMatchObject({ name: 'CssSyntaxError' })
-  })
-})
-
-it('fails with wrong syntax', () => {
-  const input = `
-    article {
-      @column 12/12 <=sm;
-      @column 6/12 md;
-      @column 8/12 >=lg;
     }
   `
 
@@ -540,8 +427,8 @@ it('parses 12/12', () => {
 it('parses properly with multiple @column in a row', () => {
   const input = `
     article {
-      @column 12/12@xs;
-      @column 6/12@sm/md;
+      @column 12/12 xs;
+      @column 6/12 sm/md;
     }
   `
 
