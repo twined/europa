@@ -139,14 +139,18 @@
 @media (min-width: 740px) and (max-width: 1023px){
   figure{
     position: relative;
-    flex: 0 0 calc(58.3333333333% - 14.5833333333px);
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: calc(58.3333333333% - 14.5833333333px);
     max-width: calc(58.3333333333% - 14.5833333333px)
   }
 }
 @media (min-width: 1024px) and (max-width: 1398px){
   figure{
     position: relative;
-    flex: 0 0 calc(58.3333333333% - 20.8333333333px);
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: calc(58.3333333333% - 20.8333333333px);
     max-width: calc(58.3333333333% - 20.8333333333px)
   }
 }

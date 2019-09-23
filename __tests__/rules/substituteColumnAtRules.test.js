@@ -51,21 +51,27 @@ it('parses regular @column', () => {
     @media (min-width: 0) {
       article {
         position: relative;
-        flex: 0 0 calc(75% - 5px);
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(75% - 5px);
         max-width: calc(75% - 5px)
       }
     }
     @media (min-width: 740px) {
       article {
         position: relative;
-        flex: 0 0 calc(75% - 7.5px);
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(75% - 7.5px);
         max-width: calc(75% - 7.5px)
       }
     }
     @media (min-width: 1024px) {
       article {
         position: relative;
-        flex: 0 0 calc(75% - 12.5px);
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(75% - 12.5px);
         max-width: calc(75% - 12.5px)
       }
     }
@@ -88,21 +94,27 @@ it('parses regular @column + gutter', () => {
     @media (min-width: 0) {
       article {
         position: relative;
-        flex: 0 0 calc(75% + 15px);
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(75% + 15px);
         max-width: calc(75% + 15px)
       }
     }
     @media (min-width: 740px) {
       article {
         position: relative;
-        flex: 0 0 calc(75% + 22.5px);
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(75% + 22.5px);
         max-width: calc(75% + 22.5px)
       }
     }
     @media (min-width: 1024px) {
       article {
         position: relative;
-        flex: 0 0 calc(75% + 37.5px);
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(75% + 37.5px);
         max-width: calc(75% + 37.5px)
       }
     }
@@ -138,7 +150,9 @@ it('parses @column for single bp', () => {
     @media (min-width: 0) and (max-width: 739px) {
       article {
         position: relative;
-        flex: 0 0 calc(75% - 5px);
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(75% - 5px);
         max-width: calc(75% - 5px)
       }
     }
@@ -163,21 +177,27 @@ it('parses multiple @column for different bp', () => {
     @media (min-width: 0) and (max-width: 739px) {
       article {
         position: relative;
-        flex: 0 0 calc(75% - 6.25px);
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(75% - 6.25px);
         max-width: calc(75% - 6.25px)
       }
     }
     @media (min-width: 740px) and (max-width: 1023px) {
       article {
         position: relative;
-        flex: 0 0 calc(60% - 14px);
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(60% - 14px);
         max-width: calc(60% - 14px)
       }
     }
     @media (min-width: 1024px) and (max-width: 1398px) {
       article {
         position: relative;
-        flex: 0 0 100%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 100%;
         max-width: 100%
       }
     }
@@ -202,7 +222,9 @@ it('runs correctly inside @responsive', () => {
     @media (min-width: 0) and (max-width: 739px) {
       article {
         position: relative;
-        flex: 0 0 calc(50% - 10px);
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(50% - 10px);
         max-width: calc(50% - 10px)
       }
     }
@@ -257,21 +279,27 @@ it('runs nested under advanced breakpoint', () => {
     @media (min-width: 1024px) and (max-width: 1249px) {
       article {
         position: relative;
-        flex: 0 0 calc(50% + 25px);
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(50% + 25px);
         max-width: calc(50% + 25px)
       }
     }
     @media (min-width: 1250px) and (max-width: 1919px) {
       article {
         position: relative;
-        flex: 0 0 calc(50% + 35px);
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(50% + 35px);
         max-width: calc(50% + 35px)
       }
     }
     @media (min-width: 1920px) {
       article {
         position: relative;
-        flex: 0 0 calc(50% + 45px);
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(50% + 45px);
         max-width: calc(50% + 45px)
       }
     }
@@ -324,21 +352,27 @@ it('runs with advanced breakpoint', () => {
     @media (min-width: 1024px) and (max-width: 1249px) {
       article {
         position: relative;
-        flex: 0 0 calc(50% + 25px);
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(50% + 25px);
         max-width: calc(50% + 25px)
       }
     }
     @media (min-width: 1250px) and (max-width: 1919px) {
       article {
         position: relative;
-        flex: 0 0 calc(50% + 35px);
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(50% + 35px);
         max-width: calc(50% + 35px)
       }
     }
     @media (min-width: 1920px) {
       article {
         position: relative;
-        flex: 0 0 calc(50% + 45px);
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(50% + 45px);
         max-width: calc(50% + 45px)
       }
     }
@@ -361,7 +395,9 @@ it('runs with gutters and breakpoint', () => {
     @media (min-width: 0) and (max-width: 739px) {
       article {
         position: relative;
-        flex: 0 0 calc(50% + 10px);
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(50% + 10px);
         max-width: calc(50% + 10px)
       }
     }
@@ -398,21 +434,27 @@ it('parses 12/12', () => {
     @media (min-width: 0) {
       article {
         position: relative;
-        flex: 0 0 100%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 100%;
         max-width: 100%
       }
     }
     @media (min-width: 740px) {
       article {
         position: relative;
-        flex: 0 0 100%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 100%;
         max-width: 100%
       }
     }
     @media (min-width: 1024px) {
       article {
         position: relative;
-        flex: 0 0 100%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 100%;
         max-width: 100%
       }
     }
@@ -436,21 +478,27 @@ it('parses properly with multiple @column in a row', () => {
     @media (min-width: 0) and (max-width: 739px) {
       article {
         position: relative;
-        flex: 0 0 100%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 100%;
         max-width: 100%
       }
     }
     @media (min-width: 740px) and (max-width: 1023px) {
       article {
         position: relative;
-        flex: 0 0 calc(50% - 15px);
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(50% - 15px);
         max-width: calc(50% - 15px)
       }
     }
     @media (min-width: 1024px) {
       article {
         position: relative;
-        flex: 0 0 calc(50% - 25px);
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(50% - 25px);
         max-width: calc(50% - 25px)
       }
     }

@@ -231,6 +231,8 @@ export default postcss.plugin('europacss-column', getConfig => {
 
 function createFlexDecls(flexDecls, flexSize) {
   flexDecls.push(buildDecl('position', 'relative'))
-  flexDecls.push(buildDecl('flex', `0 0 ${flexSize}`))
+  flexDecls.push(buildDecl('flex-grow', '0'))
+  flexDecls.push(buildDecl('flex-shrink', '0'))
+  flexDecls.push(buildDecl('flex-basis', flexSize))
   flexDecls.push(buildDecl('max-width', flexSize))
 }

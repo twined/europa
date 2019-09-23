@@ -26,7 +26,9 @@ it('parses regular @column-typography', () => {
   const output = `
     article {
       position: relative;
-      flex: 0 0 75%;
+      flex-grow: 0;
+      flex-shrink: 0;
+      flex-basis: 75%;
       max-width: 75%;
       padding-right: 12.5%;
     }
@@ -48,7 +50,9 @@ it('parses regular @column-typography centered', () => {
   const output = `
     article {
       position: relative;
-      flex: 0 0 75%;
+      flex-grow: 0;
+      flex-shrink: 0;
+      flex-basis: 75%;
       max-width: 75%;
       padding-right: 12.5%;
       margin-left: auto;
@@ -72,7 +76,9 @@ it('parses regular @column-typography right', () => {
   const output = `
     article {
       position: relative;
-      flex: 0 0 75%;
+      flex-grow: 0;
+      flex-shrink: 0;
+      flex-basis: 75%;
       max-width: 75%;
       padding-right: 12.5%;
       margin-left: auto;
@@ -97,7 +103,9 @@ it('parses @column-typography for single bp', () => {
     @media (min-width: 0) and (max-width: 739px) {
       article {
         position: relative;
-        flex: 0 0 75%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 75%;
         max-width: 75%;
         padding-right: 12.5%
       }
@@ -121,7 +129,9 @@ it('parses @column-typography for single bp centered', () => {
     @media (min-width: 0) and (max-width: 739px) {
       article {
         position: relative;
-        flex: 0 0 75%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 75%;
         max-width: 75%;
         padding-right: 12.5%;
         margin-left: auto;
@@ -150,7 +160,9 @@ it('parses multiple @column-typography for different bp', () => {
     @media (min-width: 0) and (max-width: 739px) {
       article {
         position: relative;
-        flex: 0 0 75%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 75%;
         max-width: 75%;
         padding-right: 12.5%
       }
@@ -159,7 +171,9 @@ it('parses multiple @column-typography for different bp', () => {
     @media (min-width: 740px) and (max-width: 1023px) {
       article {
         position: relative;
-        flex: 0 0 60%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 60%;
         max-width: 60%;
         padding-right: 10%
       }
@@ -168,7 +182,9 @@ it('parses multiple @column-typography for different bp', () => {
     @media (min-width: 1024px) {
       article {
         position: relative;
-        flex: 0 0 100%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 100%;
         max-width: 100%;
         padding-right: 16.6666666667%
       }
@@ -194,7 +210,9 @@ it('runs correctly inside @responsive', () => {
     @media (min-width: 0) and (max-width: 739px) {
       article {
         position: relative;
-        flex: 0 0 50%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 50%;
         max-width: 50%;
         padding-right: 8.3333333333%
       }

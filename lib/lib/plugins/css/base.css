@@ -257,23 +257,44 @@ html.prefers-reduced-motion {
 * Breakpoint debug
 */
 
-i.dbg {
+.dbg-breakpoints {
   position: fixed;
+  height: 25px;
   bottom: 4px;
   left: 4px;
   font-family: monospace;
   font-size: 11px;
-  font-weight: bold;
   z-index: 99;
   display: block;
-}
-
-i.dbg:after {
   text-transform: uppercase;
   background-color: #fff;
   font-style: normal;
   padding: 4px 5px;
-  text-align: center;
+  border-radius: 6px;
+  font-family: Fira Code, Menlo, Monaco, monospace;
+  font-size: 9px;
+}
+
+.dbg-breakpoints .breakpoint,
+.dbg-breakpoints .user-agent {
+  float: left;
+}
+
+.dbg-breakpoints .user-agent {
+  line-height: 20px;
+  padding-left: 3px;
+  padding-right: 4px;
+}
+
+.dbg-breakpoints .user-agent span {
+  color: darkblue;
+  cursor: pointer;
+}
+
+.dbg-breakpoints .breakpoint:after {
+  line-height: 20px;
+  padding-left: 3px;
+  padding-right: 4px;
 
   @iterate theme.breakpoints {
     @responsive $key {
@@ -282,12 +303,17 @@ i.dbg:after {
   }
 }
 
+.dbg-breakpoints .brand {
+  height: 20px;
+  width: 20px;
+  float: left;
+}
 
 /**
 * Grid overlay
 */
 
-.__dbg {
+.dbg-grid {
   @container;
   display: none;
   user-select: none;
