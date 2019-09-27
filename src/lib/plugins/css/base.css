@@ -253,6 +253,17 @@ html.prefers-reduced-motion {
 }
 
 
+/** Lazyload fix for Chrome.
+ *  Sometimes IntersectionObserver doesn't pick up the image
+ */
+
+img[data-src],
+img[data-srcset] {
+  min-height: 1px;
+  min-width: 1px;
+}
+
+
 /**
 * Breakpoint debug
 */
