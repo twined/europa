@@ -13,8 +13,7 @@
     "test": "jest __tests__ && eslint src/*.js",
     "coverage": "jest __tests__ --coverage",
     "prebuild": "rimraf lib",
-    "build": "babel src --out-dir lib --copy-files",
-    "prepare": "yarn run test"
+    "build": "babel src --out-dir lib --copy-files"
   },
   "author": "T. Mjoen <trond@twined.net>",
   "license": "MIT",
