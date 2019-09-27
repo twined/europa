@@ -1,5 +1,11 @@
 # Change Log
 
+### 0.1.3
+
+- Bump dependencies
+- Build base.css
+
+
 ### 0.1.2
 
 - Add Chrome lazyload fix
