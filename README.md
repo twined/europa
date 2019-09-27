@@ -5,7 +5,7 @@
 ![](http://univers.agency/europa.svg)
 
 <p align="center">
-    <a href="https://travis-ci.org/twined/europa"><img src="https://img.shields.io/travis/twined/europa/master.svg" alt="Build Status"></a>
+    <a href="https://travis-ci.org/univers-agency/europacss"><img src="https://img.shields.io/travis/univers-agency/europacss/master.svg" alt="Build Status"></a>
 </p>
 
 ------
