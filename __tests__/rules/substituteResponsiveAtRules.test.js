@@ -478,7 +478,9 @@ it('parses multiple space tags inside reponsive', () => {
     @media (min-width: 1399px){
       .v-module[data-v="body+center"]{
         position: relative;
-        flex: 0 0 50%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 50%;
         max-width: 50%;
         padding-right: 8.3333333333%
       }
@@ -559,28 +561,36 @@ it('parses multiple breakpoints slashed', () => {
     @media (min-width: 1024px) and (max-width: 1199px){
       article{
         position: relative;
-        flex: 0 0 calc(33.3333333333% - 46.6666666667px);
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(33.3333333333% - 46.6666666667px);
         max-width: calc(33.3333333333% - 46.6666666667px)
       }
     }
     @media (min-width: 1200px) and (max-width: 1559px){
       article{
         position: relative;
-        flex: 0 0 calc(33.3333333333% - 53.3333333333px);
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(33.3333333333% - 53.3333333333px);
         max-width: calc(33.3333333333% - 53.3333333333px)
       }
     }
     @media (min-width: 1560px) and (max-width: 1919px){
       article{
         position: relative;
-        flex: 0 0 calc(33.3333333333% - 66.6666666667px);
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(33.3333333333% - 66.6666666667px);
         max-width: calc(33.3333333333% - 66.6666666667px)
       }
     }
     @media (min-width: 1920px){
       article{
         position: relative;
-        flex: 0 0 calc(33.3333333333% - 80px);
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(33.3333333333% - 80px);
         max-width: calc(33.3333333333% - 80px)
       }
     }

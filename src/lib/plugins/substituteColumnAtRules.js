@@ -43,9 +43,7 @@ export default postcss.plugin('europacss-column', getConfig => {
     const finalRules = []
 
     css.walkAtRules('column', atRule => {
-      let suppliedSize
-      let suppliedBreakpoint
-      let [head, align = 'left'] = atRule.params.split(' ')
+      let [suppliedSize, suppliedBreakpoint] = atRule.params.split(' ')
       let needsBreakpoints = false
       let alreadyResponsive = false
       let flexSize
@@ -59,10 +57,8 @@ export default postcss.plugin('europacss-column', getConfig => {
         throw atRule.error(`COLUMN: Can only be used inside a rule, not on root.`)
       }
 
-      if (head.indexOf('@')) {
-        [suppliedSize, suppliedBreakpoint] = head.split('@')
-      } else {
-        suppliedSize = head
+      if (suppliedSize.indexOf('@') > -1) {
+        throw atRule.error(`COLUMN: Old size@breakpoint syntax is removed. Use a space instead`)
       }
 
       const parent = atRule.parent
@@ -100,18 +96,14 @@ export default postcss.plugin('europacss-column', getConfig => {
           && grandParent.type === 'atrule'
           && grandParent.name === 'responsive') {
         if (suppliedBreakpoint) {
-          throw atRule.error(`COLUMN: When nesting @column under @responsive, we do not accept a breakpoints query.`, { name: suppliedBreakpoint })
+          throw atRule.error(`COLUMN: When nesting @column under  responsive, we do not accept a breakpoints query.`, { name: suppliedBreakpoint })
         }
 
         suppliedBreakpoint = grandParent.params
       }
 
       if (suppliedBreakpoint && advancedBreakpointQuery(suppliedBreakpoint)) {
-        throw atRule.error(`COLUMN: Column only accepts simple breakpoints, not advanced queries. This is due to gutter calculations`, { name: suppliedBreakpoint })
-      }
-
-      if (!['left', 'center', 'right'].includes(align)) {
-        throw atRule.error(`COLUMN: \`align\` value must be left, center or right`)
+        suppliedBreakpoint = extractBreakpointKeys(breakpoints, suppliedBreakpoint).join('/')
       }
 
       [wantedColumns, totalColumns] = suppliedSize.split('/')
@@ -143,7 +135,6 @@ export default postcss.plugin('europacss-column', getConfig => {
 
           flexDecls = []
           createFlexDecls(flexDecls, flexSize)
-          maybeAddAlign(flexDecls, align)
 
           const originalRule = postcss.rule({ selector: parent.selector })
           originalRule.append(...flexDecls)
@@ -173,7 +164,6 @@ export default postcss.plugin('europacss-column', getConfig => {
           }
 
           createFlexDecls(flexDecls, flexSize)
-          maybeAddAlign(flexDecls, align)
 
           atRule.parent.append(...flexDecls)
         } else {
@@ -202,7 +192,6 @@ export default postcss.plugin('europacss-column', getConfig => {
             }
 
             createFlexDecls(flexDecls, flexSize)
-            maybeAddAlign(flexDecls, align)
 
             let originalRule
 
@@ -242,20 +231,8 @@ export default postcss.plugin('europacss-column', getConfig => {
 
 function createFlexDecls(flexDecls, flexSize) {
   flexDecls.push(buildDecl('position', 'relative'))
-  flexDecls.push(buildDecl('flex', `0 0 ${flexSize}`))
+  flexDecls.push(buildDecl('flex-grow', '0'))
+  flexDecls.push(buildDecl('flex-shrink', '0'))
+  flexDecls.push(buildDecl('flex-basis', flexSize))
   flexDecls.push(buildDecl('max-width', flexSize))
-}
-
-function maybeAddAlign(flexDecls, align) {
-  switch (align) {
-    case 'center':
-      flexDecls.push(buildDecl('margin-x', 'auto'))
-      break
-    case 'right':
-      flexDecls.push(buildDecl('margin-left', 'auto'))
-      flexDecls.push(buildDecl('margin-right', '0'))
-      break
-    default:
-      break
-  }
 }

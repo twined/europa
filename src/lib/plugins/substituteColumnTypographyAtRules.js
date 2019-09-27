@@ -67,7 +67,9 @@ export default postcss.plugin('europacss-column-typography', getConfig => {
 
       const flexDecls = [
         buildDecl('position', 'relative'),
-        buildDecl('flex', `0 0 ${flexSize}`),
+        buildDecl('flex-grow', '0'),
+        buildDecl('flex-shrink', '0'),
+        buildDecl('flex-basis', flexSize),
         buildDecl('max-width', flexSize),
         buildDecl('padding-right', paddingSize)
       ]
