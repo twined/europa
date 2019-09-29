@@ -102,10 +102,10 @@ export default postcss.plugin('europacss-column-typography', getConfig => {
       if (!parent.nodes.length) {
         parent.remove()
       }
-
-      if (finalRules.length) {
-        css.append(finalRules)
-      }
     })
+
+    if (finalRules.length) {
+      css.append(finalRules)
+    }
   }
 })

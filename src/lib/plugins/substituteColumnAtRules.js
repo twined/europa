@@ -220,12 +220,11 @@ export default postcss.plugin('europacss-column', getConfig => {
       if (grandParent && !grandParent.nodes.length) {
         grandParent.remove()
       }
-
-
-      if (finalRules.length) {
-        css.append(finalRules)
-      }
     })
+
+    if (finalRules.length) {
+      css.append(finalRules)
+    }
   }
 })
 

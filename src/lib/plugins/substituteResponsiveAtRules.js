@@ -61,6 +61,7 @@ export default postcss.plugin('europacss-responsive', getConfig => {
         finalRules.push(mediaRule)
       }
     })
+
     if (finalRules.length) {
       css.append(finalRules)
     }

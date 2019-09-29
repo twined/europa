@@ -1,5 +1,10 @@
 # Change Log
 
+### 0.1.4
+
+- Performance optimizations
+
+
 ### 0.1.3
 
 - Bump dependencies
