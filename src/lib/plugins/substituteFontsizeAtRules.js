@@ -99,10 +99,10 @@ export default postcss.plugin('europacss-fontsize', getConfig => {
       if (!parent.nodes.length) {
         parent.remove()
       }
-
-      if (finalRules.length) {
-        css.append(finalRules)
-      }
     })
+
+    if (finalRules.length) {
+      css.append(finalRules)
+    }
   }
 })

@@ -17,7 +17,7 @@ import splitUnit from '../../util/splitUnit'
  *
  */
 
-export default postcss.plugin('europacss-column-typography', getConfig => {
+export default postcss.plugin('europacss-container', getConfig => {
   return function (css) {
     const { theme: { breakpoints, container } } = getConfig()
     const finalRules = []
