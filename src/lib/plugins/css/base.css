@@ -135,6 +135,14 @@ a {
   text-decoration: inherit;
 }
 
+/**
+ * Nicer looking underlines
+ */
+
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
 
 /**
  * Reset form element properties that are easy to forget to
