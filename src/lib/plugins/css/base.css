@@ -233,9 +233,8 @@ video {
 */
 
 html.moonwalk {
-  [data-moonwalk=""] {
+  [data-moonwalk], [data-moonwalk-section] {
     visibility: hidden;
-    opacity: 0;
   }
 }
 
