@@ -1,5 +1,12 @@
 # Change Log
 
+### 0.1.5
+
+- Add moonwalk sections as initially hidden.
+- Remove moonwalk opacity values
+- Add Node 12 to test matrix
+
+
 ### 0.1.4
 
 - Performance optimizations
