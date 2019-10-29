@@ -26,11 +26,6 @@ export default function parseSize (node, config, size, bp) {
           throw node.error('SPACING: Fractions need a breakpoint due to gutter calculations', { name: bp })
         }
 
-        // TODO: Deprecate after testing -- should not be neccessary after bp parsing
-        if (advancedBreakpointQuery(bp)) {
-          throw node.error('SPACING: No support for advanced breakpoints when using fractions (due to gutter calculations)', { name: bp })
-        }
-
         let gutterMultiplier
         let sizeMath
         let [wantedColumns, totalColumns] = size.split('/')
@@ -115,5 +110,5 @@ function renderColGutterMultiplier (node, multiplier, bp, { theme }) {
   const gutter = theme.columns.gutters[bp]
   const [val, unit] = splitUnit(gutter)
 
-  return `${(val * multiplier) / 2}${unit}`
+  return `${(val * multiplier)}${unit}`
 }

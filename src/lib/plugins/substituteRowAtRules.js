@@ -24,7 +24,7 @@ export default postcss.plugin('europacss-row', getConfig => {
 
       parent.insertBefore(atRule, ...decls)
 
-      const spaceRule = postcss.atRule({ name: 'space', params: 'margin-left 2'})
+      const spaceRule = postcss.atRule({ name: 'space', params: 'margin-left 1'})
       const decendentChildren = postcss.rule({ selector: '> *' })
       const firstOfType = postcss.rule({ selector: '&:first-child' })
       firstOfType.append(buildDecl('margin-left', '0'))
