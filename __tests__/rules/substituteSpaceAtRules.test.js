@@ -9,22 +9,84 @@ function run (input, opts) {
 const DEFAULT_CFG = {
   theme: {
     breakpoints: {
-      xs: '0',
-      sm: '740px',
-      md: '1024px'
+      mobile: '0',
+      tablet: '740px',
+      desktop: '1024px'
     },
-    spacing: {
-      md: {
-        xs: '25px',
-        sm: '50px',
-        md: '75px'
+
+    container: {
+      maxWidth: {
+        mobile: '740px',
+        tablet: '1024px',
+        desktop: '100%'
+      },
+
+      padding: {
+        mobile: '15px',
+        tablet: '35px',
+        desktop: '50px'
       }
     },
+
+    spacing: {
+      xs: {
+        mobile: '10px',
+        tablet: '20px',
+        desktop: '30px'
+      },
+      md: {
+        mobile: '15px',
+        tablet: '25px',
+        desktop: '50px'
+      },
+      xl: {
+        mobile: '25px',
+        tablet: '50px',
+        desktop: '75px'
+      }
+    },
+
+    typography: {
+      base: '16px',
+      lineHeight: {
+        mobile: 1.6,
+        tablet: 1.6,
+        desktop: 1.6
+      },
+      sizes: {
+        xs: {
+          mobile: '10px',
+          tablet: '12px',
+          desktop: '14px'
+        },
+        sm: {
+          mobile: '12px',
+          tablet: '14px',
+          desktop: '16px'
+        },
+        base: {
+          mobile: '14px',
+          tablet: '16px',
+          desktop: '18px'
+        },
+        lg: {
+          mobile: '16px',
+          tablet: '18px',
+          desktop: '20px'
+        },
+        xl: {
+          mobile: '18px',
+          tablet: '20px',
+          desktop: '22px'
+        }
+      }
+    },
+
     columns: {
       gutters: {
-        xs: '20px',
-        sm: '30px',
-        md: '50px'
+        mobile: '20px',
+        tablet: '30px',
+        desktop: '50px'
       }
     }
   }
@@ -33,7 +95,7 @@ const DEFAULT_CFG = {
 it('parses @space per mq size', () => {
   const input = `
     body article .test {
-      @space margin-top xl;
+      @space margin-top md;
       font-size: 18px;
     }
   `
@@ -45,36 +107,24 @@ it('parses @space per mq size', () => {
 
     @media (min-width: 0){
       body article .test {
-        margin-top: 85px;
+        margin-top: 15px;
       }
     }
 
     @media (min-width: 740px){
       body article .test {
-        margin-top: 100px;
+        margin-top: 25px;
       }
     }
 
     @media (min-width: 1024px){
       body article .test {
-        margin-top: 140px;
-      }
-    }
-
-    @media (min-width: 1399px){
-      body article .test {
-        margin-top: 140px;
-      }
-    }
-
-    @media (min-width: 1900px){
-      body article .test {
-        margin-top: 180px;
+        margin-top: 50px;
       }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -83,7 +133,7 @@ it('parses @space per mq size', () => {
 it('parses @space only for requested bp', () => {
   const input = `
     body article .test {
-      @space margin-top xl xs;
+      @space margin-top xl desktop;
       font-size: 18px;
     }
   `
@@ -93,14 +143,14 @@ it('parses @space only for requested bp', () => {
       font-size: 18px;
     }
 
-    @media (min-width: 0) and (max-width: 739px){
+    @media (min-width: 1024px){
       body article .test {
-        margin-top: 85px;
+        margin-top: 75px;
       }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -109,7 +159,7 @@ it('parses @space only for requested bp', () => {
 it('parses @space! only for requested bp', () => {
   const input = `
     body article .test {
-      @space! margin-top xl xs;
+      @space! margin-top md mobile;
       font-size: 18px;
     }
   `
@@ -121,12 +171,12 @@ it('parses @space! only for requested bp', () => {
 
     @media (min-width: 0) and (max-width: 739px){
       body article .test {
-        margin-top: 85px !important;
+        margin-top: 15px !important;
       }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -135,29 +185,29 @@ it('parses @space! only for requested bp', () => {
 it('parses @space for theme(..)', () => {
   const input = `
     body article .test {
-      @space margin-top vertical-rhythm(theme.typography.sizes.xl) xs;
+      @space margin-top vertical-rhythm(theme.typography.sizes.xl) mobile;
     }
 
     body article .test {
-      @space margin-top vertical-rhythm(theme.typography.sizes.xl, 1.2) xs;
+      @space margin-top vertical-rhythm(theme.typography.sizes.xl, 1.2) mobile;
     }
   `
 
   const output = `
     @media (min-width: 0) and (max-width: 739px){
       body article .test{
-        margin-top: calc(20px * 1.6)
+        margin-top: calc(18px * 1.6)
       }
     }
 
     @media (min-width: 0) and (max-width: 739px){
       body article .test{
-        margin-top: calc(20px * 1.2)
+        margin-top: calc(18px * 1.2)
       }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -166,7 +216,7 @@ it('parses @space for theme(..)', () => {
 it('parses @space for fraction', () => {
   const input = `
     article {
-      @space margin-top 6/12 xs;
+      @space margin-top 6/12 mobile;
       font-size: 18px;
     }
   `
@@ -177,12 +227,12 @@ it('parses @space for fraction', () => {
     }
     @media (min-width: 0) and (max-width: 739px){
       article {
-        margin-top: calc(50% - 12.5px);
+        margin-top: calc(50% - 10px);
       }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -303,7 +353,7 @@ it('parses advanced @responsive @space for fraction with gutter multiplier', () 
 it('parses @space for fraction of breakpoint key', () => {
   const input = `
     article {
-      @space margin-top xs/2 xs;
+      @space margin-top xs/2 mobile;
       font-size: 18px;
     }
   `
@@ -320,7 +370,59 @@ it('parses @space for fraction of breakpoint key', () => {
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @space for 0.5 of gutter', () => {
+  const input = `
+    article {
+      @space margin-top 0.5 mobile;
+      font-size: 18px;
+    }
+  `
+
+  const output = `
+    article {
+      font-size: 18px;
+    }
+
+    @media (min-width: 0) and (max-width: 739px){
+      article {
+        margin-top: 10px;
+      }
+    }
+  `
+
+  return run(input, DEFAULT_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @space for 1.5 of gutter', () => {
+  const input = `
+    article {
+      @space margin-top 1.5 mobile;
+      font-size: 18px;
+    }
+  `
+
+  const output = `
+    article {
+      font-size: 18px;
+    }
+
+    @media (min-width: 0) and (max-width: 739px){
+      article {
+        margin-top: 30px;
+      }
+    }
+  `
+
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -347,30 +449,18 @@ it('parses @space for fraction of breakpoint key for all breakpoints', () => {
 
     @media (min-width: 740px){
       article {
-        margin-top: calc(15px/2);
+        margin-top: calc(20px/2);
       }
     }
 
     @media (min-width: 1024px){
       article {
-        margin-top: calc(15px/2);
-      }
-    }
-
-    @media (min-width: 1399px){
-      article {
-        margin-top: calc(15px/2);
-      }
-    }
-
-    @media (min-width: 1900px){
-      article {
-        margin-top: calc(15px/2);
+        margin-top: calc(30px/2);
       }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -414,7 +504,7 @@ it('@space with fraction and no breakpointQuery', () => {
 it('parses @space as gutter multiplier for regular number', () => {
   const input = `
     article {
-      @space padding-left 1 xs;
+      @space padding-left 1 mobile;
       font-size: 18px;
     }
   `
@@ -426,12 +516,12 @@ it('parses @space as gutter multiplier for regular number', () => {
 
     @media (min-width: 0) and (max-width: 739px){
       article {
-        padding-left: 12.5px;
+        padding-left: 20px;
       }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -440,7 +530,7 @@ it('parses @space as gutter multiplier for regular number', () => {
 it('parses @space as negative gutter multiplier for regular number', () => {
   const input = `
     article {
-      @space padding-left -1 xs;
+      @space padding-left -1 mobile;
       font-size: 18px;
     }
   `
@@ -452,12 +542,12 @@ it('parses @space as negative gutter multiplier for regular number', () => {
 
     @media (min-width: 0) and (max-width: 739px){
       article {
-        padding-left: -12.5px;
+        padding-left: -20px;
       }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -478,36 +568,24 @@ it('parses @space as gutter multiplier for regular number across bps', () => {
 
     @media (min-width: 0){
       article {
-        padding-left: 12.5px;
+        padding-left: 20px;
       }
     }
 
     @media (min-width: 740px){
       article {
-        padding-left: 17.5px;
+        padding-left: 30px;
       }
     }
 
     @media (min-width: 1024px){
       article {
-        padding-left: 25px;
-      }
-    }
-
-    @media (min-width: 1399px){
-      article {
-        padding-left: 25px;
-      }
-    }
-
-    @media (min-width: 1900px){
-      article {
-        padding-left: 30px;
+        padding-left: 50px;
       }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -516,7 +594,7 @@ it('parses @space as gutter multiplier for regular number across bps', () => {
 it('parses @space with no max for last bp', () => {
   const input = `
     body article .test {
-      @space margin-top xl xl;
+      @space margin-top md desktop;
       font-size: 18px;
     }
   `
@@ -526,14 +604,14 @@ it('parses @space with no max for last bp', () => {
       font-size: 18px;
     }
 
-    @media (min-width: 1900px){
+    @media (min-width: 1024px){
       body article .test {
-        margin-top: 180px;
+        margin-top: 50px;
       }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -553,7 +631,7 @@ it('parses @space 0 w/o breakpoints', () => {
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -562,7 +640,7 @@ it('parses @space 0 w/o breakpoints', () => {
 it('parses @space 0 w/ breakpoint', () => {
   const input = `
     article {
-      @space margin-y 0 xs;
+      @space margin-y 0 mobile;
     }
   `
 
@@ -575,7 +653,7 @@ it('parses @space 0 w/ breakpoint', () => {
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -597,7 +675,7 @@ it('parses @space shortcuts margin', () => {
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -619,7 +697,7 @@ it('parses @space shortcuts padding', () => {
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -639,7 +717,7 @@ it('parses @space shortcuts padding-y', () => {
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -648,7 +726,7 @@ it('parses @space shortcuts padding-y', () => {
 it('parses @space with q', () => {
   const input = `
     body article .test {
-      @space margin-top xl <=sm;
+      @space margin-top xl <=tablet;
       font-size: 18px;
     }
   `
@@ -660,18 +738,18 @@ it('parses @space with q', () => {
 
     @media (min-width: 0) and (max-width: 739px){
       body article .test {
-        margin-top: 85px;
+        margin-top: 25px;
       }
     }
 
     @media (min-width: 740px) and (max-width: 1023px){
       body article .test {
-        margin-top: 100px;
+        margin-top: 50px;
       }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -698,37 +776,31 @@ it('parses @space with > *', () => {
       display: flex;
       flex-wrap: nowrap;
     }
+
     article > *:first-of-type {
       margin-left: 0;
     }
+
     @media (min-width: 0){
       article > * {
-        margin-left: 25px;
+        margin-left: 40px;
       }
     }
+
     @media (min-width: 740px){
-      article > * {
-        margin-left: 35px;
-      }
-    }
-    @media (min-width: 1024px){
-      article > * {
-        margin-left: 50px;
-      }
-    }
-    @media (min-width: 1399px){
-      article > * {
-        margin-left: 50px;
-      }
-    }
-    @media (min-width: 1900px){
       article > * {
         margin-left: 60px;
       }
     }
+
+    @media (min-width: 1024px){
+      article > * {
+        margin-left: 100px;
+      }
+    }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -737,7 +809,7 @@ it('parses @space with > *', () => {
 it('parses @space with multiple split bps', () => {
   const input = `
     body article .test {
-      @space margin-top xl xs/sm/xl;
+      @space margin-top xl mobile/desktop;
       font-size: 18px;
     }
   `
@@ -749,24 +821,18 @@ it('parses @space with multiple split bps', () => {
 
     @media (min-width: 0) and (max-width: 739px){
       body article .test {
-        margin-top: 85px;
+        margin-top: 25px;
       }
     }
 
-    @media (min-width: 740px) and (max-width: 1023px){
+    @media (min-width: 1024px){
       body article .test {
-        margin-top: 100px;
-      }
-    }
-
-    @media (min-width: 1900px){
-      body article .test {
-        margin-top: 180px;
+        margin-top: 75px;
       }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -781,41 +847,27 @@ it('parses @space per mq size with shortcuts', () => {
   const output = `
     @media (min-width: 0){
       body{
-        margin-top: 85px;
-        margin-bottom: 85px
+        margin-top: 25px;
+        margin-bottom: 25px
       }
     }
 
     @media (min-width: 740px){
       body{
-        margin-top: 100px;
-        margin-bottom: 100px
+        margin-top: 50px;
+        margin-bottom: 50px
       }
     }
 
     @media (min-width: 1024px){
       body{
-        margin-top: 140px;
-        margin-bottom: 140px
-      }
-    }
-
-    @media (min-width: 1399px){
-      body{
-        margin-top: 140px;
-        margin-bottom: 140px
-      }
-    }
-
-    @media (min-width: 1900px){
-      body{
-        margin-top: 180px;
-        margin-bottom: 180px
+        margin-top: 75px;
+        margin-bottom: 75px
       }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -824,7 +876,7 @@ it('parses @space per mq size with shortcuts', () => {
 it('works inside @responsive', () => {
   const input = `
     article {
-      @responsive xs {
+      @responsive mobile {
         @space margin-top xl;
       }
     }
@@ -833,12 +885,12 @@ it('works inside @responsive', () => {
   const output = `
     @media (min-width: 0) and (max-width: 739px){
       article{
-        margin-top: 85px
+        margin-top: 25px
       }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
   })
 })
@@ -846,7 +898,7 @@ it('works inside @responsive', () => {
 it('can use container as size', () => {
   const input = `
     article {
-      @space margin-left container xs;
+      @space margin-left container mobile;
     }
   `
 
@@ -858,7 +910,7 @@ it('can use container as size', () => {
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -867,34 +919,34 @@ it('can use container as size', () => {
 it('works inside @responsive with q string', () => {
   const input = `
     article {
-      @responsive >md {
+      @responsive >=tablet {
         @space margin-top xl;
       }
     }
   `
 
   const output = `
-    @media (min-width: 1399px) and (max-width: 1899px){
+    @media (min-width: 740px) and (max-width: 1023px){
       article{
-        margin-top: 140px
+        margin-top: 50px
       }
     }
 
-    @media (min-width: 1900px){
+    @media (min-width: 1024px){
       article{
-        margin-top: 180px
+        margin-top: 75px
       }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
   })
 })
 
 it('works inside @responsive as dbl parent', () => {
   const input = `
-    @responsive xs {
+    @responsive mobile {
       article {
         @space margin-top xl;
       }
@@ -904,12 +956,12 @@ it('works inside @responsive as dbl parent', () => {
   const output = `
     @media (min-width: 0) and (max-width: 739px){
       article{
-        margin-top: 85px
+        margin-top: 25px
       }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -918,21 +970,21 @@ it('works inside @responsive as dbl parent', () => {
 it('fails with bp query inside @responsive', () => {
   const input = `
     article {
-      @responsive xs {
-        @space margin-top xl >=md;
+      @responsive mobile {
+        @space margin-top xl >=tablet;
       }
     }
   `
 
   expect.assertions(1)
-  return run(input).catch(e => {
+  return run(input, DEFAULT_CFG).catch(e => {
     expect(e).toMatchObject({ name: 'CssSyntaxError' })
   })
 })
 
 it('can run from @responsive root', () => {
   const input = `
-    @responsive xs {
+    @responsive desktop {
       .alert-yellow {
         @space margin-top xs;
       }
@@ -940,14 +992,14 @@ it('can run from @responsive root', () => {
   `
 
   const output = `
-    @media (min-width: 0) and (max-width: 739px){
+    @media (min-width: 1024px){
       .alert-yellow{
-        margin-top: 10px
+        margin-top: 30px
       }
     }
   `
 
-  return run(input).then(result => {
+  return run(input, DEFAULT_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })

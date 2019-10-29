@@ -1,5 +1,16 @@
 # Change Log
 
+### 0.1.6
+
+- Nicer default underlines in base
+
+**BREAKING CHANGES**
+- Switch gutter sizing to be 1 whole unit of gutter instead of a half in `@space`. The brings
+  it in line with `@column` spacing (which was 1 unit). So if you had:
+  `@space margin-left 2;` it would now be `@space margin-left 1;`. You can still do half
+  units: `@space margin-left 0.5;`
+
+
 ### 0.1.5
 
 - Add moonwalk sections as initially hidden.

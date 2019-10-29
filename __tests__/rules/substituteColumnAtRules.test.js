@@ -126,6 +126,51 @@ it('parses regular @column + gutter', () => {
   })
 })
 
+it('parses regular @column + half gutter', () => {
+  const input = `
+    article {
+      @column 3:0.5/4;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0) {
+      article {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(75% + 5px);
+        max-width: calc(75% + 5px)
+      }
+    }
+
+    @media (min-width: 740px) {
+      article {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(75% + 7.5px);
+        max-width: calc(75% + 7.5px)
+      }
+    }
+
+    @media (min-width: 1024px) {
+      article {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(75% + 12.5px);
+        max-width: calc(75% + 12.5px)
+      }
+    }
+  `
+
+  return run(input, DEFAULT_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
 it('fails on old format', () => {
   const input = `
     article {

@@ -446,7 +446,7 @@ it('parses multiple space tags inside reponsive', () => {
     .v-module {
       &[data-v="body+center"] {
         @responsive >=lg {
-          @space padding-left 2;
+          @space padding-left 1;
           @space margin-left 3/12;
           @column-typography 6/12;
         }
