@@ -1,5 +1,10 @@
 # Change Log
 
+### 0.1.7
+
+- Fix @fontsize parsing under @responsive
+
+
 ### 0.1.6
 
 - Nicer default underlines in base

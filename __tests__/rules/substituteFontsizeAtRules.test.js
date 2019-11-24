@@ -238,6 +238,70 @@ it('parses regular @fontsize for single breakpoint with modifier and no line-hei
   })
 })
 
+it('parses @fontsize correctly inside @responsive', () => {
+  const CFG = {
+    theme: {
+      breakpoints: {
+        xs: '0',
+        sm: '740px',
+        md: '1024px'
+      },
+      typography: {
+        families: {
+          serif: 'SerifFont, serif'
+        },
+
+        sizes: {
+          base: {
+            sm: {
+              'font-size': '17px',
+              'line-height': '1.3'
+            },
+            md: {
+              'font-size': '19px',
+              'line-height': '1.3'
+            }
+          }
+        }
+      }
+    }
+  }
+
+  const input = `
+    @responsive >=sm {
+      h1 {
+        @fontsize base/1;
+        font-family: theme(typography.families.serif);
+      }
+    }
+  `
+
+  const output = `
+    @media (min-width: 740px) and (max-width: 1023px){
+      h1{
+        font-size: 17px;
+        line-height: 1.3;
+      }
+    }
+    @media (min-width: 1024px){
+      h1{
+        font-size: 19px;
+        line-height: 1.3;
+      }
+    }
+    @media (min-width: 740px){
+      h1 {
+        font-family: SerifFont, serif;
+      }
+    }
+  `
+
+  return run(input, CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
 it('parses object @fontsize for single breakpoint', () => {
   const cfg = {
     theme: {
