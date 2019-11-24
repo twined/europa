@@ -364,8 +364,8 @@ it('runs correctly inside @responsive', () => {
   `
 
   const output = `
-    @media (min-width: 0) and (max-width: 739px) {
-      article {
+    @media (min-width: 0) and (max-width: 739px){
+      article{
         font-size: 19px
       }
     }
