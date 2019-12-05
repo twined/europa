@@ -27,11 +27,6 @@ html {
 body {
   font-family: theme('typography.families.main');
   font-size: theme('typography.base');
-  @iterate theme.typography.lineHeight {
-    @responsive $key {
-      line-height: $value;
-    }
-  }
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
