@@ -1,5 +1,19 @@
 # Change Log
 
+### 0.1.8
+
+- Drop setting lineheights in body from Europa.
+  Do this yourself in your own css:
+
+  ```
+  @iterate theme.typography.lineHeight {
+    @responsive $key {
+      line-height: $value;
+    }
+  }
+  ```
+
+
 ### 0.1.7
 
 - Fix @fontsize parsing under @responsive
