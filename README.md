@@ -139,6 +139,19 @@ If you need the set properties to be marked as `!important` you can use `@space!
   @space! margin-left xs;
 ```
 
+### `@font {fontFamily} [fsQuery]`
+
+Selects a font family. Can also be passed a font size query.
+
+**PARAMS**:
+
+`{fontFamily}`
+  - picks `fontFamily` from `typography.families`
+
+`[fsQuery]`
+  - can also be passed. Will then create a `@fontsize` rule with `fsQuery` as params
+
+
 ### `@fontsize {fsQuery} [breakpointQuery]`
 
 **PARAMS**:

@@ -1,5 +1,11 @@
 # Change Log
 
+### 0.1.10
+
+- Add `@font` rule. Selects family, can also be used for fontsize:
+  `@font serif xs`
+
+
 ### 0.1.9
 
 - Actually COMMIT the change from 0.1.8.. Jeez.
