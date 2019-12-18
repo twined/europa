@@ -1,5 +1,10 @@
 # Change Log
 
+### 0.1.11
+
+- Add `[data-moonwalk-run]` with visibility hidden
+
+
 ### 0.1.10
 
 - Add `@font` rule. Selects family, can also be used for fontsize:

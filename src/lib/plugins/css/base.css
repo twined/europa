@@ -236,7 +236,9 @@ video {
 */
 
 html.moonwalk {
-  [data-moonwalk], [data-moonwalk-section] {
+  [data-moonwalk],
+  [data-moonwalk-section],
+  [data-moonwalk-run] {
     visibility: hidden;
   }
 }
