@@ -16,7 +16,54 @@ it('parses @row', () => {
     article {
       display: flex;
     }
-    article > *:first-child {
+    article > *:nth-child(1) {
+      margin-left: 0;
+    }
+    @media (min-width: 0) {
+      article > * {
+        margin-left: 25px;
+      }
+    }
+    @media (min-width: 740px) {
+      article > * {
+        margin-left: 35px;
+      }
+    }
+    @media (min-width: 1024px) {
+      article > * {
+        margin-left: 50px;
+      }
+    }
+    @media (min-width: 1399px) {
+      article > * {
+        margin-left: 50px;
+      }
+    }
+    @media (min-width: 1900px) {
+      article > * {
+        margin-left: 60px;
+      }
+    }
+  `
+
+  return run(input).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @row with specified children count', () => {
+  const input = `
+    article {
+      @row 3;
+    }
+  `
+
+  const output = `
+    article {
+      display: flex;
+    }
+    article > *:nth-child(3n+1) {
       margin-left: 0;
     }
     @media (min-width: 0) {

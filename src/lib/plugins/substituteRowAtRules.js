@@ -16,6 +16,10 @@ export default postcss.plugin('europacss-row', getConfig => {
       if (parent.type === 'root') {
         throw atRule.error(`ROW: Can only be used inside a rule, not on root.`)
       }
+      let childSpec = '1'
+      if (atRule.params) {
+        childSpec = `${parseInt(atRule.params)}n+1`
+      }
 
       const decls = [
         buildDecl('display', 'flex'),
@@ -26,7 +30,7 @@ export default postcss.plugin('europacss-row', getConfig => {
 
       const spaceRule = postcss.atRule({ name: 'space', params: 'margin-left 1'})
       const decendentChildren = postcss.rule({ selector: '> *' })
-      const firstOfType = postcss.rule({ selector: '&:first-child' })
+      const firstOfType = postcss.rule({ selector: `&:nth-child(${childSpec})` })
       firstOfType.append(buildDecl('margin-left', '0'))
 
       decendentChildren.append(spaceRule)

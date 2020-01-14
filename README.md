@@ -91,6 +91,29 @@ todo
 
 todo
 
+### `@color {fg/bg} {colorName}`
+
+Gets `colorName` from `theme.colors`
+
+
+### `@row [childrenPerRow]`
+
+Spaces children correctly per row. Does not set child widths/columns!
+If no params are given, only the first child gets a margin-left of 0.
+
+**EXAMPLE**:
+
+```
+.row {
+  @row 3;
+
+  .child {
+    @column 4/12;
+  }
+}
+```
+
+
 ### `@embed-responsive {aspectRatio}
 
 **PARAMS**:

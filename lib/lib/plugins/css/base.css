@@ -368,7 +368,7 @@ img[data-srcset] {
 
     height: 100%;
     content: ' ';
-    background-color: #ff00001a;
+    background-color: theme(colors.grid, #0095ff33);
   }
 }
 
