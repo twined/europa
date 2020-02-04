@@ -38,7 +38,7 @@ export default postcss.plugin('europacss-column', getConfig => {
   100%
   */
   return function (css) {
-    const { theme: { breakpoints, spacing, columns } } = getConfig()
+    const { theme: { breakpoints, breakpointCollections, spacing, columns } } = getConfig()
     const responsiveRules = postcss.root()
     const finalRules = []
 
@@ -74,7 +74,7 @@ export default postcss.plugin('europacss-column', getConfig => {
         // try to grab the breakpoint
         if (advancedBreakpointQuery(parent.params)) {
           // parse the breakpoints
-          suppliedBreakpoint = extractBreakpointKeys(breakpoints, parent.params).join('/')
+          suppliedBreakpoint = extractBreakpointKeys({ breakpoints, breakpointCollections }, parent.params).join('/')
         } else {
           suppliedBreakpoint = parent.params
         }
@@ -103,7 +103,7 @@ export default postcss.plugin('europacss-column', getConfig => {
       }
 
       if (suppliedBreakpoint && advancedBreakpointQuery(suppliedBreakpoint)) {
-        suppliedBreakpoint = extractBreakpointKeys(breakpoints, suppliedBreakpoint).join('/')
+        suppliedBreakpoint = extractBreakpointKeys({ breakpoints, breakpointCollections }, suppliedBreakpoint).join('/')
       }
 
       [wantedColumns, totalColumns] = suppliedSize.split('/')
@@ -202,7 +202,7 @@ export default postcss.plugin('europacss-column', getConfig => {
             }
             originalRule.append(...flexDecls)
 
-            const mediaRule = postcss.atRule({ name: 'media', params: buildMediaQueryQ(breakpoints, bp) })
+            const mediaRule = postcss.atRule({ name: 'media', params: buildMediaQueryQ({ breakpoints, breakpointCollections }, bp) })
             mediaRule.append(originalRule)
             finalRules.push(mediaRule)
           })

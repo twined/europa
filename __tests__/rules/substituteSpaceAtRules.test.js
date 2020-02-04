@@ -14,6 +14,10 @@ const DEFAULT_CFG = {
       desktop: '1024px'
     },
 
+    breakpointCollections: {
+      $test: 'mobile/tablet'
+    },
+
     container: {
       maxWidth: {
         mobile: '740px',
@@ -995,6 +999,38 @@ it('can run from @responsive root', () => {
     @media (min-width: 1024px){
       .alert-yellow{
         margin-top: 30px
+      }
+    }
+  `
+
+  return run(input, DEFAULT_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @space with breakpointCollection', () => {
+  const input = `
+    body article .test {
+      @space margin-top xl $test;
+      font-size: 18px;
+    }
+  `
+
+  const output = `
+    body article .test {
+      font-size: 18px;
+    }
+
+    @media (min-width: 0) and (max-width: 739px){
+      body article .test {
+        margin-top: 25px;
+      }
+    }
+
+    @media (min-width: 740px) and (max-width: 1023px){
+      body article .test {
+        margin-top: 50px;
       }
     }
   `

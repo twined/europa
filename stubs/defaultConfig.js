@@ -8,6 +8,12 @@ module.exports = {
       xl: '1900px'
     },
 
+    breakpointCollections: {
+      $desktop: 'md/lg/xl',
+      $tablet: 'sm',
+      $mobile: 'xs'
+    },
+
     container: {
       maxWidth: {
         xs: '740px',

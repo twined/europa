@@ -1,9 +1,6 @@
 import _ from 'lodash'
 import postcss from 'postcss'
 import cloneNodes from '../../util/cloneNodes'
-import buildMediaQuery from '../../util/buildMediaQuery'
-import extractBreakpointKeys from '../../util/extractBreakpointKeys';
-import buildMediaQueryQ from '../../util/buildMediaQueryQ';
 
 export default postcss.plugin('europacss-iterate', getConfig => {
   return function (css) {

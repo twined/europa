@@ -1,7 +1,6 @@
 import _ from 'lodash'
 import renderCalcWithRounder from './renderCalcWithRounder'
 import splitUnit from './splitUnit'
-import advancedBreakpointQuery from './advancedBreakpointQuery'
 
 export default function parseSize (node, config, size, bp) {
   if (size === '0') {

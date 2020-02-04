@@ -24,7 +24,10 @@ import sizeNeedsBreakpoints from '../../util/sizeNeedsBreakpoints'
  */
 export default postcss.plugin('europacss-fontsize', getConfig => {
   return function (css) {
-    const { theme } = getConfig()
+    const config = getConfig()
+    const { theme } = config
+    const { breakpoints, breakpointCollections } = theme
+
     const responsiveRules = postcss.root()
     const finalRules = []
 
@@ -81,7 +84,7 @@ export default postcss.plugin('europacss-fontsize', getConfig => {
 
       if (bpQuery) {
         // We have a q, like '>=sm'. Extract all breakpoints we need media queries for
-        const affectedBreakpoints = extractBreakpointKeys(theme.breakpoints, bpQuery)
+        const affectedBreakpoints = extractBreakpointKeys({ breakpoints, breakpointCollections }, bpQuery)
 
         _.each(affectedBreakpoints, bp => {
           let parsedFontSizeQuery = parseFontSizeQuery(clonedRule, theme, fontSizeQuery, bp)
@@ -89,7 +92,7 @@ export default postcss.plugin('europacss-fontsize', getConfig => {
 
           const mediaRule = clonedRule.clone({
             name: 'media',
-            params: buildMediaQueryQ(theme.breakpoints, bp)
+            params: buildMediaQueryQ({ breakpoints, breakpointCollections }, bp)
           })
 
           if (selector) {
@@ -102,10 +105,10 @@ export default postcss.plugin('europacss-fontsize', getConfig => {
           finalRules.push(mediaRule)
         })
       } else {
-        _.keys(theme.breakpoints).forEach(bp => {
+        _.keys(breakpoints).forEach(bp => {
           let parsedFontSizeQuery = parseFontSizeQuery(clonedRule, theme, fontSizeQuery, bp)
           const fontDecls = _.keys(parsedFontSizeQuery).map(prop => buildDecl(prop, parsedFontSizeQuery[prop]))
-          const mediaRule = clonedRule.clone({ name: 'media', params: buildMediaQuery(theme.breakpoints, bp) })
+          const mediaRule = clonedRule.clone({ name: 'media', params: buildMediaQuery(breakpoints, bp) })
           const originalRule = postcss.rule({ selector: parent.selector })
 
           originalRule.append(...fontDecls)

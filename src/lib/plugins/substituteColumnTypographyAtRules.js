@@ -2,10 +2,8 @@
 import _ from 'lodash'
 import postcss from 'postcss'
 import buildDecl from '../../util/buildDecl'
-import buildMediaQuery from '../../util/buildMediaQuery'
 import buildMediaQueryQ from '../../util/buildMediaQueryQ'
 import cloneNodes from '../../util/cloneNodes'
-import extractBreakpointKeys from '../../util/extractBreakpointKeys'
 import renderCalcWithRounder from '../../util/renderCalcWithRounder'
 import renderCalcTypographyPadding from '../../util/renderCalcTypographyPadding'
 
@@ -26,6 +24,7 @@ import renderCalcTypographyPadding from '../../util/renderCalcTypographyPadding'
 export default postcss.plugin('europacss-column-typography', getConfig => {
   return function (css) {
     const { theme } = getConfig()
+    const { breakpoints, breakpointCollections } = theme
     const responsiveRules = postcss.root()
     const finalRules = []
 
@@ -92,7 +91,7 @@ export default postcss.plugin('europacss-column-typography', getConfig => {
         // add a media query
         const originalRule = postcss.rule({ selector: parent.selector })
         originalRule.append(...flexDecls)
-        const mediaRule = postcss.atRule({ name: 'media', params: buildMediaQueryQ(theme.breakpoints, bpQuery) })
+        const mediaRule = postcss.atRule({ name: 'media', params: buildMediaQueryQ({ breakpoints, breakpointCollections }, bpQuery) })
         mediaRule.append(originalRule)
         finalRules.push(mediaRule)
       } else {

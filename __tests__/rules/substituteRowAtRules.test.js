@@ -98,3 +98,30 @@ it('parses @row with specified children count', () => {
     expect(result.warnings().length).toBe(0)
   })
 })
+
+it('parses @row with query', () => {
+  const input = `
+    article {
+      @row 3 xs;
+    }
+  `
+
+  const output = `
+  @media (min-width: 0) and (max-width: 739px) {
+    article {
+      display: flex;
+    }
+    article > *:nth-child(3n+1) {
+      margin-left: 0;
+    }
+    article > * {
+      margin-left: 25px;
+    }
+  }
+  `
+
+  return run(input).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})

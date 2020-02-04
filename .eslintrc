@@ -6,5 +6,9 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-  "extends": ["standard"]
+  "extends": ["standard"],
+
+  "rules": {
+    "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }]
+  }
 }

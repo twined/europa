@@ -3,8 +3,8 @@ import parseQ from './parseQ'
 
 // for single breakpoints, use buildSpecificMediaQuery
 
-export default function buildMediaQueryQ (breakpoints, q) {
-  const queryStrings = parseQ(breakpoints, q)
+export default function buildMediaQueryQ ({ breakpoints, breakpointCollections }, q) {
+  const queryStrings = parseQ({ breakpoints, breakpointCollections }, q)
 
   return _(queryStrings)
     .map(screen => {

@@ -1,9 +1,6 @@
 import _ from 'lodash'
 import postcss from 'postcss'
 import cloneNodes from '../../util/cloneNodes'
-import buildMediaQuery from '../../util/buildMediaQuery'
-import extractBreakpointKeys from '../../util/extractBreakpointKeys';
-import buildMediaQueryQ from '../../util/buildMediaQueryQ';
 import buildDecl from '../../util/buildDecl';
 
 export default postcss.plugin('europacss-unpack', getConfig => {

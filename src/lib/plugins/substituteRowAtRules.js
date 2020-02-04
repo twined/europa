@@ -37,7 +37,6 @@ export default postcss.plugin('europacss-row', getConfig => {
       decendentChildren.append(firstOfType)
 
       parent.insertAfter(atRule, decendentChildren)
-
       atRule.remove()
     })
   }

@@ -2,13 +2,12 @@ import _ from 'lodash'
 import postcss from 'postcss'
 import cloneNodes from '../../util/cloneNodes'
 import buildMediaQuery from '../../util/buildMediaQuery'
-import extractBreakpointKeys from '../../util/extractBreakpointKeys';
 import buildMediaQueryQ from '../../util/buildMediaQueryQ';
 
 export default postcss.plugin('europacss-responsive', getConfig => {
   return function (css) {
     const config = getConfig()
-    const { theme: { breakpoints } } = config
+    const { theme: { breakpoints, breakpointCollections } } = config
     const finalRules = []
 
     css.walkAtRules('responsive', atRule => {
@@ -34,7 +33,7 @@ export default postcss.plugin('europacss-responsive', getConfig => {
       atRule.remove()
 
       // convert to query string
-      const mediaQuery = buildMediaQueryQ(breakpoints, params)
+      const mediaQuery = buildMediaQueryQ({ breakpoints, breakpointCollections }, params)
 
       // create a media query
       const mediaRule = postcss.atRule({ name: 'media', params: mediaQuery })

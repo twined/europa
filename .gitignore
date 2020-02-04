@@ -3,5 +3,4 @@ npm-debug.log
 yarn-error.log
 /coverage
 /.vscode
-/lib
 .DS_Store

@@ -47,6 +47,8 @@ function processRule(atRule, config, finalRules, flagAsImportant) {
     throw atRule.error(`SPACING: Spacing should not include children.`)
   }
 
+  const { theme: { breakpoints, breakpointCollections, spacing } } = config
+
   // Clone rule to act upon. We remove the atRule from DOM later, but
   // we still need some data from the original.
   let clonedRule = atRule.clone()
@@ -93,7 +95,7 @@ function processRule(atRule, config, finalRules, flagAsImportant) {
     // we need media queries for. Since there is a breakpoint query, we
     // HAVE to generate breakpoints even if the sizeQuery doesn't
     // call for it.
-    const affectedBreakpoints = extractBreakpointKeys(config.theme.breakpoints, bpQuery)
+    const affectedBreakpoints = extractBreakpointKeys({ breakpoints, breakpointCollections }, bpQuery)
 
     _.each(affectedBreakpoints, bp => {
       let parsedSize = parseSize(clonedRule, config, size, bp)
@@ -101,7 +103,7 @@ function processRule(atRule, config, finalRules, flagAsImportant) {
 
       const mediaRule = clonedRule.clone({
         name: 'media',
-        params: buildMediaQueryQ(config.theme.breakpoints, bp)
+        params: buildMediaQueryQ({ breakpoints, breakpointCollections }, bp)
       })
 
       if (selector) {
@@ -114,10 +116,10 @@ function processRule(atRule, config, finalRules, flagAsImportant) {
       finalRules.push(mediaRule)
     })
   } else {
-    if (sizeNeedsBreakpoints(config.theme.spacing, size)) {
-      _.keys(config.theme.breakpoints).forEach(bp => {
+    if (sizeNeedsBreakpoints(spacing, size)) {
+      _.keys(breakpoints).forEach(bp => {
         const parsedSize = parseSize(clonedRule, config, size, bp)
-        const mediaRule = clonedRule.clone({ name: 'media', params: buildMediaQuery(config.theme.breakpoints, bp) })
+        const mediaRule = clonedRule.clone({ name: 'media', params: buildMediaQuery(breakpoints, bp) })
         const sizeDecls = buildDecl(prop, parsedSize, flagAsImportant)
         const originalRule = postcss.rule({ selector: parent.selector }).append(sizeDecls)
         mediaRule.append(originalRule)

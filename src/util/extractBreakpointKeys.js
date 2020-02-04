@@ -1,12 +1,24 @@
 import _ from 'lodash'
 
-export default function extractBreakpointKeys (breakpoints, q) {
+export default function extractBreakpointKeys ({ breakpoints, breakpointCollections }, q) {
   const bps = []
   const keys = _.keys(breakpoints)
 
   switch (q[0]) {
     case '=':
-      throw (new Error('parseQ: Mediaqueries should never start with ='))
+      throw (new Error('extractBreakpointKeys: Mediaqueries should never start with ='))
+
+    case '$': {
+      const key = q
+      if (!breakpointCollections) {
+        throw (new Error(`extractBreakpointKeys: No \`breakpointCollection\` set in config, but \`${key}\` was referenced`))
+      }
+      const resolvedBreakpointQ = breakpointCollections[key]
+      if (!resolvedBreakpointQ) {
+        throw (new Error(`extractBreakpointKeys: Breakpoint collection \`${key}\` not found!`))
+      }
+      return extractBreakpointKeys({ breakpoints, breakpointCollections }, resolvedBreakpointQ)
+    }
 
     case '<':
       if (q[1] === '=') {

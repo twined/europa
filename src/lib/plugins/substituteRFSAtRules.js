@@ -25,6 +25,8 @@ import sizeNeedsBreakpoints from '../../util/sizeNeedsBreakpoints'
 export default postcss.plugin('europacss-rfs', getConfig => {
   return function (css) {
     const { theme } = getConfig()
+    const { breakpoints, breakpointCollections } = theme
+
     const responsiveRules = postcss.root()
     const finalRules = []
 
@@ -67,14 +69,14 @@ export default postcss.plugin('europacss-rfs', getConfig => {
 
       if (bpQuery) {
         // We have a q, like '>=sm'. Extract all breakpoints we need media queries for
-        const affectedBreakpoints = extractBreakpointKeys(theme.breakpoints, bpQuery)
+        const affectedBreakpoints = extractBreakpointKeys({ breakpoints, breakpointCollections }, bpQuery)
         _.each(affectedBreakpoints, bp => {
           let parsedFontSizeQuery = parseRFSQuery(cp, theme, fontSizeQuery, bp)
           const fontDecls = _.keys(parsedFontSizeQuery).map(prop => buildDecl(prop, parsedFontSizeQuery[prop]))
 
           if (needsMediaRule) {
             const originalRule = postcss.rule({ selector: parent.selector })
-            const mediaRule = cp.clone({ name: 'media', params: buildMediaQueryQ(theme.breakpoints, bp) })
+            const mediaRule = cp.clone({ name: 'media', params: buildMediaQueryQ({ breakpoints, breakpointCollections }, bp) })
             originalRule.append(...fontDecls)
             mediaRule.append(originalRule)
             finalRules.push(mediaRule)
@@ -83,10 +85,10 @@ export default postcss.plugin('europacss-rfs', getConfig => {
           }
         })
       } else {
-        _.keys(theme.breakpoints).forEach(bp => {
+        _.keys(breakpoints).forEach(bp => {
           let parsedFontSizeQuery = parseRFSQuery(cp, theme, fontSizeQuery, bp)
           const fontDecls = _.keys(parsedFontSizeQuery).map(prop => buildDecl(prop, parsedFontSizeQuery[prop]))
-          const mediaRule = cp.clone({ name: 'media', params: buildMediaQuery(theme.breakpoints, bp) })
+          const mediaRule = cp.clone({ name: 'media', params: buildMediaQuery(breakpoints, bp) })
           const originalRule = postcss.rule({ selector: parent.selector })
 
           originalRule.append(...fontDecls)

@@ -19,7 +19,7 @@ import splitUnit from '../../util/splitUnit'
 
 export default postcss.plugin('europacss-container', getConfig => {
   return function (css) {
-    const { theme: { breakpoints, container } } = getConfig()
+    const { theme: { breakpoints, breakpointCollections, container } } = getConfig()
     const finalRules = []
 
     css.walkAtRules('container', atRule => {
@@ -63,7 +63,7 @@ export default postcss.plugin('europacss-container', getConfig => {
       }
 
       if (q) {
-        affectedBreakpoints = extractBreakpointKeys(breakpoints, q)
+        affectedBreakpoints = extractBreakpointKeys({ breakpoints, breakpointCollections }, q)
         exact = true
       } else {
         affectedBreakpoints = _.keys(breakpoints)
@@ -79,7 +79,7 @@ export default postcss.plugin('europacss-container', getConfig => {
         const containerDecl = buildDecl('padding-x', paddingValue)
 
         if (needsMediaRule) {
-          const mediaRule = postcss.atRule({ name: 'media', params: exact ? buildMediaQueryQ(breakpoints, bp) : buildMediaQuery(breakpoints, bp) })
+          const mediaRule = postcss.atRule({ name: 'media', params: exact ? buildMediaQueryQ({ breakpoints, breakpointCollections }, bp) : buildMediaQuery(breakpoints, bp) })
           const originalRule = postcss.rule({ selector: parent.selector })
 
           originalRule.append(containerDecl)
