@@ -1,5 +1,11 @@
 # Change Log
 
+### 0.1.15
+
+- Add `breakpointCollections` to config
+- Allow setting a media query key to `@row`
+
+
 ### 0.1.14
 
 - Reduced motion fix.

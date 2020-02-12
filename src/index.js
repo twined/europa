@@ -25,8 +25,11 @@ const getConfigFunction = config => () => {
 }
 
 const plugin = postcss.plugin('europacss', config => {
+  const resolvedConfigPath = resolveConfigPath(config)
+  const cfgFunction = getConfigFunction(resolvedConfigPath || config)
+
   const preludium = [
-    substituteRowAtRules(),
+    substituteRowAtRules(cfgFunction),
     postcssNested(),
     postcssExtend()
   ]
@@ -36,8 +39,6 @@ const plugin = postcss.plugin('europacss', config => {
     formatCSS
   ]
 
-  const resolvedConfigPath = resolveConfigPath(config)
-  const cfgFunction = getConfigFunction(resolvedConfigPath || config)
   const configuredEuropaPlugins = plugins.map(plug => plug(cfgFunction))
 
   const pipeline = [

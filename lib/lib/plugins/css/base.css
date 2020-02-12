@@ -397,6 +397,7 @@ picture {
   label,
   option,
   select,
+  video,
   textarea {
     outline: none !important;
   }

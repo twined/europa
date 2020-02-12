@@ -79,6 +79,8 @@ function processRule(atRule, config, finalRules, flagAsImportant) {
 
     if (parent.selector[0] === '&') {
       selector = parent.selector.replace('&', grandParent.parent.selector)
+    } else if (parent.selector === '> *') {
+      selector = grandParent.parent.selector + ' ' + parent.selector
     } else {
       selector = parent.selector
     }

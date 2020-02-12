@@ -1040,3 +1040,44 @@ it('parses @space with breakpointCollection', () => {
     expect(result.warnings().length).toBe(0)
   })
 })
+
+it('parses @space with > * under responsive!', () => {
+  const input = `
+    article {
+      @responsive tablet {
+        display: flex;
+        flex-wrap: nowrap;
+
+        > * {
+          @space margin-left 2;
+
+          &:first-of-type {
+            margin-left: 0;
+          }
+        }
+      }
+    }
+  `
+
+  const output = `
+   @media (min-width: 740px) and (max-width: 1023px){
+     article > *{
+       margin-left: 60px;
+     }
+   }
+   @media (min-width: 740px) and (max-width: 1023px){
+     article{
+       display: flex;
+       flex-wrap: nowrap;
+     }
+     article > *:first-of-type {
+       margin-left: 0;
+     }
+   }
+  `
+
+  return run(input, DEFAULT_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})

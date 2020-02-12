@@ -23,8 +23,9 @@ export default postcss.plugin('europacss-font', getConfig => {
         throw atRule.error(`FONT: @font should not include children.`)
       }
 
-      let [family, fsQuery] = postcss.list.space(atRule.params)
+      let [family, fsQuery, bpQuery] = postcss.list.space(atRule.params)
 
+      const fsParams = fsQuery ? fsQuery + (bpQuery ? ' ' + bpQuery : '') : null
       const ff = theme.typography.families[family]
 
       if (!ff) {
@@ -35,9 +36,9 @@ export default postcss.plugin('europacss-font', getConfig => {
         buildDecl('font-family', ff),
       ]
 
-      if (fsQuery) {
+      if (fsParams) {
         // insert a @fontsize at rule after this
-        const fsRule = postcss.atRule({ name: 'fontsize', params: fsQuery })
+        const fsRule = postcss.atRule({ name: 'fontsize', params: fsParams })
         parent.insertBefore(atRule, fsRule)
       }
 
