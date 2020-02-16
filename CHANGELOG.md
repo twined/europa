@@ -1,5 +1,10 @@
 # Change Log
 
+### 0.1.16
+
+- Add `-container` as `@space` param for negative container width
+
+
 ### 0.1.15
 
 - Add `breakpointCollections` to config

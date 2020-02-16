@@ -920,6 +920,27 @@ it('can use container as size', () => {
   })
 })
 
+it('can use -container as size', () => {
+  const input = `
+    article {
+      @space margin-left -container mobile;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0) and (max-width: 739px){
+      article{
+        margin-left: -15px
+      }
+    }
+  `
+
+  return run(input, DEFAULT_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
 it('works inside @responsive with q string', () => {
   const input = `
     article {

@@ -7,6 +7,15 @@ export default function parseSize (node, config, size, bp) {
     return '0'
   }
 
+  if (size === '-container') {
+    // get size from container.padding
+    if (!_.has(config.theme.container.padding, bp)) {
+      throw node.error(`SPACING: No \`${bp}\` breakpoint found in \`theme.container.padding\`.`, { name: bp })
+    }
+
+    return '-' + config.theme.container.padding[bp]
+  }
+
   if (size === 'container') {
     // get size from container.padding
     if (!_.has(config.theme.container.padding, bp)) {

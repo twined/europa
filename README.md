@@ -137,6 +137,7 @@ If no params are given, only the first child gets a margin-left of 0.
   - `3:1/6` > Calcs a 3/6 fraction but with 1 added gutter unit
   - `xs/2` > Gets half of the XS from `theme.spacing` map.
   - `container` > Gets value from `theme.container.padding` for breakpoint.
+  - `-container` > Gets negative value of `theme.container.padding` for breakpoint.
   - `vertical-rhythm(theme.typography.sizes.xl)` > Grabs object for breakpoint and multiplies with default line-height.
   - `vertical-rhythm(theme.typography.sizes.xl, 1.2)` > Grabs object for breakpoint and multiplies with 1.2 as line-height.
 
