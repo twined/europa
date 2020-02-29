@@ -6,6 +6,7 @@
 
 <p align="center">
     <a href="https://travis-ci.org/univers-agency/europacss"><img src="https://img.shields.io/travis/univers-agency/europacss/master.svg" alt="Build Status"></a>
+    <a href="https://badge.fury.io/js/%40univers-agency%2Feuropacss"><img src="https://badge.fury.io/js/%40univers-agency%2Feuropacss.svg" alt="npm version" height="18"></a>
 </p>
 
 ------
