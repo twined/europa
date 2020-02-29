@@ -1,5 +1,12 @@
 # Change Log
 
+### 0.1.17
+
+- Set default Moonwalk style to `opacity: 0` instead of `visibility: hidden`.
+ Remember to update `jupiter` if you use Moonwalk. This was done to fix an
+ accessibility problem when trying to tab to an invisible element.
+
+
 ### 0.1.16
 
 - Add `-container` as `@space` param for negative container width
