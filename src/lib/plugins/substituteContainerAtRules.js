@@ -75,18 +75,26 @@ export default postcss.plugin('europacss-container', getConfig => {
           throw atRule.error(`CONTAINER: No \`${bp}\` breakpoint found in \`container.padding\`.`)
         }
 
+        if (!_.has(container.maxWidth, bp)) {
+          throw atRule.error(`CONTAINER: No \`${bp}\` breakpoint found in \`container.padding\`.`)
+        }
+
         const paddingValue = container.padding[bp]
         const containerDecl = buildDecl('padding-x', paddingValue)
+        const maxWidthValue = container.maxWidth[bp]
+        const containerMaxWidthDecl = buildDecl('max-width', maxWidthValue)
 
         if (needsMediaRule) {
           const mediaRule = postcss.atRule({ name: 'media', params: exact ? buildMediaQueryQ({ breakpoints, breakpointCollections }, bp) : buildMediaQuery(breakpoints, bp) })
           const originalRule = postcss.rule({ selector: parent.selector })
 
           originalRule.append(containerDecl)
+          originalRule.append(containerMaxWidthDecl)
           mediaRule.append(originalRule)
           finalRules.push(mediaRule)
         } else {
           parent.append(containerDecl)
+          parent.append(containerMaxWidthDecl)
         }
       })
 

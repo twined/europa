@@ -24,46 +24,46 @@ it('parses @container with no other decls', () => {
   `
 
   const output = `
+    article {
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    @media (min-width: 0) {
       article {
-        width: 100%;
-        margin-left: auto;
-        margin-right: auto;
+        padding-left: 15px;
+        padding-right: 15px;
+        max-width: 740px;
       }
-
-      @media (min-width: 0) {
-        article {
-          padding-left: 15px;
-          padding-right: 15px;
-        }
+    }
+    @media (min-width: 740px) {
+      article {
+        padding-left: 35px;
+        padding-right: 35px;
+        max-width: 1024px;
       }
-
-      @media (min-width: 740px) {
-        article {
-          padding-left: 35px;
-          padding-right: 35px;
-        }
+    }
+    @media (min-width: 1024px) {
+      article {
+        padding-left: 50px;
+        padding-right: 50px;
+        max-width: 100%;
       }
-
-      @media (min-width: 1024px) {
-        article {
-          padding-left: 50px;
-          padding-right: 50px;
-        }
+    }
+    @media (min-width: 1399px) {
+      article {
+        padding-left: 100px;
+        padding-right: 100px;
+        max-width: 100%;
       }
-
-      @media (min-width: 1399px) {
-        article {
-          padding-left: 100px;
-          padding-right: 100px;
-        }
+    }
+    @media (min-width: 1900px) {
+      article {
+        padding-left: 100px;
+        padding-right: 100px;
+        max-width: 100%;
       }
-
-      @media (min-width: 1900px) {
-        article {
-          padding-left: 100px;
-          padding-right: 100px;
-        }
-      }
+    }
   `
 
   return run(input).then(result => {
@@ -89,39 +89,39 @@ it('parses @container with other decls', () => {
       background-color: red;
       padding-bottom: 50px;
     }
-
     @media (min-width: 0) {
       article {
         padding-left: 15px;
         padding-right: 15px;
+        max-width: 740px;
       }
     }
-
     @media (min-width: 740px) {
       article {
         padding-left: 35px;
         padding-right: 35px;
+        max-width: 1024px;
       }
     }
-
     @media (min-width: 1024px) {
       article {
         padding-left: 50px;
         padding-right: 50px;
+        max-width: 100%;
       }
     }
-
     @media (min-width: 1399px) {
       article {
         padding-left: 100px;
         padding-right: 100px;
+        max-width: 100%;
       }
     }
-
     @media (min-width: 1900px) {
       article {
         padding-left: 100px;
         padding-right: 100px;
+        max-width: 100%;
       }
     }
   `
@@ -154,6 +154,7 @@ it('parses @container for specific breakpoints', () => {
       article {
         padding-left: 15px;
         padding-right: 15px;
+        max-width: 740px;
       }
     }
 
@@ -161,6 +162,7 @@ it('parses @container for specific breakpoints', () => {
       article {
         padding-left: 35px;
         padding-right: 35px;
+        max-width: 1024px;
       }
     }
 
@@ -168,6 +170,7 @@ it('parses @container for specific breakpoints', () => {
       article {
         padding-left: 100px;
         padding-right: 100px;
+        max-width: 100%;
       }
     }
   `
@@ -203,6 +206,7 @@ it('runs correctly inside @responsive', () => {
         margin-right: auto;
         padding-left: 15px;
         padding-right: 15px;
+        max-width: 740px;
       }
     }
   `
