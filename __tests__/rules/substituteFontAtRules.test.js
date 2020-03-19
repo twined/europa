@@ -24,6 +24,29 @@ it('parses @font', () => {
   })
 })
 
+it('parses @font inside @responsive', () => {
+  const input = `
+    article {
+      @responsive xs {
+        @font serif;
+      }
+    }
+  `
+
+  const output = `
+  @media (min-width: 0) and (max-width: 739px) {
+    article {
+      font-family: Georgia,Cambria,"Times New Roman",Times,serif
+    }
+  }
+  `
+
+  return run(input).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
 it('parses @font with size', () => {
   const input = `
     article {

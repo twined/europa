@@ -26,10 +26,14 @@ export default postcss.plugin('europacss-font', getConfig => {
       let [family, fsQuery, bpQuery] = postcss.list.space(atRule.params)
 
       const fsParams = fsQuery ? fsQuery + (bpQuery ? ' ' + bpQuery : '') : null
-      const ff = theme.typography.families[family]
+      let ff = theme.typography.families[family]
 
       if (!ff) {
         throw atRule.error(`FONT: Could not find \`${family}\` in typography.families config`)
+      }
+
+      if (ff.length) {
+        ff = ff.join(',')
       }
 
       const decls = [

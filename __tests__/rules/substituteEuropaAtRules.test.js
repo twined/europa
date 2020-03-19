@@ -22,7 +22,7 @@ it('imports @europa arrows', () => {
   `
 
   return run(input).then(result => {
-    expect(result.css).toMatch(/transform: translateY\(5px \* -1\) translateX\(5px\);/)
+    expect(result.css).toMatch(/transform: translateY\(calc\(5px \* -1\)\) translateX\(5px\);/)
     expect(result.warnings().length).toBe(0)
   })
 })

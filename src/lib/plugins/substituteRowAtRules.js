@@ -20,6 +20,7 @@ export default postcss.plugin('europacss-row', getConfig => {
 
     css.walkAtRules('row', atRule => {
       let selector
+      let wrapInResponsive = false
       const parent = atRule.parent
       let grandParent = atRule.parent.parent
 
@@ -33,6 +34,11 @@ export default postcss.plugin('europacss-row', getConfig => {
 
       let childSpec = '1'
       let [rowCount = null, bpQuery = null] = postcss.list.space(atRule.params)
+
+      if (bpQuery) {
+        wrapInResponsive = true
+      }
+
       if (atRule.params) {
         childSpec = `${parseInt(rowCount)}n+1`
       }
@@ -86,8 +92,15 @@ export default postcss.plugin('europacss-row', getConfig => {
       decendentChildren.append(spaceRule)
       decendentChildren.append(nthChild)
 
-      parent.insertBefore(atRule, ...decls)
-      parent.insertAfter(atRule, decendentChildren)
+      if (wrapInResponsive) {
+        const responsiveRule = postcss.atRule({ name: 'responsive', params: bpQuery })
+        responsiveRule.append(...decls)
+        responsiveRule.append(decendentChildren)
+        parent.insertBefore(atRule, responsiveRule)
+      } else {
+        parent.insertBefore(atRule, ...decls)
+        parent.insertAfter(atRule, decendentChildren)
+      }
 
       atRule.remove()
     })

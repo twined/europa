@@ -205,3 +205,45 @@ it('parses @row as child under @responsive w/ advanced bpQuery', () => {
     expect(result.warnings().length).toBe(0)
   })
 })
+
+it('parses @row w/ advanced bpQuery', () => {
+  const input = `
+    .inner {
+      article {
+        @row 3 $desktop;
+      }
+    }
+  `
+
+  const output = `
+  @media (min-width: 1024px) and (max-width: 1398px) {
+    .inner article > * {
+      margin-left: 50px;
+    }
+  }
+  @media (min-width: 1399px) and (max-width: 1899px) {
+    .inner article > * {
+      margin-left: 50px;
+    }
+  }
+  @media (min-width: 1900px) {
+    .inner article > * {
+      margin-left: 60px;
+    }
+  }
+  @media (min-width: 1024px) and (max-width: 1398px), (min-width: 1399px) and (max-width: 1899px), (min-width: 1900px) {
+    .inner article {
+      display: flex;
+      flex-wrap: nowrap;
+    }
+    .inner article > *:nth-child(3n+1) {
+      margin-left: 0;
+    }
+  }
+  `
+
+  return run(input).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})

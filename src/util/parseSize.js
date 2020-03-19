@@ -7,6 +7,16 @@ export default function parseSize (node, config, size, bp) {
     return '0'
   }
 
+  if (size === '-container/2') {
+    // get size from container.padding
+    if (!_.has(config.theme.container.padding, bp)) {
+      throw node.error(`SPACING: No \`${bp}\` breakpoint found in \`theme.container.padding\`.`, { name: bp })
+    }
+
+    const [val, unit] = splitUnit(config.theme.container.padding[bp])
+    return `-${val / 2}${unit}`
+  }
+
   if (size === '-container') {
     // get size from container.padding
     if (!_.has(config.theme.container.padding, bp)) {
@@ -14,6 +24,16 @@ export default function parseSize (node, config, size, bp) {
     }
 
     return '-' + config.theme.container.padding[bp]
+  }
+
+  if (size === 'container/2') {
+    // get size from container.padding
+    if (!_.has(config.theme.container.padding, bp)) {
+      throw node.error(`SPACING: No \`${bp}\` breakpoint found in \`theme.container.padding\`.`, { name: bp })
+    }
+
+    const [val, unit] = splitUnit(config.theme.container.padding[bp])
+    return `${val / 2}${unit}`
   }
 
   if (size === 'container') {
@@ -96,6 +116,10 @@ export default function parseSize (node, config, size, bp) {
       const fs = _.isObject(obj[bp]) ? obj[bp]['font-size'] : obj[bp]
 
       return `calc(${fs} * ${lineHeight})`
+    }
+
+    if (size.indexOf('px') !== -1) {
+      return size
     }
 
     // it's a number. we treat regular numbers as a multiplier of col gutter.

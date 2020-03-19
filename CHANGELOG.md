@@ -1,5 +1,14 @@
 # Change Log
 
+### 0.1.18
+
+- Enforce container max width config when using `@container`.
+- Add optional breakpoint param to `@row <cols> [bpQuery]`
+- Add `container/2` and `-container/2` as spacing options
+  `@space container/2 $desktop;`
+- Fix `@font` under `@responsive`
+
+
 ### 0.1.17
 
 - Set default Moonwalk style to `opacity: 0` instead of `visibility: hidden`.
