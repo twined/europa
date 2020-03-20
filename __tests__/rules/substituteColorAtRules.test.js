@@ -10,7 +10,11 @@ const DEFAULT_CFG = {
     colors: {
       green: {
         dark: '#22AA22',
-        light: '#AAFFAA'
+        light: '#AAFFAA',
+        test: {
+          one: '#ffffff',
+          two: '#000000'
+        }
       }
     }
   }
@@ -28,6 +32,52 @@ it('parses @color', () => {
     article {
       color: #22AA22;
       background-color: #AAFFAA;
+    }
+  `
+
+  return run(input, DEFAULT_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @color w/deep key', () => {
+  const input = `
+    article {
+      @color fg green.test.one;
+      @color bg green.test.two;
+    }
+  `
+
+  const output = `
+    article {
+      color: #ffffff;
+      background-color: #000000;
+    }
+  `
+
+  return run(input, DEFAULT_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @color w/deep key inside @responsive', () => {
+  const input = `
+    article {
+      @responsive $desktop {
+        @color fg green.test.one;
+        @color bg green.test.two;
+      }
+    }
+  `
+
+  const output = `
+    @media (min-width: 1024px) and (max-width: 1398px), (min-width: 1399px) and (max-width: 1899px), (min-width: 1900px) {
+      article {
+        color: #ffffff;
+        background-color: #000000
+      }
     }
   `
 
