@@ -11,16 +11,10 @@ export default postcss.plugin('europacss-europa', getConfig => {
       if (atRule.params === 'base') {
         const normalizeStyles = postcss.parse(fs.readFileSync(require.resolve('normalize.css'), 'utf8'))
         const baseStyles = postcss.parse(fs.readFileSync(`${__dirname}/css/base.css`, 'utf8'))
-
-        // atRule.before(updateSource([...normalizeStyles.nodes, ...baseStyles.nodes], atRule.source))
-        // atRule.remove()
         prepend(css, updateSource([...normalizeStyles.nodes, ...baseStyles.nodes]))
         atRule.remove()
       } else if (atRule.params === 'arrows') {
         const styles = postcss.parse(fs.readFileSync(`${__dirname}/css/arrows.css`, 'utf8'))
-
-        // atRule.before(updateSource([...styles.nodes], atRule.source))
-        // atRule.remove()
         prepend(css, updateSource([...styles.nodes]))
         atRule.remove()
       }
