@@ -97,16 +97,18 @@ todo
 Gets `colorName` from `theme.colors`
 
 
-### `@row [childrenPerRow]`
+### `@row [childrenPerRow[/wrapModifier]] [breakpointQuery]`
 
 Spaces children correctly per row. Does not set child widths/columns!
 If no params are given, only the first child gets a margin-left of 0.
+
+`wrapModifier` defaults to `nowrap`.
 
 **EXAMPLE**:
 
 ```
 .row {
-  @row 3;
+  @row 3/wrap;
 
   .child {
     @column 4/12;
@@ -141,6 +143,8 @@ If no params are given, only the first child gets a margin-left of 0.
   - `-container` > Gets negative value of `theme.container.padding` for breakpoint.
   - `vertical-rhythm(theme.typography.sizes.xl)` > Grabs object for breakpoint and multiplies with default line-height.
   - `vertical-rhythm(theme.typography.sizes.xl, 1.2)` > Grabs object for breakpoint and multiplies with 1.2 as line-height.
+  - `calc(100vw - var[container] + var[1])` > Switches out `var[container]` and `var[1]` with correct values for
+    container padding and 1 gutter unit per breakpoint.
 
 **EXAMPLES**:
 

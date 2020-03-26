@@ -43,6 +43,7 @@ export default postcss.plugin('europacss-column', getConfig => {
     const finalRules = []
 
     css.walkAtRules('column', atRule => {
+      const src = atRule.source
       let [suppliedSize, suppliedBreakpoint] = atRule.params.split(' ')
       let needsBreakpoints = false
       let alreadyResponsive = false
@@ -137,6 +138,7 @@ export default postcss.plugin('europacss-column', getConfig => {
           createFlexDecls(flexDecls, flexSize)
 
           const originalRule = postcss.rule({ selector: parent.selector })
+          originalRule.source = src
           originalRule.append(...flexDecls)
           const mediaRule = postcss.atRule({ name: 'media', params: buildMediaQuery(breakpoints, bp) })
           mediaRule.append(originalRule)
@@ -200,9 +202,11 @@ export default postcss.plugin('europacss-column', getConfig => {
             } else {
               originalRule = postcss.rule({ selector: grandParent.selector })
             }
+            originalRule.source = src
             originalRule.append(...flexDecls)
 
             const mediaRule = postcss.atRule({ name: 'media', params: buildMediaQueryQ({ breakpoints, breakpointCollections }, bp) })
+            mediaRule.source = src
             mediaRule.append(originalRule)
             finalRules.push(mediaRule)
           })

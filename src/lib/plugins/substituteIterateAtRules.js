@@ -1,14 +1,16 @@
 import _ from 'lodash'
 import postcss from 'postcss'
 import cloneNodes from '../../util/cloneNodes'
+import updateSource from '../../util/updateSource'
 
 export default postcss.plugin('europacss-iterate', getConfig => {
   return function (css) {
     const config = getConfig()
-    const finalRules = []
+    let finalRules = []
 
     css.walkAtRules('iterate', atRule => {
       const parent = atRule.parent
+      const src = atRule.src
 
       if (parent.type === 'root') {
         throw atRule.error(`ITERATE: Cannot run from root`, { word: 'iterate' })

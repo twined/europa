@@ -27,6 +27,7 @@ export default postcss.plugin('europacss-container', getConfig => {
       let affectedBreakpoints
       let exact = false
       const parent = atRule.parent
+      const src = atRule.source
 
       if (atRule.parent.type === 'root') {
         throw atRule.error(`CONTAINER: Can only be used inside a rule, not on root.`)
@@ -87,6 +88,7 @@ export default postcss.plugin('europacss-container', getConfig => {
         if (needsMediaRule) {
           const mediaRule = postcss.atRule({ name: 'media', params: exact ? buildMediaQueryQ({ breakpoints, breakpointCollections }, bp) : buildMediaQuery(breakpoints, bp) })
           const originalRule = postcss.rule({ selector: parent.selector })
+          originalRule.source = src
 
           originalRule.append(containerDecl)
           originalRule.append(containerMaxWidthDecl)

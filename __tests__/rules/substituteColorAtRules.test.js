@@ -15,6 +15,10 @@ const DEFAULT_CFG = {
           one: '#ffffff',
           two: '#000000'
         }
+      },
+      gray: {
+        100: '#111111',
+        200: '#222222'
       }
     }
   }
@@ -32,6 +36,27 @@ it('parses @color', () => {
     article {
       color: #22AA22;
       background-color: #AAFFAA;
+    }
+  `
+
+  return run(input, DEFAULT_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @color w/number key', () => {
+  const input = `
+    article {
+      @color fg gray.100;
+      @color bg gray.200;
+    }
+  `
+
+  const output = `
+    article {
+      color: #111111;
+      background-color: #222222;
     }
   `
 

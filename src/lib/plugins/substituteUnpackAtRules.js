@@ -9,6 +9,7 @@ export default postcss.plugin('europacss-unpack', getConfig => {
     const finalRules = []
 
     css.walkAtRules('unpack', atRule => {
+      const src = atRule.source
       const parent = atRule.parent
 
       if (parent.type === 'root') {
@@ -48,6 +49,7 @@ export default postcss.plugin('europacss-unpack', getConfig => {
 
         // build a responsive rule with these decls
         const responsiveRule = postcss.atRule({ name: 'responsive', params: `>=${breakpoint}` })
+        responsiveRule.source = src
         responsiveRule.append(...decls)
         atRule.parent.append(responsiveRule)
       })

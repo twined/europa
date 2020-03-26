@@ -31,6 +31,7 @@ export default postcss.plugin('europacss-rfs', getConfig => {
     const finalRules = []
 
     css.walkAtRules('rfs', atRule => {
+      const src = atRule.source
       let needsMediaRule = true
 
       if (atRule.parent.type === 'root') {
@@ -78,7 +79,9 @@ export default postcss.plugin('europacss-rfs', getConfig => {
             const originalRule = postcss.rule({ selector: parent.selector })
             const mediaRule = cp.clone({ name: 'media', params: buildMediaQueryQ({ breakpoints, breakpointCollections }, bp) })
             originalRule.append(...fontDecls)
+            originalRule.source = src
             mediaRule.append(originalRule)
+            mediaRule.source = src
             finalRules.push(mediaRule)
           } else {
             parent.append(...fontDecls)
@@ -90,7 +93,7 @@ export default postcss.plugin('europacss-rfs', getConfig => {
           const fontDecls = _.keys(parsedFontSizeQuery).map(prop => buildDecl(prop, parsedFontSizeQuery[prop]))
           const mediaRule = cp.clone({ name: 'media', params: buildMediaQuery(breakpoints, bp) })
           const originalRule = postcss.rule({ selector: parent.selector })
-
+          originalRule.source = src
           originalRule.append(...fontDecls)
           mediaRule.append(originalRule)
           finalRules.push(mediaRule)

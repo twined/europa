@@ -12,7 +12,7 @@ import sizeNeedsBreakpoints from '../../util/sizeNeedsBreakpoints'
 /**
  * FONTSIZE
  *
- * @param {fontSizeQuery}     - size of font + optional adjustment + optional line height
+ * @param {fontSizeQuery} - size of font + optional adjustment + optional line height
  * @param [breakpoint]    - if this should only apply to ONE breakpoint
  *
  * Examples:
@@ -33,6 +33,7 @@ export default postcss.plugin('europacss-fontsize', getConfig => {
 
     css.walkAtRules('fontsize', atRule => {
       let selector
+      const src = atRule.source
 
       if (atRule.parent.type === 'root') {
         throw atRule.error(`FONTSIZE: Can only be used inside a rule, not on root.`)
@@ -97,6 +98,7 @@ export default postcss.plugin('europacss-fontsize', getConfig => {
 
           if (selector) {
             const originalRule = postcss.rule({ selector }).append(...fontDecls)
+            originalRule.source = src
             mediaRule.append(originalRule)
           } else {
             mediaRule.append(fontDecls)
@@ -110,6 +112,7 @@ export default postcss.plugin('europacss-fontsize', getConfig => {
           const fontDecls = _.keys(parsedFontSizeQuery).map(prop => buildDecl(prop, parsedFontSizeQuery[prop]))
           const mediaRule = clonedRule.clone({ name: 'media', params: buildMediaQuery(breakpoints, bp) })
           const originalRule = postcss.rule({ selector: parent.selector })
+          originalRule.source = src
 
           originalRule.append(...fontDecls)
           mediaRule.append(originalRule)

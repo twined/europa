@@ -435,7 +435,6 @@ it('parses multiple space tags inside reponsive', () => {
         @responsive >=lg {
           @space padding-left 1;
           @space margin-left 3/12;
-          @column-typography 6/12;
         }
       }
     }
@@ -460,16 +459,6 @@ it('parses multiple space tags inside reponsive', () => {
     @media (min-width: 1900px){
       .v-module[data-v="body+center"]{
         margin-left: calc(25% - 45px)
-      }
-    }
-    @media (min-width: 1399px){
-      .v-module[data-v="body+center"]{
-        position: relative;
-        flex-grow: 0;
-        flex-shrink: 0;
-        flex-basis: 50%;
-        max-width: 50%;
-        padding-right: 8.3333333333%
       }
     }
   `

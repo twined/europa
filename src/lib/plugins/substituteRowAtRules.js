@@ -19,8 +19,10 @@ export default postcss.plugin('europacss-row', getConfig => {
     const finalRules = []
 
     css.walkAtRules('row', atRule => {
+      const src = atRule.source
       let selector
       let wrapInResponsive = false
+      let wrapRow = 'nowrap'
       const parent = atRule.parent
       let grandParent = atRule.parent.parent
 
@@ -41,6 +43,10 @@ export default postcss.plugin('europacss-row', getConfig => {
 
       if (atRule.params) {
         childSpec = `${parseInt(rowCount)}n+1`
+
+        if (rowCount && rowCount.indexOf('/') > -1) {
+          [rowCount, wrapRow] = rowCount.split('/')
+        }
       }
 
       let clonedRule = atRule.clone()
@@ -79,7 +85,7 @@ export default postcss.plugin('europacss-row', getConfig => {
 
       const decls = [
         buildDecl('display', 'flex'),
-        buildDecl('flex-wrap', 'nowrap')
+        buildDecl('flex-wrap', wrapRow)
       ]
 
       const spaceParams = 'margin-left 1'
@@ -94,11 +100,13 @@ export default postcss.plugin('europacss-row', getConfig => {
 
       if (wrapInResponsive) {
         const responsiveRule = postcss.atRule({ name: 'responsive', params: bpQuery })
+        responsiveRule.source = src
         responsiveRule.append(...decls)
         responsiveRule.append(decendentChildren)
         parent.insertBefore(atRule, responsiveRule)
       } else {
-        parent.insertBefore(atRule, ...decls)
+        // parent.insertBefore(atRule, ...decls)
+        parent.prepend(...decls)
         parent.insertAfter(atRule, decendentChildren)
       }
 

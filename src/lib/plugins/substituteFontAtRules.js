@@ -43,6 +43,7 @@ export default postcss.plugin('europacss-font', getConfig => {
       if (fsParams) {
         // insert a @fontsize at rule after this
         const fsRule = postcss.atRule({ name: 'fontsize', params: fsParams })
+        fsRule.source = atRule.source
         parent.insertBefore(atRule, fsRule)
       }
 

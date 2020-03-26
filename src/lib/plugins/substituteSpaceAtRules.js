@@ -8,6 +8,7 @@ import extractBreakpointKeys from '../../util/extractBreakpointKeys'
 import buildDecl from '../../util/buildDecl'
 import parseSize from '../../util/parseSize'
 import sizeNeedsBreakpoints from '../../util/sizeNeedsBreakpoints'
+import updateSource from '../../util/updateSource'
 
 /**
  * SPACE
@@ -90,6 +91,8 @@ function processRule(atRule, config, finalRules, flagAsImportant) {
     selector = parent.selector
   }
 
+  const src = atRule.source
+
   atRule.remove()
 
   if (bpQuery) {
@@ -110,9 +113,11 @@ function processRule(atRule, config, finalRules, flagAsImportant) {
 
       if (selector) {
         const originalRule = postcss.rule({ selector }).append(sizeDecls)
+        originalRule.source = src
         mediaRule.append(originalRule)
       } else {
         mediaRule.append(sizeDecls)
+        mediaRule.source = src
       }
 
       finalRules.push(mediaRule)
@@ -124,6 +129,7 @@ function processRule(atRule, config, finalRules, flagAsImportant) {
         const mediaRule = clonedRule.clone({ name: 'media', params: buildMediaQuery(breakpoints, bp) })
         const sizeDecls = buildDecl(prop, parsedSize, flagAsImportant)
         const originalRule = postcss.rule({ selector: parent.selector }).append(sizeDecls)
+        originalRule.source = src
         mediaRule.append(originalRule)
         finalRules.push(mediaRule)
       })

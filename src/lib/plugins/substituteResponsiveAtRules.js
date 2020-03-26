@@ -30,6 +30,7 @@ export default postcss.plugin('europacss-responsive', getConfig => {
 
       // clone parent, but without atRule
       let cp = atRule.clone()
+      const src = atRule.source
       atRule.remove()
 
       // convert to query string
@@ -46,6 +47,7 @@ export default postcss.plugin('europacss-responsive', getConfig => {
         }
       } else {
         const originalRule = postcss.rule({ selector: parent.selector })
+        originalRule.source = src
         originalRule.append(...cloneNodes(nodes))
         mediaRule.append(originalRule)
       }

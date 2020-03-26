@@ -1,6 +1,6 @@
 {
   "name": "@univers-agency/europacss",
-  "version": "0.1.18",
+  "version": "0.2.0",
   "description": "Europa CSS system",
   "main": "lib/index.js",
   "keywords": [
@@ -10,6 +10,7 @@
     "helpers"
   ],
   "scripts": {
+    "dev": "babel src --out-dir lib --copy-files && yalc push",
     "test": "jest __tests__ && eslint src/*.js",
     "coverage": "jest __tests__ --coverage",
     "prebuild": "rimraf lib",

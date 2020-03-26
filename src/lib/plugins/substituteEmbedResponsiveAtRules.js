@@ -13,6 +13,8 @@ import reduceCSSCalc from 'reduce-css-calc'
 export default postcss.plugin('europacss-embed-responsive', getConfig => {
   return function (css) {
     css.walkAtRules('embed-responsive', atRule => {
+      const src = atRule.source
+
       if (atRule.parent.type === 'root') {
         throw atRule.error(`EMBED-RESPONSIVE: Can only be used inside a rule, not on root.`)
       }
@@ -28,10 +30,11 @@ export default postcss.plugin('europacss-embed-responsive', getConfig => {
       ]
       // create a :before rule
       const pseudoBefore = postcss.rule({ selector: '&::before' })
+      pseudoBefore.source = src
       atRule.parent.insertAfter(atRule, pseudoBefore.append(...decls))
 
       const styles = postcss.parse(fs.readFileSync(`${__dirname}/css/embed-responsive.css`, 'utf8'))
-      atRule.parent.insertAfter(atRule, updateSource([...styles.nodes]))
+      atRule.parent.insertAfter(atRule, updateSource([...styles.nodes], src))
       atRule.remove()
     })
   }

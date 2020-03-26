@@ -9,6 +9,18 @@
   "extends": ["standard"],
 
   "rules": {
-    "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }]
+    "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
+    "arrow-parens": [2, "as-needed"],
+    "class-methods-use-this": 0,
+    "comma-dangle": ["error", "never"],
+    "no-console": "off",
+    "no-debugger": "off",
+    "no-param-reassign": 0,
+    "no-underscore-dangle": 0,
+    "quotes": ["error", "single"],
+    "radix": ["error", "as-needed"],
+    "semi": 0,
+    "space-before-function-paren": ["error", "always"]
   }
 }
+

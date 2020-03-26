@@ -1,9 +1,13 @@
 # Change Log
 
-### 0.1.18
+### 0.2.0
 
-- Enforce container max width config when using `@container`.
+- BREAKING: Enforce container max width config when using `@container`.
+- Fix source mapping for most plugins
 - Add optional breakpoint param to `@row <cols> [bpQuery]`
+- Add simple calc() interpolation. I.e: `@space width calc(100vw - var[container] + var[1])`.
+  `var[container]` gets replaced with the container padding for each breakpoint and `var[1]`
+  gets replaced with 1 gutter unit for each breakpoint.
 - Add `container/2` and `-container/2` as spacing options
   `@space container/2 $desktop;`
 - Fix `@font` under `@responsive`
