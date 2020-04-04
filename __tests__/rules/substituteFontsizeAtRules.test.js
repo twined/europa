@@ -391,3 +391,44 @@ it('fails inside @responsive with own breakpointQuery', () => {
     expect(e).toMatchObject({ name: 'CssSyntaxError' })
   })
 })
+
+it('parses a selector path', () => {
+  const cfg = {
+    theme: {
+      breakpoints: {
+        xs: '0',
+        sm: '740px',
+        md: '1024px'
+      },
+      typography: {
+        sizes: {
+          product: {
+            name: {
+              xs: '14px',
+              sm: '16px'
+            }
+          }
+        }
+      }
+    }
+  }
+
+  const input = `
+    article {
+      @fontsize product.name xs;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0) and (max-width: 739px){
+      article{
+        font-size: 14px
+      }
+    }
+  `
+
+  return run(input, cfg).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})

@@ -1,4 +1,26 @@
-# Change Log
+# Changelog
+
+### 0.2.1
+
+- Allow querying `@fontsize` by keypath:
+  `@fontsize product.name;`
+
+  Config would then be:
+
+  ```
+  typography: {
+    sizes: {
+      product: {
+        name: {
+          xs: '14px',
+          sm: '16px',
+          // ...
+        }
+      }
+    }
+  }
+  ```
+
 
 ### 0.2.0
 

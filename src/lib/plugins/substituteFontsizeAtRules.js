@@ -88,7 +88,7 @@ export default postcss.plugin('europacss-fontsize', getConfig => {
         const affectedBreakpoints = extractBreakpointKeys({ breakpoints, breakpointCollections }, bpQuery)
 
         _.each(affectedBreakpoints, bp => {
-          let parsedFontSizeQuery = parseFontSizeQuery(clonedRule, theme, fontSizeQuery, bp)
+          let parsedFontSizeQuery = parseFontSizeQuery(clonedRule, config, fontSizeQuery, bp)
           const fontDecls = _.keys(parsedFontSizeQuery).map(prop => buildDecl(prop, parsedFontSizeQuery[prop]))
 
           const mediaRule = clonedRule.clone({
@@ -108,7 +108,7 @@ export default postcss.plugin('europacss-fontsize', getConfig => {
         })
       } else {
         _.keys(breakpoints).forEach(bp => {
-          let parsedFontSizeQuery = parseFontSizeQuery(clonedRule, theme, fontSizeQuery, bp)
+          let parsedFontSizeQuery = parseFontSizeQuery(clonedRule, config, fontSizeQuery, bp)
           const fontDecls = _.keys(parsedFontSizeQuery).map(prop => buildDecl(prop, parsedFontSizeQuery[prop]))
           const mediaRule = clonedRule.clone({ name: 'media', params: buildMediaQuery(breakpoints, bp) })
           const originalRule = postcss.rule({ selector: parent.selector })

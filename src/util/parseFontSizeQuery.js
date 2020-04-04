@@ -1,7 +1,8 @@
 import _ from 'lodash'
 import splitUnit from './splitUnit'
 
-export default function parseFontSizeQuery (node, theme, fontSizeQuery, breakpoint) {
+export default function parseFontSizeQuery (node, config, fontSizeQuery, breakpoint) {
+  const { theme } = config
   let lineHeight
   let modifier
   let renderedFontSize
@@ -19,32 +20,38 @@ export default function parseFontSizeQuery (node, theme, fontSizeQuery, breakpoi
 
   const fontSize = fontSizeQuery
 
-  if (!_.has(theme.typography.sizes, fontSize)) {
+  // get the wanted object
+  const themePath = ['theme', 'typography', 'sizes']
+  const path = fontSize.split('.')
+  const resolvedFontsize = _.get(config, themePath.concat(path))
+
+  if (!resolvedFontsize) {
     throw node.error(`FONTSIZE: No \`${fontSize}\` size found in theme.typography.sizes.`, { name: fontSize })
   }
-  if (!_.has(theme.typography.sizes[fontSize], breakpoint)) {
+
+  if (!_.has(resolvedFontsize, breakpoint)) {
     throw node.error(`FONTSIZE: No breakpoint \`${breakpoint}\` found in theme.typography.sizes.${fontSize}`, { name: breakpoint })
   }
 
   if (!modifier) {
-    if (_.isObject(theme.typography.sizes[fontSize][breakpoint])) {
+    if (_.isObject(resolvedFontsize[breakpoint])) {
       const props = {}
-      _.keys(theme.typography.sizes[fontSize][breakpoint]).forEach(key => {
-        props[key] = theme.typography.sizes[fontSize][breakpoint][key]
+      _.keys(resolvedFontsize[breakpoint]).forEach(key => {
+        props[key] = resolvedFontsize[breakpoint][key]
       })
       return props
     } else {
       return {
-        ...{ 'font-size': theme.typography.sizes[fontSize][breakpoint] },
+        ...{ 'font-size': resolvedFontsize[breakpoint] },
         ...(lineHeight && { 'line-height': lineHeight })
       }
     }
   } else {
     let fs
-    if (_.isObject(theme.typography.sizes[fontSize][breakpoint])) {
-      fs = theme.typography.sizes[fontSize][breakpoint]['font-size']
+    if (_.isObject(resolvedFontsize[breakpoint])) {
+      fs = resolvedFontsize[breakpoint]['font-size']
     } else {
-      fs = theme.typography.sizes[fontSize][breakpoint]
+      fs = resolvedFontsize[breakpoint]
     }
     const [val, unit] = splitUnit(fs)
     renderedFontSize = `${val * modifier}${unit}`
