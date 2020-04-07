@@ -2,6 +2,7 @@
 
 ### 0.2.1
 
+- Add `@grid`. Sets up column gap with correct gutter across all breakpoints.
 - Allow querying `@fontsize` by keypath:
   `@fontsize product.name;`
 

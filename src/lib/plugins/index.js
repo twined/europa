@@ -15,6 +15,7 @@ import substituteColumnAtRules from './substituteColumnAtRules'
 import substituteResponsiveAtRules from './substituteResponsiveAtRules'
 import substituteEmbedResponsiveAtRules from './substituteEmbedResponsiveAtRules'
 import substituteRowAtRules from './substituteRowAtRules'
+import substituteGridAtRules from './substituteGridAtRules'
 import postcssExtend from 'postcss-extend-rule'
 
 export default [
@@ -23,6 +24,7 @@ export default [
   substituteIfAtRules,
   substituteColorAtRules,
   evaluateEuropaFunctions,
+  substituteGridAtRules,
   substituteIterateAtRules,
   substituteUnpackAtRules,
   substituteContainerAtRules,

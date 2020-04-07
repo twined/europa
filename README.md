@@ -97,6 +97,36 @@ todo
 Gets `colorName` from `theme.colors`
 
 
+### `@grid`
+
+Sets column gap to your gutter configuration across all breakpoints.
+
+**EXAMPLE**:
+
+```
+.my-grid {
+  @grid;
+  grid-template-areas: "a b"
+                       "a c";
+  grid-template-columns: 6fr 6fr;
+
+  .a {
+    grid-area: a;
+  }
+
+  .b {
+    grid-area: b;
+  }
+
+  .c {
+    grid-area: c;
+  }
+}
+```
+
+This creates a 6 columns wide stacking grid.
+
+
 ### `@row [childrenPerRow[/wrapModifier]] [breakpointQuery]`
 
 Spaces children correctly per row. Does not set child widths/columns!
