@@ -96,6 +96,41 @@ const DEFAULT_CFG = {
   }
 }
 
+it('parses @space translateX', () => {
+  const input = `
+    body article .test {
+      @space translateX calc(100vw - var[container] + var[1]);
+      font-size: 18px;
+    }
+  `
+
+  const output = `
+    body article .test {
+      font-size: 18px;
+    }
+    @media (min-width: 0){
+      body article .test {
+        transform: translateX(calc(100vw - 15px + 20px));
+      }
+    }
+    @media (min-width: 740px){
+      body article .test {
+        transform: translateX(calc(100vw - 35px + 30px));
+      }
+    }
+    @media (min-width: 1024px){
+      body article .test {
+        transform: translateX(calc(100vw - 50px + 50px));
+      }
+    }
+  `
+
+  return run(input, DEFAULT_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
 it('parses @space calced', () => {
   const input = `
     body article .test {

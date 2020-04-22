@@ -2,6 +2,8 @@ import postcss from 'postcss'
 
 export default function buildDecl (p, value, important = false) {
   const props = []
+  let wrapper = null
+
   switch (p) {
     case 'margin-x':
       props.push('margin-left')
@@ -37,9 +39,33 @@ export default function buildDecl (p, value, important = false) {
       props.push('padding-bottom')
       break
 
+    case 'translateX':
+      props.push('transform')
+      wrapper = 'translateX($VALUE)'
+      break
+
+    case 'translateY':
+      props.push('transform')
+      wrapper = 'translateY($VALUE)'
+      break
+
+    case 'translateZ':
+      props.push('transform')
+      wrapper = 'translateZ($VALUE)'
+      break
+
+    case 'scale':
+      props.push('transform')
+      wrapper = 'scale($VALUE)'
+      break
+
     default:
       props.push(p)
   }
 
-  return props.map(prop => postcss.decl({ prop, value, important }))
+  return props.map(prop => postcss.decl({
+    prop,
+    value: wrapper ? wrapper.replace('$VALUE', value) : value,
+    important
+  }))
 }

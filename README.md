@@ -161,6 +161,7 @@ If no params are given, only the first child gets a margin-left of 0.
 
 `{decl}`
   - `margin-x`, `margin-y`, `padding-x`, `padding-y`
+  - `translateX`, `translateY`, `translateZ`, `scale`
   - Any prop that accepts the values you give it.
 
 `{sizeQuery}`
@@ -189,6 +190,11 @@ If no params are given, only the first child gets a margin-left of 0.
   &:last-of-type {
     @space margin-bottom: xl;
   }
+}
+
+.powerful-stuff {
+  /* move element 4 columns + a gutter size to the left */
+  @space translateX calc(var[4:1/12] * -1);
 }
 ```
 

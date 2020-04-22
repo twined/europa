@@ -1,5 +1,11 @@
 # Changelog
 
+### 0.2.2
+
+- Fix `dbg-grid` for max sized containers.
+- Add `translateX`, `translateY`, `translateZ` and `scale` shortcuts to `@space`
+
+
 ### 0.2.1
 
 - Add `@grid`. Sets up column gap with correct gutter across all breakpoints.
