@@ -304,16 +304,14 @@ it('parses advanced nesting', () => {
   `
 
   const output = `
-    header[data-nav] {
-      width: 100%;
-      margin-left: auto;
-      margin-right: auto;
-    }
     @media (min-width: 0) {
       header[data-nav] {
         padding-left: 15px;
         padding-right: 15px;
         max-width: 740px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
       }
     }
     @media (min-width: 740px) {
@@ -321,6 +319,9 @@ it('parses advanced nesting', () => {
         padding-left: 35px;
         padding-right: 35px;
         max-width: 1024px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
       }
     }
     @media (min-width: 1024px) {
@@ -328,6 +329,9 @@ it('parses advanced nesting', () => {
         padding-left: 50px;
         padding-right: 50px;
         max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
       }
     }
     @media (min-width: 1399px) {
@@ -335,6 +339,9 @@ it('parses advanced nesting', () => {
         padding-left: 100px;
         padding-right: 100px;
         max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
       }
     }
     @media (min-width: 1900px) {
@@ -342,6 +349,9 @@ it('parses advanced nesting', () => {
         padding-left: 100px;
         padding-right: 100px;
         max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
       }
     }
     header[data-nav] nav {

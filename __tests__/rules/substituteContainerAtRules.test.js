@@ -24,16 +24,14 @@ it('parses @container with no other decls', () => {
   `
 
   const output = `
-    article {
-      width: 100%;
-      margin-left: auto;
-      margin-right: auto;
-    }
     @media (min-width: 0) {
       article {
         padding-left: 15px;
         padding-right: 15px;
         max-width: 740px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%
       }
     }
     @media (min-width: 740px) {
@@ -41,6 +39,9 @@ it('parses @container with no other decls', () => {
         padding-left: 35px;
         padding-right: 35px;
         max-width: 1024px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%
       }
     }
     @media (min-width: 1024px) {
@@ -48,6 +49,9 @@ it('parses @container with no other decls', () => {
         padding-left: 50px;
         padding-right: 50px;
         max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%
       }
     }
     @media (min-width: 1399px) {
@@ -55,6 +59,9 @@ it('parses @container with no other decls', () => {
         padding-left: 100px;
         padding-right: 100px;
         max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%
       }
     }
     @media (min-width: 1900px) {
@@ -62,6 +69,9 @@ it('parses @container with no other decls', () => {
         padding-left: 100px;
         padding-right: 100px;
         max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%
       }
     }
   `
@@ -83,9 +93,6 @@ it('parses @container with other decls', () => {
 
   const output = `
     article {
-      width: 100%;
-      margin-left: auto;
-      margin-right: auto;
       background-color: red;
       padding-bottom: 50px;
     }
@@ -94,6 +101,9 @@ it('parses @container with other decls', () => {
         padding-left: 15px;
         padding-right: 15px;
         max-width: 740px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
       }
     }
     @media (min-width: 740px) {
@@ -101,6 +111,9 @@ it('parses @container with other decls', () => {
         padding-left: 35px;
         padding-right: 35px;
         max-width: 1024px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
       }
     }
     @media (min-width: 1024px) {
@@ -108,6 +121,9 @@ it('parses @container with other decls', () => {
         padding-left: 50px;
         padding-right: 50px;
         max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
       }
     }
     @media (min-width: 1399px) {
@@ -115,6 +131,9 @@ it('parses @container with other decls', () => {
         padding-left: 100px;
         padding-right: 100px;
         max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
       }
     }
     @media (min-width: 1900px) {
@@ -122,6 +141,9 @@ it('parses @container with other decls', () => {
         padding-left: 100px;
         padding-right: 100px;
         max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
       }
     }
   `
@@ -143,34 +165,37 @@ it('parses @container for specific breakpoints', () => {
 
   const output = `
     article {
-      width: 100%;
-      margin-left: auto;
-      margin-right: auto;
       background-color: red;
       padding-bottom: 50px;
     }
-
     @media (min-width: 0) and (max-width: 739px) {
       article {
         padding-left: 15px;
         padding-right: 15px;
         max-width: 740px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
       }
     }
-
     @media (min-width: 740px) and (max-width: 1023px) {
       article {
         padding-left: 35px;
         padding-right: 35px;
         max-width: 1024px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
       }
     }
-
     @media (min-width: 1900px) {
       article {
         padding-left: 100px;
         padding-right: 100px;
         max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
       }
     }
   `
@@ -198,17 +223,53 @@ it('runs correctly inside @responsive', () => {
       background-color: red;
       padding-bottom: 50px;
     }
-
     @media (min-width: 0) and (max-width: 739px) {
       article {
-        width: 100%;
-        margin-left: auto;
-        margin-right: auto;
         padding-left: 15px;
         padding-right: 15px;
         max-width: 740px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
       }
     }
+  `
+
+  return run(input).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @container for specific breakpoints', () => {
+  const input = `
+    article {
+      @container xs;
+      @container sm;
+    }
+  `
+
+  const output = `
+  @media (min-width: 0) and (max-width: 739px) {
+    article {
+      padding-left: 15px;
+      padding-right: 15px;
+      max-width: 740px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%
+    }
+  }
+  @media (min-width: 740px) and (max-width: 1023px) {
+    article {
+      padding-left: 35px;
+      padding-right: 35px;
+      max-width: 1024px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%
+    }
+  }
   `
 
   return run(input).then(result => {

@@ -37,9 +37,6 @@ export default postcss.plugin('europacss-container', getConfig => {
         throw atRule.error(`CONTAINER: Container should not include children.`)
       }
 
-      parent.prepend(buildDecl('margin-x', 'auto'))
-      parent.prepend(buildDecl('width', '100%'))
-
       // if we have a q, like '>=sm'. Extract all breakpoints we need media queries for
       let q = atRule.params
 
@@ -85,6 +82,9 @@ export default postcss.plugin('europacss-container', getConfig => {
         const maxWidthValue = container.maxWidth[bp]
         const containerMaxWidthDecl = buildDecl('max-width', maxWidthValue)
 
+        const containerMarginDecl = buildDecl('margin-x', 'auto')
+        const containerWidthDecl = buildDecl('width', '100%')
+
         if (needsMediaRule) {
           const mediaRule = postcss.atRule({ name: 'media', params: exact ? buildMediaQueryQ({ breakpoints, breakpointCollections }, bp) : buildMediaQuery(breakpoints, bp) })
           const originalRule = postcss.rule({ selector: parent.selector })
@@ -92,16 +92,25 @@ export default postcss.plugin('europacss-container', getConfig => {
 
           originalRule.append(containerDecl)
           originalRule.append(containerMaxWidthDecl)
+          originalRule.append(containerMarginDecl)
+          originalRule.append(containerWidthDecl)
           mediaRule.append(originalRule)
           finalRules.push(mediaRule)
         } else {
           parent.append(containerDecl)
           parent.append(containerMaxWidthDecl)
+          parent.append(containerMarginDecl)
+          parent.append(containerWidthDecl)
         }
       })
 
       parent.after(finalRules)
       atRule.remove()
+
+      // check if parent has anything
+      if (parent && !parent.nodes.length) {
+        parent.remove()
+      }
     })
   }
 })
