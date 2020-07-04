@@ -82,6 +82,27 @@ it('parses regular @fontsize for single breakpoint', () => {
   })
 })
 
+it('parses hardcoded @fontsize for single breakpoint', () => {
+  const input = `
+    article {
+      @fontsize 50px xs;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0) and (max-width: 739px){
+      article{
+        font-size: 50px
+      }
+    }
+  `
+
+  return run(input).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
 it('parses regular @fontsize for single breakpoint with line-height', () => {
   const input = `
     article {

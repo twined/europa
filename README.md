@@ -23,10 +23,17 @@ Example `postcss.config.js`:
 ```js
 module.exports = {
   plugins: [
-    require('postcss-easy-import')({ prefix: '_', extensions: ['pcss', 'scss', 'css'] }),
-    require('europacss'),
+    require('postcss-easy-import')({
+      prefix: '_',
+      extensions: ['pcss', 'scss', 'css'],
+      plugins: [
+        require('stylelint')
+      ]
+    }),
+    require('@univers-agency/europacss'),
     require('autoprefixer')({ grid: 'on' }),
     require('css-mqgroup')({ sort: true }),
+    require('postcss-reporter')({ clearReportedMessages: true, throwError: false })
   ]
 }
 ```
@@ -262,6 +269,7 @@ Responsive Font Size helper. `theme.typography.rfs.minimum` values must be set f
 `{fsQuery}`
   - `base` > Creates a responsive font size between `theme.typography.sizes.base` and `theme.typography.rfs.minimum` for all breakpoints.
   - `base/2.0` > Same as above, but sets `line-height` to 2.0
+  - `12px-16px/2.0` > Manually set min size to 12px, max size to 16px, line-height to 2.0
 
 `[breakpointQuery]`
   - `xs`

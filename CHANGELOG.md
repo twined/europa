@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.2.3
+
+- Add option to provide hardcoded `@fontsize` and `@rfs` parameters
+
+
 ### 0.2.2
 
 - Fix `dbg-grid` for max sized containers.

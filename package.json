@@ -1,6 +1,6 @@
 {
   "name": "@univers-agency/europacss",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Europa CSS system",
   "main": "lib/index.js",
   "keywords": [

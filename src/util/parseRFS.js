@@ -3,40 +3,45 @@ import calcMinFromBreakpoint from './calcMinFromBreakpoint'
 import calcMaxFromBreakpoint from './calcMaxFromBreakpoint'
 
 export default function parseRFS (node, theme, size, breakpoint) {
-  // check size exists in both theme.typography.sizes and theme.typography.rfs.minimum
-  if (!_.has(theme.typography.sizes, size)) {
-    throw node.error(`RFS: No size \`${size}\` found in theme.typography`)
-  }
-
-  if (!_.has(theme.typography.rfs.minimum, size)) {
-    throw node.error(`RFS: No size \`${size}\` found in theme.typography.rfs.minimum`)
-  }
-
-  if (!_.has(theme.typography.sizes[size], breakpoint)) {
-    throw node.error(`RFS: No breakpoint \`${breakpoint}\` found in theme.typography.${size}`)
-  }
-
-  if (!_.has(theme.typography.rfs.minimum, size)) {
-    throw node.error(`RFS: No size \`${size}\` found in theme.typography.rfs.minimum`)
-  }
-
-  if (!_.has(theme.typography.rfs.minimum[size], breakpoint)) {
-    throw node.error(`RFS: No breakpoint \`${breakpoint}\` found in theme.typography.rfs.minimum.${size}`)
-  }
-
   let minSize
   let maxSize
 
-  if (_.isObject(theme.typography.rfs.minimum[size][breakpoint])) {
-    minSize = theme.typography.rfs.minimum[size][breakpoint]['font-size']
+  if (size.indexOf('-') > -1) {
+    // alternative syntax - `minSize-maxSize`
+    [minSize, maxSize] = size.split('-')
   } else {
-    minSize = theme.typography.rfs.minimum[size][breakpoint]
-  }
+    // check size exists in both theme.typography.sizes and theme.typography.rfs.minimum
+    if (!_.has(theme.typography.sizes, size)) {
+      throw node.error(`RFS: No size \`${size}\` found in theme.typography`)
+    }
 
-  if (_.isObject(theme.typography.sizes[size][breakpoint])) {
-    maxSize = theme.typography.sizes[size][breakpoint]['font-size']
-  } else {
-    maxSize = theme.typography.sizes[size][breakpoint]
+    if (!_.has(theme.typography.rfs.minimum, size)) {
+      throw node.error(`RFS: No size \`${size}\` found in theme.typography.rfs.minimum`)
+    }
+
+    if (!_.has(theme.typography.sizes[size], breakpoint)) {
+      throw node.error(`RFS: No breakpoint \`${breakpoint}\` found in theme.typography.${size}`)
+    }
+
+    if (!_.has(theme.typography.rfs.minimum, size)) {
+      throw node.error(`RFS: No size \`${size}\` found in theme.typography.rfs.minimum`)
+    }
+
+    if (!_.has(theme.typography.rfs.minimum[size], breakpoint)) {
+      throw node.error(`RFS: No breakpoint \`${breakpoint}\` found in theme.typography.rfs.minimum.${size}`)
+    }
+
+    if (_.isObject(theme.typography.rfs.minimum[size][breakpoint])) {
+      minSize = theme.typography.rfs.minimum[size][breakpoint]['font-size']
+    } else {
+      minSize = theme.typography.rfs.minimum[size][breakpoint]
+    }
+
+    if (_.isObject(theme.typography.sizes[size][breakpoint])) {
+      maxSize = theme.typography.sizes[size][breakpoint]['font-size']
+    } else {
+      maxSize = theme.typography.sizes[size][breakpoint]
+    }
   }
 
   const sizeUnit = getUnit(minSize)

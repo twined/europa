@@ -81,6 +81,28 @@ it('parses regular @rfs for all breakpoints', () => {
   })
 })
 
+it('parses syntax without cfg', () => {
+  const input = `
+    article {
+      @rfs 12px-16px/2.0 sm;
+    }
+  `
+
+  const output = `
+    @media (min-width: 740px) and (max-width: 1048px){
+      article{
+        font-size: calc(12px + 4 * ((100vw - 740px) / 308));
+        line-height: 2.0
+      }
+    }
+  `
+
+  return run(input, cfg).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
 it('parses regular @rfs for single breakpoint', () => {
   const input = `
     article {
