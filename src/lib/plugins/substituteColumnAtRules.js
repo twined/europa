@@ -44,7 +44,7 @@ export default postcss.plugin('europacss-column', getConfig => {
 
     css.walkAtRules('column', atRule => {
       const src = atRule.source
-      let [suppliedSize, suppliedBreakpoint] = atRule.params.split(' ')
+      let [suppliedSize, suppliedBreakpoint] = postcss.list.space(atRule.params)
       let needsBreakpoints = false
       let alreadyResponsive = false
       let flexSize
