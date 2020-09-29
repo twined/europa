@@ -30,11 +30,10 @@
   "dependencies": {
     "lodash": "^4.17.20",
     "normalize.css": "^8.0.1",
-    "postcss": "^7.0.30",
     "postcss-extend-rule": "^3.0.0",
     "postcss-functions": "twined/postcss-functions",
-    "postcss-nested": "^4.2.1",
-    "postcss-reporter": "^6.0.1",
+    "postcss-nested": "^5.0.1",
+    "postcss-reporter": "^7.0.1",
     "reduce-css-calc": "^2.1.7"
   },
   "devDependencies": {
@@ -43,10 +42,10 @@
     "@babel/node": "^7.10.5",
     "@babel/preset-env": "^7.11.5",
     "babel-jest": "^26.3.0",
-    "eslint": "^7.9.0",
+    "eslint": "^7.10.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-es5": "^1.5.0",
-    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^24.0.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prefer-let": "^1.1.0",
@@ -54,7 +53,11 @@
     "eslint-plugin-security": "^1.4.0",
     "eslint-plugin-standard": "^4.0.1",
     "jest": "^26.4.2",
+    "postcss": "^8.1.1",
     "rimraf": "^3.0.2"
+  },
+  "peerDependencies": {
+    "postcss": "^8.0.5"
   },
   "jest": {
     "testEnvironment": "node",
