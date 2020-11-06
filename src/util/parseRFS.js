@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import calcMinFromBreakpoint from './calcMinFromBreakpoint'
 import calcMaxFromBreakpoint from './calcMaxFromBreakpoint'
+import getUnit from './getUnit'
 
 export default function parseRFS (node, theme, size, breakpoint) {
   let minSize
@@ -87,15 +88,6 @@ export default function parseRFS (node, theme, size, breakpoint) {
   }
 
   return `calc(${minSize} + ${sizeDiff} * ((100vw - ${minWidth}) / ${rangeDiff}))`
-}
-
-function getUnit (value) {
-  const match = value.match(/px|rem|em|vw/)
-
-  if (match) {
-    return match.toString()
-  }
-  return null
 }
 
 function pxToRem (px, rootSize) {

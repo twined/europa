@@ -256,6 +256,31 @@ it('parses @space! only for requested bp', () => {
   })
 })
 
+it('parses @space between()', () => {
+  const input = `
+    body article .test {
+      @space margin-top between(40px-80px) desktop;
+      font-size: 18px;
+    }
+  `
+
+  const output = `
+    body article .test {
+      font-size: 18px;
+    }
+    @media (min-width: 1024px){
+      body article .test {
+        margin-top: calc(40px + 40 * ((100vw - 1024px) / 200));
+      }
+    }
+  `
+
+  return run(input, DEFAULT_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
 it('parses @space with px', () => {
   const input = `
     body article .test {
