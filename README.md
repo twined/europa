@@ -43,8 +43,10 @@ module.exports = {
 - Remember to keep your `@import` statements at the top of your `.pcss` file
 - Add
 
-    @europa arrows;
-    @europa base;
+```
+@europa arrows;
+@europa base;
+```
 
   to your main stylesheet
 
@@ -177,6 +179,7 @@ If no params are given, only the first child gets a margin-left of 0.
   - `1/3` > Calcs a fraction.
   - `3:1/6` > Calcs a 3/6 fraction but with 1 added gutter unit
   - `xs/2` > Gets half of the XS from `theme.spacing` map.
+  - `between(20px-50px)` > Scales the value from 20px at the start of breakpoint to 50px at the end of breakpoint.
   - `container` > Gets value from `theme.container.padding` for breakpoint.
   - `-container` > Gets negative value of `theme.container.padding` for breakpoint.
   - `vertical-rhythm(theme.typography.sizes.xl)` > Grabs object for breakpoint and multiplies with default line-height.
