@@ -1,5 +1,12 @@
 # Changelog
 
+### 0.3.0
+
+- BREAKING: Removed `@rfs` -- use `@fontsize between(18px-22px)/1.5 $sm` instead.
+- Add `between(min-max)` to `@space`
+- Add `between(min-max)` tp `@fontsize`
+
+
 ### 0.2.3
 
 - Add option to provide hardcoded `@fontsize` and `@rfs` parameters

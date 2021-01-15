@@ -235,6 +235,7 @@ Selects a font family. Can also be passed a font size query.
   - `lg` > Picks the `lg` key from `theme.typography.sizes` across breakpoints
   - `lg/2.0` > Also sets `line-height` to `2.0`
   - `lg(2.0)/2.0` > Adds a modifier `(2.0)` that gets used as a multiplier in a calc() for the final font-size.
+  - `between(18px-22px)/2.0` > Responsive font sizing, from 18px to 22px. Needs a breakpoint to function properly.
   - `product.size` > Traverses the keypath `product.size` within `theme.typography.sizes`
 
 `[breakpointQuery]`

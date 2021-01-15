@@ -1,10 +1,16 @@
 import _ from 'lodash'
 import splitUnit from './splitUnit'
+import parseRFSQuery from './parseRFSQuery'
 
 export default function parseFontSizeQuery (node, config, fontSizeQuery, breakpoint) {
   let lineHeight
   let modifier
   let renderedFontSize
+
+  if (fontSizeQuery.indexOf('between(') !== -1) {
+    // responsive font size
+    return parseRFSQuery(node, config, fontSizeQuery, breakpoint)
+  }
 
   if (fontSizeQuery.indexOf('/') !== -1) {
     // we have a line-height parameter

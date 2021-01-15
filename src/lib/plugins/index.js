@@ -10,7 +10,6 @@ import substituteAtruleAliases from './substituteAtruleAliases'
 import substituteSpaceAtRules from './substituteSpaceAtRules'
 import substituteFontAtRules from './substituteFontAtRules'
 import substituteFontsizeAtRules from './substituteFontsizeAtRules'
-import substituteRFSAtRules from './substituteRFSAtRules'
 import substituteColumnAtRules from './substituteColumnAtRules'
 import substituteResponsiveAtRules from './substituteResponsiveAtRules'
 import substituteEmbedResponsiveAtRules from './substituteEmbedResponsiveAtRules'
@@ -32,7 +31,6 @@ export default [
   substituteSpaceAtRules,
   substituteFontAtRules,
   substituteFontsizeAtRules,
-  substituteRFSAtRules,
   substituteEmbedResponsiveAtRules,
   substituteColumnAtRules,
   substituteResponsiveAtRules

@@ -3,53 +3,14 @@ import calcMinFromBreakpoint from './calcMinFromBreakpoint'
 import calcMaxFromBreakpoint from './calcMaxFromBreakpoint'
 import getUnit from './getUnit'
 
-export default function parseRFS (node, theme, size, breakpoint) {
-  let minSize
-  let maxSize
-
-  if (size.indexOf('-') > -1) {
-    // alternative syntax - `minSize-maxSize`
-    [minSize, maxSize] = size.split('-')
-  } else {
-    // check size exists in both theme.typography.sizes and theme.typography.rfs.minimum
-    if (!_.has(theme.typography.sizes, size)) {
-      throw node.error(`RFS: No size \`${size}\` found in theme.typography`)
-    }
-
-    if (!_.has(theme.typography.rfs.minimum, size)) {
-      throw node.error(`RFS: No size \`${size}\` found in theme.typography.rfs.minimum`)
-    }
-
-    if (!_.has(theme.typography.sizes[size], breakpoint)) {
-      throw node.error(`RFS: No breakpoint \`${breakpoint}\` found in theme.typography.${size}`)
-    }
-
-    if (!_.has(theme.typography.rfs.minimum, size)) {
-      throw node.error(`RFS: No size \`${size}\` found in theme.typography.rfs.minimum`)
-    }
-
-    if (!_.has(theme.typography.rfs.minimum[size], breakpoint)) {
-      throw node.error(`RFS: No breakpoint \`${breakpoint}\` found in theme.typography.rfs.minimum.${size}`)
-    }
-
-    if (_.isObject(theme.typography.rfs.minimum[size][breakpoint])) {
-      minSize = theme.typography.rfs.minimum[size][breakpoint]['font-size']
-    } else {
-      minSize = theme.typography.rfs.minimum[size][breakpoint]
-    }
-
-    if (_.isObject(theme.typography.sizes[size][breakpoint])) {
-      maxSize = theme.typography.sizes[size][breakpoint]['font-size']
-    } else {
-      maxSize = theme.typography.sizes[size][breakpoint]
-    }
-  }
+export default function parseRFS (node, config, size, breakpoint) {
+  const [minSize, maxSize] = size.split('-')
 
   const sizeUnit = getUnit(minSize)
   const maxSizeUnit = getUnit(maxSize)
 
-  let minWidth = calcMinFromBreakpoint(theme.breakpoints, breakpoint)
-  let maxWidth = calcMaxFromBreakpoint(theme.breakpoints, breakpoint)
+  let minWidth = calcMinFromBreakpoint(config.theme.breakpoints, breakpoint)
+  let maxWidth = calcMaxFromBreakpoint(config.theme.breakpoints, breakpoint)
 
   if (!maxWidth) {
     // no max width for this breakpoint. Add 200 to min :)
@@ -59,7 +20,7 @@ export default function parseRFS (node, theme, size, breakpoint) {
 
   const widthUnit = getUnit(minWidth)
   const maxWidthUnit = getUnit(maxWidth)
-  const rootSize = theme.typography.rootSize
+  const rootSize = config.theme.typography.rootSize || '18px'
 
   if (sizeUnit === null) {
     throw node.error(`RFS: Sizes need unit values - breakpoint: ${breakpoint} - size: ${size}`)

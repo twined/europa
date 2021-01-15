@@ -1,6 +1,6 @@
 import parseRFS from './parseRFS'
 
-export default function parseRFSQuery (node, theme, fontSizeQuery, breakpoint) {
+export default function parseRFSQuery (node, config, fontSizeQuery, breakpoint) {
   let lineHeight
 
   if (fontSizeQuery.indexOf('/') !== -1) {
@@ -8,8 +8,10 @@ export default function parseRFSQuery (node, theme, fontSizeQuery, breakpoint) {
     [fontSizeQuery, lineHeight] = fontSizeQuery.split('/')
   }
 
+  fontSizeQuery = fontSizeQuery.match(/between\((.*)\)/)[1]
+
   const fontSize = fontSizeQuery
-  const renderedFontSize = parseRFS(node, theme, fontSize, breakpoint)
+  const renderedFontSize = parseRFS(node, config, fontSize, breakpoint)
 
   return {
     ...{ 'font-size': renderedFontSize },
