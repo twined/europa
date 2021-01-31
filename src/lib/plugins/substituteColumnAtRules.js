@@ -29,14 +29,7 @@ import splitBreakpoints from '../../util/splitBreakpoints'
  *
  */
 export default postcss.plugin('europacss-column', getConfig => {
-  /*
-  calc(100% * 1/6 - (120px - 1/6 * 120px))
-  calc(100% * 2/6 - (120px - 1/6 * 240px))
-  calc(100% * 3/6 - (120px - 1/6 * 360px))
-  calc(100% * 4/6 - (120px - 1/6 * 480px))
-  calc(100% * 5/6 - (120px - 1/6 * 600px))
-  100%
-  */
+
   return function (css) {
     const { theme: { breakpoints, breakpointCollections, spacing, columns } } = getConfig()
     const responsiveRules = postcss.root()

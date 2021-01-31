@@ -1,6 +1,5 @@
 import _ from 'lodash'
 
-import postcss from 'postcss'
 import postcssNested from 'postcss-nested'
 import postcssExtend from 'postcss-extend-rule'
 
@@ -24,7 +23,7 @@ const getConfigFunction = config => () => {
   return resolveConfig([_.isObject(config) ? config : require(config), defaultConfig])
 }
 
-const plugin = postcss.plugin('europacss', config => {
+module.exports = config => {
   const resolvedConfigPath = resolveConfigPath(config)
   const cfgFunction = getConfigFunction(resolvedConfigPath || config)
 
@@ -39,7 +38,9 @@ const plugin = postcss.plugin('europacss', config => {
     formatCSS
   ]
 
-  const configuredEuropaPlugins = plugins.map(plug => plug(cfgFunction))
+  const configuredEuropaPlugins = plugins.map(plug => {
+    return plug(cfgFunction)
+  })
 
   const pipeline = [
     ...preludium,
@@ -51,10 +52,12 @@ const plugin = postcss.plugin('europacss', config => {
     pipeline.push(registerConfigAsDependency(resolvedConfigPath))
   }
 
-  return (root, result) => pipeline.reduce(
-    (promise, plugin) => promise.then(
-      () => plugin(result.root, result)
-    ), Promise.resolve())
-})
+  return {
+    postcssPlugin: 'europacss',
+    plugins: [
+      ...pipeline
+    ]
+  }
+}
 
-module.exports = plugin
+module.exports.postcss = true

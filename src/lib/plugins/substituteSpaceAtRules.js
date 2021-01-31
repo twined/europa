@@ -20,22 +20,34 @@ import updateSource from '../../util/updateSource'
  * Examples:
  *
  *    @space margin-top xl;
- *    @space margin-top sm xs;
+ *    @space margin-top 25px xs;
  *
  */
-export default postcss.plugin('europacss-space', getConfig => {
-  return function (css, result) {
-    const config = getConfig()
-    const finalRules = []
+module.exports = getConfig => {
+  const config = getConfig()
+  const finalRules = []
 
-    css.walkAtRules('space', atRule => processRule(atRule, config, finalRules, false))
-    css.walkAtRules('space!', atRule => processRule(atRule, config, finalRules, true))
+  return {
+    postcssPlugin: 'europacss-space',
+    prepare({ root }) {
+      return {
+        AtRule: {
+          'space': atRule => processRule(atRule, config, finalRules, false),
+          'space!': atRule => processRule(atRule, config, finalRules, true)
+        },
 
-    if (finalRules.length) {
-      css.append(finalRules)
+        OnceExit() {
+          if (finalRules.length) {
+            root.append(finalRules)
+          }
+        }
+      }
     }
   }
-})
+}
+
+module.exports.postcss = true
+
 
 function processRule(atRule, config, finalRules, flagAsImportant) {
   let selector
@@ -140,12 +152,12 @@ function processRule(atRule, config, finalRules, flagAsImportant) {
     }
   }
 
-  // check if parent has anything
+  // remove parent if empty
   if (parent && !parent.nodes.length) {
     parent.remove()
   }
 
-  // check if grandparent has anything
+  // remove grandparent if empty
   if (grandParent && !grandParent.nodes.length) {
     grandParent.remove()
   }
