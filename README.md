@@ -97,13 +97,32 @@ If `value` is an object, all properties will be added to the selector, i.e:
 
 todo
 
-### `@responsive {breakpointQuery} block`
+### `@responsive {breakpointQuery} {block}`
 
-todo
+**EXAMPLE**:
+
+```
+@responsive desktop_md {
+  display: none;
+}
+
+@responsive <=ipad_portrait {
+  color: red;
+}
+```
+
 
 ### `@color {fg/bg} {colorName}`
 
 Gets `colorName` from `theme.colors`
+
+**EXAMPLE**:
+
+```
+h2 {
+  @color fg headings.h2;
+}
+```
 
 
 ### `@grid`
@@ -264,29 +283,6 @@ Renders `{block}` if `{value}` is true. Ignores it otherwise.
 }
 ```
 
-### `@rfs {fsQuery} [breakpointQuery]`
-
-Responsive Font Size helper. `theme.typography.rfs.minimum` values must be set for all keys used.
-
-**PARAMS**:
-
-`{fsQuery}`
-  - `base` > Creates a responsive font size between `theme.typography.sizes.base` and `theme.typography.rfs.minimum` for all breakpoints.
-  - `base/2.0` > Same as above, but sets `line-height` to 2.0
-  - `12px-16px/2.0` > Manually set min size to 12px, max size to 16px, line-height to 2.0
-
-`[breakpointQuery]`
-  - `xs`
-  - `>=md`
-  - etc..
-
-**EXAMPLES**:
-
-```postcss
-article {
-  @rfs base sm;
-}
-```
 
 ### `@column {sizeQuery} [breakpointQuery] `
 
