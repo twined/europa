@@ -10,6 +10,12 @@ export default function parseSize (node, config, size, bp) {
     return '0'
   }
 
+  // first check if we have it in our config spacing map
+  // if we do, we extract it and run it through the normal checks
+  if (_.has(config.theme.spacing, size)) {
+    size = config.theme.spacing[size][bp]
+  }
+
   if (size.indexOf('between(') > -1) {
     size = size.match(/between\((.*)\)/)[1]
 
@@ -213,8 +219,6 @@ export default function parseSize (node, config, size, bp) {
   if (!_.has(config.theme.spacing[size], bp)) {
     throw node.error(`SPACING: No \`${bp}\` breakpoint found in spacing map for \`${size}\`.`)
   }
-
-  return config.theme.spacing[size][bp]
 }
 
 function renderColGutterMultiplier (node, multiplier, bp, { theme }) {

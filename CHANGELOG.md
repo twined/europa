@@ -1,5 +1,20 @@
 # Changelog
 
+### 0.4.0
+
+- Allow using space constants and syntax inside config's spacing map:
+
+  ```
+  spacing: {
+    variable: {
+      xs: '15px',
+      md: 'between(15px-50px)',
+      lg: 'container'
+    }
+  }
+  ```
+
+
 ### 0.3.0
 
 - BREAKING: Removed `@rfs` -- use `@fontsize between(18px-22px)/1.5 $sm` instead.

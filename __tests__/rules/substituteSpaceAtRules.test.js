@@ -47,6 +47,11 @@ const DEFAULT_CFG = {
         mobile: '25px',
         tablet: '50px',
         desktop: '75px'
+      },
+      var: {
+        mobile: '25px',
+        tablet: 'between(50px-100px)',
+        desktop: '100px'
       }
     },
 
@@ -194,6 +199,32 @@ it('parses @space per mq size', () => {
     @media (min-width: 1024px){
       body article .test {
         margin-top: 50px;
+      }
+    }
+  `
+
+  return run(input, DEFAULT_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @space only for requested variable bp', () => {
+  const input = `
+    body article .test {
+      @space margin-top var tablet;
+      font-size: 18px;
+    }
+  `
+
+  const output = `
+    body article .test {
+      font-size: 18px;
+    }
+
+    @media (min-width: 740px) and (max-width: 1023px){
+      body article .test {
+        margin-top: calc(50px + 50 * ((100vw - 740px) / 283));
       }
     }
   `
