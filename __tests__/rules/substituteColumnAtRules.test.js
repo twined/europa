@@ -83,6 +83,49 @@ it('parses regular @column', () => {
   })
 })
 
+it('parses calc()ed @column', () => {
+  const input = `
+    article {
+      @column calc(100vw - var[3/4]);
+    }
+  `
+
+  const output = `
+    @media (min-width: 0) {
+      article {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(100vw - (75% - 5px));
+        max-width: calc(100vw - (75% - 5px))
+      }
+    }
+    @media (min-width: 740px) {
+      article {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(100vw - (75% - 7.5px));
+        max-width: calc(100vw - (75% - 7.5px))
+      }
+    }
+    @media (min-width: 1024px) {
+      article {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(100vw - (75% - 12.5px));
+        max-width: calc(100vw - (75% - 12.5px))
+      }
+    }
+  `
+
+  return run(input, DEFAULT_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
 it('parses regular @column + gutter', () => {
   const input = `
     article {

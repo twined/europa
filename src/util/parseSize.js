@@ -4,6 +4,7 @@ import calcMinFromBreakpoint from './calcMinFromBreakpoint'
 import calcMaxFromBreakpoint from './calcMaxFromBreakpoint'
 import getUnit from './getUnit'
 import splitUnit from './splitUnit'
+import stripNestedCalcs from './stripNestedCalcs'
 
 export default function parseSize (node, config, size, bp) {
   if (size === '0') {
@@ -128,7 +129,7 @@ export default function parseSize (node, config, size, bp) {
         size = size.replace(`var[${m}]`, parsedMatch)
       })
 
-      return size
+      return stripNestedCalcs(size)
     }
 
     if (size.indexOf('/') !== -1) {
@@ -208,6 +209,7 @@ export default function parseSize (node, config, size, bp) {
         size.indexOf('vw') !== -1 ||
         size.indexOf('rem') !== -1 ||
         size.indexOf('em') !== -1 ||
+        size.indexOf('ch') !== -1 ||
         size.indexOf('%') !== -1) {
       return size
     }

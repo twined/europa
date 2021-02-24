@@ -1,5 +1,23 @@
 # Changelog
 
+### 0.5.0
+
+- Allow using `calc(100vw - var[3/4])` etc in `@column`
+- Allow using space constants and syntax inside config's typo size map:
+
+  ```
+  typography {
+    sizes: {
+      variable: {
+        xs: '15px',
+        md: 'between(15px-50px)',
+        lg: 'container'
+      }
+    }
+  }
+  ```
+
+
 ### 0.4.0
 
 - Allow using space constants and syntax inside config's spacing map:

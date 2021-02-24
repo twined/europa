@@ -375,6 +375,44 @@ it('parses object @fontsize for single breakpoint', () => {
   })
 })
 
+it('parses between() @fontsize for single breakpoint', () => {
+  const cfg = {
+    theme: {
+      breakpoints: {
+        xs: '0',
+        sm: '740px',
+        md: '1024px'
+      },
+      typography: {
+        sizes: {
+          variable: {
+            sm: 'between(20px-30px)'
+          }
+        }
+      }
+    }
+  }
+
+  const input = `
+    article {
+      @fontsize variable sm;
+    }
+  `
+
+  const output = `
+    @media (min-width: 740px) and (max-width: 1023px){
+      article{
+        font-size: calc(20px + 10 * ((100vw - 740px) / 283))
+      }
+    }
+  `
+
+  return run(input, cfg).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
 it('runs correctly inside @responsive', () => {
   const input = `
     article {

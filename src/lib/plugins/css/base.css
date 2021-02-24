@@ -387,6 +387,12 @@ picture {
   display: block;
 }
 
+/* Only render when in viewport */
+main img {
+  content-visibility: auto;
+}
+
+
 /**
 * Outlines
 */

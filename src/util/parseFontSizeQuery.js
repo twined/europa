@@ -7,38 +7,36 @@ export default function parseFontSizeQuery (node, config, fontSizeQuery, breakpo
   let modifier
   let renderedFontSize
 
-  if (fontSizeQuery.indexOf('between(') !== -1) {
-    // responsive font size
-    return parseRFSQuery(node, config, fontSizeQuery, breakpoint)
-  }
-
   if (fontSizeQuery.indexOf('/') !== -1) {
     // we have a line-height parameter
     [fontSizeQuery, lineHeight] = fontSizeQuery.split('/')
   }
 
-  if (fontSizeQuery.indexOf('(') !== -1) {
-    // we have a modifier xs(1.6) --> multiplies the size with 1.6
-    modifier = fontSizeQuery.match(/\((.*)\)/)[1]
-    fontSizeQuery = fontSizeQuery.split('(')[0]
+  if (fontSizeQuery.indexOf('between(') === -1) {
+    if (fontSizeQuery.indexOf('(') !== -1) {
+      // we have a modifier xs(1.6) --> multiplies the size with 1.6
+      modifier = fontSizeQuery.match(/\((.*)\)/)[1]
+      fontSizeQuery = fontSizeQuery.split('(')[0]
+    }
   }
 
-  const fontSize = fontSizeQuery
-
-  // get the wanted object
   const themePath = ['theme', 'typography', 'sizes']
+  const fontSize = fontSizeQuery
   const path = fontSize.split('.')
-  let resolvedFontsize = _.get(config, themePath.concat(path))
 
+  let resolvedFontsize = _.get(config, themePath.concat(path))
   if (!resolvedFontsize) {
-    // throw node.error(`FONTSIZE: No \`${fontSize}\` size found in theme.typography.sizes.`, { name: fontSize })
-    // treat as a hardcoded value
     resolvedFontsize = fontSize
   }
 
   if (!_.isString(resolvedFontsize)) {
     if (!_.has(resolvedFontsize, breakpoint)) {
       throw node.error(`FONTSIZE: No breakpoint \`${breakpoint}\` found in theme.typography.sizes.${fontSize}`, { name: breakpoint })
+    }
+  } else {
+    if (resolvedFontsize.indexOf('between(') !== -1) {
+      // responsive font size
+      return parseRFSQuery(node, config, resolvedFontsize, lineHeight, breakpoint)
     }
   }
 
@@ -56,6 +54,10 @@ export default function parseFontSizeQuery (node, config, fontSizeQuery, breakpo
       })
       return props
     } else {
+      if (resolvedFontsize[breakpoint].indexOf('between(') !== -1) {
+        // responsive font size
+        return parseRFSQuery(node, config, resolvedFontsize[breakpoint], lineHeight, breakpoint)
+      }
       return {
         ...{ 'font-size': resolvedFontsize[breakpoint] },
         ...(lineHeight && { 'line-height': lineHeight })

@@ -7,6 +7,7 @@ import postcss from 'postcss'
 import extractBreakpointKeys from '../../util/extractBreakpointKeys'
 import buildDecl from '../../util/buildDecl'
 import splitUnit from '../../util/splitUnit'
+import parseSize from '../../util/parseSize'
 import renderCalcWithRounder from '../../util/renderCalcWithRounder'
 import advancedBreakpointQuery from '../../util/advancedBreakpointQuery'
 import multipleBreakpoints from '../../util/multipleBreakpoints'
@@ -26,19 +27,13 @@ import splitBreakpoints from '../../util/splitBreakpoints'
  *    @column 6/12 xs center;
  *
  *    @column 6:1/12;
+ *    @column calc(var[6/12]);
  *
  */
 export default postcss.plugin('europacss-column', getConfig => {
-  /*
-  calc(100% * 1/6 - (120px - 1/6 * 120px))
-  calc(100% * 2/6 - (120px - 1/6 * 240px))
-  calc(100% * 3/6 - (120px - 1/6 * 360px))
-  calc(100% * 4/6 - (120px - 1/6 * 480px))
-  calc(100% * 5/6 - (120px - 1/6 * 600px))
-  100%
-  */
   return function (css) {
-    const { theme: { breakpoints, breakpointCollections, spacing, columns } } = getConfig()
+    const config = getConfig()
+    const { theme: { breakpoints, breakpointCollections, spacing, columns } } = config
     const responsiveRules = postcss.root()
     const finalRules = []
 
@@ -107,35 +102,12 @@ export default postcss.plugin('europacss-column', getConfig => {
         suppliedBreakpoint = extractBreakpointKeys({ breakpoints, breakpointCollections }, suppliedBreakpoint).join('/')
       }
 
-      [wantedColumns, totalColumns] = suppliedSize.split('/')
-
-      if (wantedColumns.indexOf(':') !== -1) {
-        // we have a gutter indicator (@column 6:1/12) -- meaning we want X times the gutter to be added
-        // first split the fraction
-        [wantedColumns, gutterMultiplier] = wantedColumns.split(':')
-      }
-
       if (needsBreakpoints) {
         _.keys(breakpoints).forEach(bp => {
-          let columnMath
-          let gutterSize = columns.gutters[bp]
-          const [gutterValue, gutterUnit] = splitUnit(gutterSize)
-
-          if (wantedColumns / totalColumns === 1) {
-            columnMath = '100%'
-          } else {
-            columnMath = `${wantedColumns}/${totalColumns} - (${gutterValue}${gutterUnit} - 1/${totalColumns} * ${gutterValue * wantedColumns}${gutterUnit})`
-          }
-
-          if (gutterMultiplier) {
-            let gutterMultiplierValue = gutterValue * gutterMultiplier
-            flexSize = renderCalcWithRounder(`${columnMath} + ${gutterMultiplierValue}${gutterUnit}`)
-          } else {
-            flexSize = columnMath === '100%' ? columnMath : renderCalcWithRounder(columnMath)
-          }
+          let parsedSize = parseSize(atRule, config, suppliedSize, bp)
 
           flexDecls = []
-          createFlexDecls(flexDecls, flexSize)
+          createFlexDecls(flexDecls, parsedSize)
 
           const originalRule = postcss.rule({ selector: parent.selector })
           originalRule.source = src
@@ -148,52 +120,16 @@ export default postcss.plugin('europacss-column', getConfig => {
         // has suppliedBreakpoint, either from a @responsive parent, or a supplied bpQuery
         if (alreadyResponsive) {
           flexDecls = []
-          let columnMath
-          let gutterSize = columns.gutters[suppliedBreakpoint]
-          let [gutterValue, gutterUnit] = splitUnit(gutterSize)
-
-          if (wantedColumns / totalColumns === 1) {
-            columnMath = '100%'
-          } else {
-            columnMath = `${wantedColumns}/${totalColumns} - (${gutterValue}${gutterUnit} - 1/${totalColumns} * ${gutterValue * wantedColumns}${gutterUnit})`
-          }
-
-          if (gutterMultiplier) {
-            let gutterMultiplierValue = gutterValue * gutterMultiplier
-            flexSize = renderCalcWithRounder(`${columnMath} + ${gutterMultiplierValue}${gutterUnit}`)
-          } else {
-            flexSize = columnMath === '100%' ? columnMath : renderCalcWithRounder(columnMath)
-          }
-
-          createFlexDecls(flexDecls, flexSize)
+          let parsedSize = parseSize(atRule, config, suppliedSize, suppliedBreakpoint)
+          createFlexDecls(flexDecls, parsedSize)
 
           atRule.parent.append(...flexDecls)
         } else {
           splitBreakpoints(suppliedBreakpoint).forEach(bp => {
             flexDecls = []
-            let columnMath
-            let gutterSize = columns.gutters[bp]
+            let parsedSize = parseSize(atRule, config, suppliedSize, bp)
 
-            if (!gutterSize) {
-              throw atRule.error(`COLUMN: no \`columns.gutters\` found for breakpoint \`${bp}\``)
-            }
-
-            let [gutterValue, gutterUnit] = splitUnit(gutterSize)
-
-            if (wantedColumns / totalColumns === 1) {
-              columnMath = '100%'
-            } else {
-              columnMath = `${wantedColumns}/${totalColumns} - (${gutterValue}${gutterUnit} - 1/${totalColumns} * ${gutterValue * wantedColumns}${gutterUnit})`
-            }
-
-            if (gutterMultiplier) {
-              let gutterMultiplierValue = gutterValue * gutterMultiplier
-              flexSize = renderCalcWithRounder(`${columnMath} + ${gutterMultiplierValue}${gutterUnit}`)
-            } else {
-              flexSize = columnMath === '100%' ? columnMath : renderCalcWithRounder(columnMath)
-            }
-
-            createFlexDecls(flexDecls, flexSize)
+            createFlexDecls(flexDecls, parsedSize)
 
             let originalRule
 
