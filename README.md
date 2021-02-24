@@ -254,7 +254,7 @@ Selects a font family. Can also be passed a font size query.
   - `lg` > Picks the `lg` key from `theme.typography.sizes` across breakpoints
   - `lg/2.0` > Also sets `line-height` to `2.0`
   - `lg(2.0)/2.0` > Adds a modifier `(2.0)` that gets used as a multiplier in a calc() for the final font-size.
-  - `between(18px-22px)/2.0` > Responsive font sizing, from 18px to 22px. Needs a breakpoint to function properly.
+  - `between(18px-22px)` > Responsive font sizing, from 18px to 22px. Needs a breakpoint to function properly.
   - `product.size` > Traverses the keypath `product.size` within `theme.typography.sizes`
 
 `[breakpointQuery]`
@@ -293,6 +293,7 @@ Creates a flex column inside rule.
 `{sizeQuery}`
   - `1/3` > Takes up one third of container, across all breakpoints
   - `3:1/6` > Takes up one third of container, across all breakpoints, with 1 unit of gutter
+  - `calc(var[container] + var[6/12])` > 6/12 columns + width of container gutter
 
 `[breakpointQuery]`
   - `xs` > For xs breakpoint only
