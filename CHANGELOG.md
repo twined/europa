@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.6.0
+
+- Add `gap` to `@row` for adding margin-top to each of the row's
+  decendents, except for N first.
+
 ### 0.5.0
 
 - Allow using `calc(100vw - var[3/4])` etc in `@column`

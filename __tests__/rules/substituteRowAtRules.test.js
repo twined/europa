@@ -197,6 +197,82 @@ it('parses @row with specified children count and wrap specifier nowrap', () => 
   })
 })
 
+it('parses @row with specified children count, wrap specifier and gap', () => {
+  const input = `
+    article {
+      @row 3/wrap/sm;
+    }
+  `
+
+  const output = `
+    article {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    article > *:nth-child(3n+1) {
+      margin-left: 0;
+    }
+    article > *:nth-child(1), article > *:nth-child(2), article > *:nth-child(3) {
+      margin-top: 0;
+    }
+    @media (min-width: 0) {
+      article > * {
+        margin-left: 25px;
+      }
+    }
+    @media (min-width: 740px) {
+      article > * {
+        margin-left: 35px;
+      }
+    }
+    @media (min-width: 1024px) {
+      article > * {
+        margin-left: 50px;
+      }
+    }
+    @media (min-width: 1399px) {
+      article > * {
+        margin-left: 50px;
+      }
+    }
+    @media (min-width: 1900px) {
+      article > * {
+        margin-left: 60px;
+      }
+    }
+    @media (min-width: 0) {
+      article > * {
+        margin-top: 20px;
+      }
+    }
+    @media (min-width: 740px) {
+      article > * {
+        margin-top: 25px;
+      }
+    }
+    @media (min-width: 1024px) {
+      article > * {
+        margin-top: 30px;
+      }
+    }
+    @media (min-width: 1399px) {
+      article > * {
+        margin-top: 30px;
+      }
+    }
+    @media (min-width: 1900px) {
+      article > * {
+        margin-top: 45px;
+      }
+    }
+  `
+
+  return run(input).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
 it('parses @row under @responsive', () => {
   const input = `
     article {

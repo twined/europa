@@ -155,12 +155,13 @@ Sets column gap to your gutter configuration across all breakpoints.
 This creates a 6 columns wide stacking grid.
 
 
-### `@row [childrenPerRow[/wrapModifier]] [breakpointQuery]`
+### `@row [childrenPerRow[/wrapModifier][/verticalGap]] [breakpointQuery]`
 
 Spaces children correctly per row. Does not set child widths/columns!
 If no params are given, only the first child gets a margin-left of 0.
 
 `wrapModifier` defaults to `nowrap`.
+`verticalGap` defaults to nothing.
 
 **EXAMPLE**:
 
@@ -172,6 +173,16 @@ If no params are given, only the first child gets a margin-left of 0.
     @column 4/12;
   }
 }
+
+/* to apply the `sm` spacing as margin-top for every child, except the 3 first: */
+.row {
+  @row 3/wrap/sm;
+
+  .child {
+    @column 4/12;
+  }
+}
+
 ```
 
 
