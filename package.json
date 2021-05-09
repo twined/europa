@@ -1,5 +1,5 @@
 {
-  "name": "@univers-agency/europacss",
+  "name": "@brandocms/europacss",
   "version": "0.6.0",
   "description": "Europa CSS system",
   "main": "lib/index.js",
@@ -18,42 +18,42 @@
   },
   "author": "T. Mjoen <trond@twined.net>",
   "license": "MIT",
-  "repository": "https://github.com/univers-agency/europacss.git",
+  "repository": "https://github.com/brandocms/europacss.git",
   "bugs": {
-    "url": "https://github.com/univers-agency/europacss/issues"
+    "url": "https://github.com/brandocms/europacss/issues"
   },
-  "homepage": "https://github.com/univers-agency/europacss",
+  "homepage": "https://github.com/brandocms/europacss",
   "files": [
     "lib",
     "stubs"
   ],
   "dependencies": {
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "normalize.css": "^8.0.1",
     "postcss": "^7.0.30",
     "postcss-extend-rule": "^3.0.0",
     "postcss-functions": "twined/postcss-functions",
     "postcss-nested": "^4.2.1",
     "postcss-reporter": "^6.0.1",
-    "reduce-css-calc": "^2.1.7"
+    "reduce-css-calc": "^2.1.8"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.6",
-    "@babel/node": "^7.8.7",
-    "@babel/preset-env": "^7.9.6",
-    "babel-jest": "^26.0.1",
-    "eslint": "^7.0.0",
-    "eslint-config-standard": "^14.1.1",
+    "@babel/cli": "^7.13.10",
+    "@babel/core": "^7.13.10",
+    "@babel/node": "^7.13.10",
+    "@babel/preset-env": "^7.13.10",
+    "babel-jest": "^26.6.3",
+    "eslint": "^7.22.0",
+    "eslint-config-standard": "^16.0.2",
     "eslint-plugin-es5": "^1.5.0",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-jest": "^23.10.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.3.1",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prefer-let": "^1.0.1",
-    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-prefer-let": "^1.1.0",
+    "eslint-plugin-promise": "^4.3.1",
     "eslint-plugin-security": "^1.4.0",
-    "eslint-plugin-standard": "^4.0.1",
-    "jest": "^26.0.1",
+    "eslint-plugin-standard": "^5.0.0",
+    "jest": "^26.6.3",
     "rimraf": "^3.0.2"
   },
   "jest": {
