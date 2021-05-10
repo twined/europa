@@ -101,6 +101,81 @@ const DEFAULT_CFG = {
   }
 }
 
+const BETWEEN_CFG = {
+  theme: {
+    breakpoints: {
+      mobile: '0',
+      tablet: '740px',
+      desktop: '1024px'
+    },
+
+    breakpointCollections: {
+      $test: 'mobile/tablet'
+    },
+
+    container: {
+      maxWidth: {
+        mobile: '740px',
+        tablet: '1024px',
+        desktop: '100%'
+      },
+
+      padding: {
+        mobile: '15px',
+        tablet: '35px',
+        desktop: '50px'
+      }
+    },
+
+    spacing: {
+      xs: {
+        mobile: '10px',
+        tablet: '20px',
+        desktop: '30px'
+      },
+      md: {
+        mobile: '15px',
+        tablet: '25px',
+        desktop: '50px'
+      },
+      xl: {
+        mobile: '25px',
+        tablet: '50px',
+        desktop: '75px'
+      },
+      var: {
+        mobile: '25px',
+        tablet: 'between(50px-100px)',
+        desktop: '100px'
+      }
+    },
+
+    typography: {
+      base: '16px',
+      lineHeight: {
+        mobile: 1.6,
+        tablet: 1.6,
+        desktop: 1.6
+      },
+      sizes: {
+        xl: {
+          mobile: 'between(18px-22px)',
+          tablet: 'between(22px-32px)',
+          desktop: '34px'
+        }
+      }
+    },
+
+    columns: {
+      gutters: {
+        mobile: '20px',
+        tablet: '30px',
+        desktop: '50px'
+      }
+    }
+  }
+}
+
 it('parses @space translateX', () => {
   const input = `
     body article .test {
@@ -421,6 +496,36 @@ it('parses @space for theme(..)', () => {
   `
 
   return run(input, DEFAULT_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @space for between() vertical-rhythm()', () => {
+  const input = `
+    body article .test {
+      @space margin-top vertical-rhythm(theme.typography.sizes.xl) mobile;
+    }
+
+    body article .test {
+      @space margin-top vertical-rhythm(theme.typography.sizes.xl, 1.2) mobile;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0) and (max-width: 739px){
+      body article .test{
+        margin-top: calc(18px + 4 * ((100vw - 320px) / 739) * 1.6)
+      }
+    }
+    @media (min-width: 0) and (max-width: 739px){
+      body article .test{
+        margin-top: calc(18px + 4 * ((100vw - 320px) / 739) * 1.2)
+      }
+    }
+  `
+
+  return run(input, BETWEEN_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })

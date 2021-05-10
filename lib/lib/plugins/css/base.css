@@ -278,6 +278,7 @@ img[data-srcset] {
   z-index: 99;
   display: block;
   text-transform: uppercase;
+  color: black;
   background-color: #fff;
   font-style: normal;
   padding: 4px 5px;

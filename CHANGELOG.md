@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.6.1
+
+- Fixed `vertical-rhythm()` with `between()` values.
+
 ### 0.6.0
 
 - Add `gap` to `@row` for adding margin-top to each of the row's

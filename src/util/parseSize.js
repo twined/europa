@@ -6,6 +6,61 @@ import getUnit from './getUnit'
 import splitUnit from './splitUnit'
 import stripNestedCalcs from './stripNestedCalcs'
 
+const processBetween = (size, config, bp, node) => {
+  size = size.match(/between\((.*)\)/)[1]
+
+  if (size.indexOf('-') > -1) {
+  // alternative syntax - `minSize-maxSize`
+    const [minSize, maxSize] = size.split('-')
+    const sizeUnit = getUnit(minSize)
+    const maxSizeUnit = getUnit(maxSize)
+
+    let minWidth = calcMinFromBreakpoint(config.theme.breakpoints, bp)
+    let maxWidth = calcMaxFromBreakpoint(config.theme.breakpoints, bp)
+
+    if (!maxWidth) {
+      // no max width for this breakpoint. Add 200 to min :)
+      // TODO: maybe skip for the largest size? set a flag here and return reg size?
+      maxWidth = `${parseFloat(minWidth) + 200}${getUnit(minWidth)}`
+    }
+
+    const widthUnit = getUnit(minWidth)
+    const maxWidthUnit = getUnit(maxWidth)
+    const rootSize = config.theme.typography.rootSize
+
+    if (sizeUnit === null) {
+      throw node.error(`BETWEEN: Sizes need unit values - breakpoint: ${bp} - size: ${size}`)
+    }
+
+    if (sizeUnit !== maxSizeUnit && widthUnit !== maxWidthUnit) {
+      throw node.error('BETWEEN: min/max unit types must match')
+    }
+
+    if (sizeUnit === 'rem' && widthUnit === 'px') {
+      minWidth = pxToRem(minWidth, rootSize)
+      maxWidth = pxToRem(maxWidth, rootSize)
+    }
+
+    // Build the responsive type decleration
+
+    const sizeDiff = parseFloat(maxSize) - parseFloat(minSize)
+    const rangeDiff = parseFloat(maxWidth) - parseFloat(minWidth)
+
+    if (sizeDiff === 0) {
+      // not really responsive. just return the regular max
+      return maxSize
+    }
+
+    if (minWidth === '0') {
+      minWidth = '320px'
+    }
+
+    return `calc(${minSize} + ${sizeDiff} * ((100vw - ${minWidth}) / ${rangeDiff}))`
+  } else {
+    throw node.error('SPACING: `between()` needs a range - between(50px-95px)', { name: bp })
+  }
+}
+
 export default function parseSize (node, config, size, bp) {
   if (size === '0') {
     return '0'
@@ -17,59 +72,34 @@ export default function parseSize (node, config, size, bp) {
     size = config.theme.spacing[size][bp]
   }
 
-  if (size.indexOf('between(') > -1) {
-    size = size.match(/between\((.*)\)/)[1]
+  if (size.indexOf('vertical-rhythm(') !== -1) {
+    const params = size.match(/vertical-rhythm\((.*)\)/)[1]
+    const [key, lineHeight = config.theme.typography.lineHeight[bp]] = params.split(',').map(p => p.trim())
+    const obj = _.get(config, key.split('.'))
 
-    if (size.indexOf('-') > -1) {
-    // alternative syntax - `minSize-maxSize`
-      const [minSize, maxSize] = size.split('-')
-      const sizeUnit = getUnit(minSize)
-      const maxSizeUnit = getUnit(maxSize)
-
-      let minWidth = calcMinFromBreakpoint(config.theme.breakpoints, bp)
-      let maxWidth = calcMaxFromBreakpoint(config.theme.breakpoints, bp)
-
-      if (!maxWidth) {
-        // no max width for this breakpoint. Add 200 to min :)
-        // TODO: maybe skip for the largest size? set a flag here and return reg size?
-        maxWidth = `${parseFloat(minWidth) + 200}${getUnit(minWidth)}`
-      }
-
-      const widthUnit = getUnit(minWidth)
-      const maxWidthUnit = getUnit(maxWidth)
-      const rootSize = config.theme.typography.rootSize
-
-      if (sizeUnit === null) {
-        throw node.error(`BETWEEN: Sizes need unit values - breakpoint: ${bp} - size: ${size}`)
-      }
-
-      if (sizeUnit !== maxSizeUnit && widthUnit !== maxWidthUnit) {
-        throw node.error('BETWEEN: min/max unit types must match')
-      }
-
-      if (sizeUnit === 'rem' && widthUnit === 'px') {
-        minWidth = pxToRem(minWidth, rootSize)
-        maxWidth = pxToRem(maxWidth, rootSize)
-      }
-
-      // Build the responsive type decleration
-
-      const sizeDiff = parseFloat(maxSize) - parseFloat(minSize)
-      const rangeDiff = parseFloat(maxWidth) - parseFloat(minWidth)
-
-      if (sizeDiff === 0) {
-        // not really responsive. just return the regular max
-        return maxSize
-      }
-
-      if (minWidth === '0') {
-        minWidth = '320px'
-      }
-
-      return `calc(${minSize} + ${sizeDiff} * ((100vw - ${minWidth}) / ${rangeDiff}))`
-    } else {
-      throw node.error('SPACING: `between()` needs a range - between(50px-95px)', { name: bp })
+    // does it exist?
+    if (!obj) {
+      throw node.error(`SPACING: No \`${key}\` size key theme object.`)
     }
+
+    let fs
+
+    if (_.isObject(obj[bp])) {
+      fs = obj[bp]['font-size']
+    } else {
+      fs = parseSize(node, config, obj[bp], bp)
+
+      if (fs.indexOf('calc(') > -1) {
+        // toss out calc
+        fs = fs.match(/calc\((.*)\)/)[1]
+      }
+    }
+
+    return `calc(${fs} * ${lineHeight})`
+  }
+
+  if (size.indexOf('between(') > -1) {
+    return processBetween(size, config, bp, node)
   }
 
   if (size === '-container/2') {
@@ -187,21 +217,6 @@ export default function parseSize (node, config, size, bp) {
       }
 
       return `calc(${config.theme.spacing[head][bp]}*${tail})`
-    }
-
-    if (size.indexOf('vertical-rhythm(') !== -1) {
-      const params = size.match(/vertical-rhythm\((.*)\)/)[1]
-      const [key, lineHeight = config.theme.typography.lineHeight[bp]] = params.split(',').map(p => p.trim())
-      const obj = _.get(config, key.split('.'))
-
-      // does it exist?
-      if (!obj) {
-        throw node.error(`SPACING: No \`${key}\` size key theme object.`)
-      }
-
-      const fs = _.isObject(obj[bp]) ? obj[bp]['font-size'] : obj[bp]
-
-      return `calc(${fs} * ${lineHeight})`
     }
 
     if (size.indexOf('px') !== -1 ||
