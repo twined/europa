@@ -389,9 +389,13 @@ picture {
 }
 
 /* Only render when in viewport */
-main img {
+/* DISABLED for now due to some lame bugs
+  1. gsap.set in looping sliders will make the image flicker, since it is so far out the viewport
+  2. screws with the scrolling logic for hiding showing headers
+*/
+/* main img {
   content-visibility: auto;
-}
+} */
 
 
 /**

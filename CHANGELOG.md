@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.6.2
+
+- Drop `content-visibility`. Set it in your own stylesheet if you
+  need to experiment with it
+
 ### 0.6.1
 
 - Fixed `vertical-rhythm()` with `between()` values.

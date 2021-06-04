@@ -147,6 +147,9 @@ const BETWEEN_CFG = {
         mobile: '25px',
         tablet: 'between(50px-100px)',
         desktop: '100px'
+      },
+      between: {
+        mobile: 'between(100px-200px)'
       }
     },
 
@@ -530,6 +533,49 @@ it('parses @space for between() vertical-rhythm()', () => {
     expect(result.warnings().length).toBe(0)
   })
 })
+
+it('parses @space for between() breakpoint', () => {
+  const input = `
+    body article .test {
+      @space margin-top between mobile;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0) and (max-width: 739px){
+      body article .test{
+        margin-top: calc(100px + 100 * ((100vw - 320px) / 739))
+      }
+    }
+  `
+
+  return run(input, BETWEEN_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+// TODO! FIX
+// it('parses @space for between() breakpoint multiplied', () => {
+//   const input = `
+//     body article .test {
+//       @space margin-top between*2 mobile;
+//     }
+//   `
+
+//   const output = `
+//     @media (min-width: 0) and (max-width: 739px){
+//       body article .test{
+//         margin-top: calc(200px + 200 * ((100vw - 320px) / 739))
+//       }
+//     }
+//   `
+
+//   return run(input, BETWEEN_CFG).then(result => {
+//     expect(result.css).toMatchCSS(output)
+//     expect(result.warnings().length).toBe(0)
+//   })
+// })
 
 it('parses @space for fraction', () => {
   const input = `
