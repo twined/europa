@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.6.3
+
+- Calc fontsize with `vw` with `--ec-zoom` variable. The `--ec-zoom` is set by Jupiter
+  to enable browser zooming with `vw` type sizing.
+
 ### 0.6.2
 
 - Drop `content-visibility`. Set it in your own stylesheet if you

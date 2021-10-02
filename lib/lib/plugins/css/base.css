@@ -4,6 +4,7 @@
   @iterate theme.breakpoints {
     --breakpoint-$key: $value
   }
+  --ec-zoom: 1.0;
 }
 
 /**
