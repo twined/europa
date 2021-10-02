@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import splitUnit from './splitUnit'
 import parseRFSQuery from './parseRFSQuery'
+import parseVWQuery from './parseVWQuery'
 
 export default function parseFontSizeQuery (node, config, fontSizeQuery, breakpoint) {
   let lineHeight
@@ -50,7 +51,12 @@ export default function parseFontSizeQuery (node, config, fontSizeQuery, breakpo
     if (_.isObject(resolvedFontsize[breakpoint])) {
       const props = {}
       _.keys(resolvedFontsize[breakpoint]).forEach(key => {
-        props[key] = resolvedFontsize[breakpoint][key]
+        const v = resolvedFontsize[breakpoint][key]
+        if (v.endsWith('vw')) {
+          props[key] = parseVWQuery(node, config, resolvedFontsize[breakpoint][key], lineHeight, breakpoint, true)
+        } else {
+          props[key] = resolvedFontsize[breakpoint][key]
+        }
       })
       return props
     } else {
@@ -58,6 +64,11 @@ export default function parseFontSizeQuery (node, config, fontSizeQuery, breakpo
         // responsive font size
         return parseRFSQuery(node, config, resolvedFontsize[breakpoint], lineHeight, breakpoint)
       }
+
+      if (resolvedFontsize[breakpoint].endsWith('vw')) {
+        return parseVWQuery(node, config, resolvedFontsize[breakpoint], lineHeight, breakpoint)
+      }
+
       return {
         ...{ 'font-size': resolvedFontsize[breakpoint] },
         ...(lineHeight && { 'line-height': lineHeight })

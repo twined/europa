@@ -413,6 +413,86 @@ it('parses between() @fontsize for single breakpoint', () => {
   })
 })
 
+it('parses vw fonts to add scale var', () => {
+  const cfg = {
+    theme: {
+      breakpoints: {
+        xs: '0',
+        sm: '740px',
+        md: '1024px'
+      },
+      typography: {
+        sizes: {
+          variable: {
+            sm: '4vw'
+          }
+        }
+      }
+    }
+  }
+
+  const input = `
+    article {
+      @fontsize variable sm;
+    }
+  `
+
+  const output = `
+    @media (min-width: 740px) and (max-width: 1023px){
+      article{
+        font-size: calc(4vw * var(--ec-zoom))
+      }
+    }
+  `
+
+  return run(input, cfg).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses fontsize objects with vw to use scale var', () => {
+  const cfg = {
+    theme: {
+      breakpoints: {
+        xs: '0',
+        sm: '740px',
+        md: '1024px'
+      },
+      typography: {
+        sizes: {
+          variable: {
+            sm: {
+              'font-size': '4vw',
+              'line-height': '4vw'
+            }
+          }
+        }
+      }
+    }
+  }
+
+  const input = `
+    article {
+      @fontsize variable sm;
+    }
+  `
+
+  const output = `
+    @media (min-width: 740px) and (max-width: 1023px){
+      article{
+        font-size: calc(4vw * var(--ec-zoom));
+        line-height: calc(4vw * var(--ec-zoom))
+      }
+    }
+  `
+
+  return run(input, cfg).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
 it('runs correctly inside @responsive', () => {
   const input = `
     article {

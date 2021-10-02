@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import calcMinFromBreakpoint from './calcMinFromBreakpoint'
 import calcMaxFromBreakpoint from './calcMaxFromBreakpoint'
 import getUnit from './getUnit'
