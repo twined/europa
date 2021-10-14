@@ -1,5 +1,13 @@
 # Changelog
 
+### 0.6.4
+
+- Add `@display` shortcut for responsive display decls. I.e
+  `@display flex $mobile;` or `@display flex/row/wrap desktop_md`
+- Add `@order` shortcut for responsive order decls. I.e
+  `@order 1 $mobile;`
+
+
 ### 0.6.3
 
 - Calc fontsize with `vw` with `--ec-zoom` variable. The `--ec-zoom` is set by Jupiter

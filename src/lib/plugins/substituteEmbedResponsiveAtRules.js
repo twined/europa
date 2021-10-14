@@ -7,7 +7,7 @@ import updateSource from '../../util/updateSource'
 import reduceCSSCalc from 'reduce-css-calc'
 
 /**
- * Aliases and shortcuts to other at-rules
+ * Embed responsive
  */
 
 export default postcss.plugin('europacss-embed-responsive', getConfig => {

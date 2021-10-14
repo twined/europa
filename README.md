@@ -155,6 +155,36 @@ Sets column gap to your gutter configuration across all breakpoints.
 This creates a 6 columns wide stacking grid.
 
 
+### `@display [displayType[/flexDirection][/flexWrap]] [breakpointQuery]`
+
+Add shortcut for responsive display decls.
+
+**EXAMPLE**:
+
+```
+article {
+  @display flex $mobile;
+}
+
+article {
+  @display flex/row/wrap $mobile;
+}
+```
+
+
+### `@order {orderNumber} [breakpointQuery]`
+
+Add shortcut for responsive order decls.
+
+**EXAMPLE**:
+
+```
+article {
+  @order 1 $mobile;
+}
+```
+
+
 ### `@row [childrenPerRow[/wrapModifier][/verticalGap]] [breakpointQuery]`
 
 Spaces children correctly per row. Does not set child widths/columns!

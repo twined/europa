@@ -2,6 +2,8 @@ import lintAtRules from './lintAtRules'
 import evaluateEuropaFunctions from './evaluateEuropaFunctions'
 import substituteIfAtRules from './substituteIfAtRules'
 import substituteColorAtRules from './substituteColorAtRules'
+import substituteDisplayAtRules from './substituteDisplayAtRules'
+import substituteOrderAtRules from './substituteOrderAtRules'
 import substituteEuropaAtRules from './substituteEuropaAtRules'
 import substituteIterateAtRules from './substituteIterateAtRules'
 import substituteUnpackAtRules from './substituteUnpackAtRules'
@@ -24,6 +26,8 @@ export default [
   substituteColorAtRules,
   evaluateEuropaFunctions,
   substituteGridAtRules,
+  substituteDisplayAtRules,
+  substituteOrderAtRules,
   substituteIterateAtRules,
   substituteUnpackAtRules,
   substituteContainerAtRules,
