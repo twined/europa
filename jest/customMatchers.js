@@ -38,16 +38,10 @@ expect.extend({
         )
         return (
           `${matcherHint(`.${name}`)}\n\n` +
-          `Uncompressed expected value:\n` +
-          `  ${printExpected(expected)}\n` +
-          `Expected value with compressed whitespace to equal:\n` +
-          `  ${printExpected(expectedWithCompresssedWhitespace)}\n` +
           `Uncompressed received value:\n` +
           `  ${printReceived(received)}\n` +
-          `Received value with compressed whitespace:\n` +
-          `  ${printReceived(receivedWithCompresssedWhitespace)}${
-            diffString ? `\n\nDifference:\n\n${diffString}` : ``
-          }`
+          `Uncompressed expected value:\n` +
+          `  ${printExpected(expected)}\n`
         )
       }
     return {

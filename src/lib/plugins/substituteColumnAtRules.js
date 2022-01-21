@@ -2,16 +2,22 @@
 import _ from 'lodash'
 import buildMediaQuery from '../../util/buildMediaQuery'
 import buildMediaQueryQ from '../../util/buildMediaQueryQ'
-import cloneNodes from '../../util/cloneNodes'
 import postcss from 'postcss'
 import extractBreakpointKeys from '../../util/extractBreakpointKeys'
 import buildDecl from '../../util/buildDecl'
-import splitUnit from '../../util/splitUnit'
 import parseSize from '../../util/parseSize'
-import renderCalcWithRounder from '../../util/renderCalcWithRounder'
 import advancedBreakpointQuery from '../../util/advancedBreakpointQuery'
-import multipleBreakpoints from '../../util/multipleBreakpoints'
 import splitBreakpoints from '../../util/splitBreakpoints'
+
+/**
+ * For some reason, Firefox is not consistent with how it calculates vw widths.
+ * This manifests through our `@column` helper when wrapping. Sometimes when
+ * resizing, it will flicker the element down to the next row and up again, as
+ * if there is not enough room for the specified number of items to flex before
+ * wrap. We try to circumvent this by setting the element's `max-width` 0.002vw
+ * wider than the flex-basis.
+ */
+const FIX_FIREFOX_FLEX_VW_BUG = true
 
 /**
  * COLUMN
@@ -168,10 +174,18 @@ export default postcss.plugin('europacss-column', getConfig => {
   }
 })
 
+import reduceCSSCalc from 'reduce-css-calc'
+
 function createFlexDecls(flexDecls, flexSize) {
+  let maxWidth
+  if (FIX_FIREFOX_FLEX_VW_BUG) {
+    maxWidth = reduceCSSCalc(`calc(${flexSize} - 0.002vw)`, 150)
+  } else {
+    maxWidth = flexSize
+  }
   flexDecls.push(buildDecl('position', 'relative'))
   flexDecls.push(buildDecl('flex-grow', '0'))
   flexDecls.push(buildDecl('flex-shrink', '0'))
   flexDecls.push(buildDecl('flex-basis', flexSize))
-  flexDecls.push(buildDecl('max-width', flexSize))
+  flexDecls.push(buildDecl('max-width', maxWidth))
 }

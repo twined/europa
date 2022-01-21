@@ -683,27 +683,27 @@ it('parses advanced @responsive @space for fraction with gutter multiplier', () 
   const output = `
     @media (min-width: 768px) and (max-width: 1023px){
       article{
-        margin-top: calc(16.6666666667% + 5.8333333333px)
+        margin-top: calc(16.666666666666668% + 5.833333333333332px)
       }
     }
     @media (min-width: 1024px) and (max-width: 1199px){
       article{
-        margin-top: calc(16.6666666667% + 11.6666666667px)
+        margin-top: calc(16.666666666666668% + 11.666666666666664px)
       }
     }
     @media (min-width: 1200px) and (max-width: 1559px){
       article{
-        margin-top: calc(16.6666666667% + 13.3333333333px)
+        margin-top: calc(16.666666666666668% + 13.333333333333329px)
       }
     }
     @media (min-width: 1560px) and (max-width: 1919px){
       article{
-        margin-top: calc(16.6666666667% + 16.6666666667px)
+        margin-top: calc(16.666666666666668% + 16.666666666666657px)
       }
     }
     @media (min-width: 1920px){
       article{
-        margin-top: calc(16.6666666667% + 20px)
+        margin-top: calc(16.666666666666668% + 20px)
       }
     }
   `

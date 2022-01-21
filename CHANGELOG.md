@@ -1,5 +1,17 @@
 # Changelog
 
+### 0.7.0
+
+- There is a slightly nasty Firefox bug with vw columns/gutters:
+
+  For some reason, Firefox is not consistent with how it calculates vw widths.
+  This manifests through our `@column` helper when wrapping. Sometimes when
+  resizing, it will flicker the element down to the next row and up again, as
+  if there is not enough room for the specified number of items to flex before
+  wrap. We try to circumvent this by setting the element's `max-width` 0.002vw
+  wider than the flex-basis.
+
+
 ### 0.6.4
 
 - Add `@display` shortcut for responsive display decls. I.e

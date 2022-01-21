@@ -54,7 +54,7 @@ it('parses regular @column', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(75% - 5px);
-        max-width: calc(75% - 5px)
+        max-width: calc(75% - 5px - 0.002vw)
       }
     }
     @media (min-width: 740px) {
@@ -63,7 +63,7 @@ it('parses regular @column', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(75% - 7.5px);
-        max-width: calc(75% - 7.5px)
+        max-width: calc(75% - 7.5px - 0.002vw)
       }
     }
     @media (min-width: 1024px) {
@@ -72,7 +72,7 @@ it('parses regular @column', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(75% - 12.5px);
-        max-width: calc(75% - 12.5px)
+        max-width: calc(75% - 12.5px - 0.002vw)
       }
     }
   `
@@ -97,7 +97,7 @@ it('parses calc()ed @column', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(100vw - (75% - 5px));
-        max-width: calc(100vw - (75% - 5px))
+        max-width: calc(100vw - 75% + 5px - 0.002vw)
       }
     }
     @media (min-width: 740px) {
@@ -106,7 +106,7 @@ it('parses calc()ed @column', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(100vw - (75% - 7.5px));
-        max-width: calc(100vw - (75% - 7.5px))
+        max-width: calc(100vw - 75% + 7.5px - 0.002vw)
       }
     }
     @media (min-width: 1024px) {
@@ -115,7 +115,7 @@ it('parses calc()ed @column', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(100vw - (75% - 12.5px));
-        max-width: calc(100vw - (75% - 12.5px))
+        max-width: calc(100vw - 75% + 12.5px - 0.002vw)
       }
     }
   `
@@ -140,7 +140,7 @@ it('parses regular @column + gutter', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(75% + 15px);
-        max-width: calc(75% + 15px)
+        max-width: calc(75% + 15px - 0.002vw)
       }
     }
     @media (min-width: 740px) {
@@ -149,7 +149,7 @@ it('parses regular @column + gutter', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(75% + 22.5px);
-        max-width: calc(75% + 22.5px)
+        max-width: calc(75% + 22.5px - 0.002vw)
       }
     }
     @media (min-width: 1024px) {
@@ -158,7 +158,7 @@ it('parses regular @column + gutter', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(75% + 37.5px);
-        max-width: calc(75% + 37.5px)
+        max-width: calc(75% + 37.5px - 0.002vw)
       }
     }
   `
@@ -183,27 +183,25 @@ it('parses regular @column + half gutter', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(75% + 5px);
-        max-width: calc(75% + 5px)
+        max-width: calc(75% + 5px - 0.002vw)
       }
     }
-
     @media (min-width: 740px) {
       article {
         position: relative;
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(75% + 7.5px);
-        max-width: calc(75% + 7.5px)
+        max-width: calc(75% + 7.5px - 0.002vw)
       }
     }
-
     @media (min-width: 1024px) {
       article {
         position: relative;
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(75% + 12.5px);
-        max-width: calc(75% + 12.5px)
+        max-width: calc(75% + 12.5px - 0.002vw)
       }
     }
   `
@@ -241,7 +239,7 @@ it('parses @column for single bp', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(75% - 5px);
-        max-width: calc(75% - 5px)
+        max-width: calc(75% - 5px - 0.002vw)
       }
     }
   `
@@ -268,7 +266,7 @@ it('parses multiple @column for different bp', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(75% - 6.25px);
-        max-width: calc(75% - 6.25px)
+        max-width: calc(75% - 6.25px - 0.002vw)
       }
     }
     @media (min-width: 740px) and (max-width: 1023px) {
@@ -277,7 +275,7 @@ it('parses multiple @column for different bp', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(60% - 14px);
-        max-width: calc(60% - 14px)
+        max-width: calc(60% - 14px - 0.002vw)
       }
     }
     @media (min-width: 1024px) and (max-width: 1398px) {
@@ -286,7 +284,7 @@ it('parses multiple @column for different bp', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: 100%;
-        max-width: 100%
+        max-width: calc(100% - 0.002vw)
       }
     }
   `
@@ -313,7 +311,7 @@ it('runs correctly inside @responsive', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(50% - 10px);
-        max-width: calc(50% - 10px)
+        max-width: calc(50% - 10px - 0.002vw)
       }
     }
   `
@@ -370,7 +368,7 @@ it('runs nested under advanced breakpoint', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(50% + 25px);
-        max-width: calc(50% + 25px)
+        max-width: calc(50% + 25px - 0.002vw)
       }
     }
     @media (min-width: 1250px) and (max-width: 1919px) {
@@ -379,7 +377,7 @@ it('runs nested under advanced breakpoint', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(50% + 35px);
-        max-width: calc(50% + 35px)
+        max-width: calc(50% + 35px - 0.002vw)
       }
     }
     @media (min-width: 1920px) {
@@ -388,7 +386,7 @@ it('runs nested under advanced breakpoint', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(50% + 45px);
-        max-width: calc(50% + 45px)
+        max-width: calc(50% + 45px - 0.002vw)
       }
     }
   `
@@ -443,7 +441,7 @@ it('runs with advanced breakpoint', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(50% + 25px);
-        max-width: calc(50% + 25px)
+        max-width: calc(50% + 25px - 0.002vw)
       }
     }
     @media (min-width: 1250px) and (max-width: 1919px) {
@@ -452,7 +450,7 @@ it('runs with advanced breakpoint', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(50% + 35px);
-        max-width: calc(50% + 35px)
+        max-width: calc(50% + 35px - 0.002vw)
       }
     }
     @media (min-width: 1920px) {
@@ -461,7 +459,7 @@ it('runs with advanced breakpoint', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(50% + 45px);
-        max-width: calc(50% + 45px)
+        max-width: calc(50% + 45px - 0.002vw)
       }
     }
   `
@@ -486,7 +484,7 @@ it('runs with gutters and breakpoint', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(50% + 10px);
-        max-width: calc(50% + 10px)
+        max-width: calc(50% + 10px - 0.002vw)
       }
     }
   `
@@ -525,7 +523,7 @@ it('parses 12/12', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: 100%;
-        max-width: 100%
+        max-width: calc(100% - 0.002vw)
       }
     }
     @media (min-width: 740px) {
@@ -534,7 +532,7 @@ it('parses 12/12', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: 100%;
-        max-width: 100%
+        max-width: calc(100% - 0.002vw)
       }
     }
     @media (min-width: 1024px) {
@@ -543,7 +541,7 @@ it('parses 12/12', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: 100%;
-        max-width: 100%
+        max-width: calc(100% - 0.002vw)
       }
     }
   `
@@ -569,7 +567,7 @@ it('parses properly with multiple @column in a row', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: 100%;
-        max-width: 100%
+        max-width: calc(100% - 0.002vw)
       }
     }
     @media (min-width: 740px) and (max-width: 1023px) {
@@ -578,7 +576,7 @@ it('parses properly with multiple @column in a row', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(50% - 15px);
-        max-width: calc(50% - 15px)
+        max-width: calc(50% - 15px - 0.002vw)
       }
     }
     @media (min-width: 1024px) {
@@ -587,7 +585,7 @@ it('parses properly with multiple @column in a row', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(50% - 25px);
-        max-width: calc(50% - 25px)
+        max-width: calc(50% - 25px - 0.002vw)
       }
     }
   `
