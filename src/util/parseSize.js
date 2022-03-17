@@ -219,9 +219,29 @@ export default function parseSize (node, config, size, bp) {
       return `calc(${config.theme.spacing[head][bp]}*${tail})`
     }
 
+    if (size.indexOf('vw') !== -1) {
+      if (config.hasOwnProperty('setMaxForVw') && config.setMaxForVw === true) {
+        // get the max container size
+        const containerBps = config.theme.container.maxWidth
+        const lastKey = [...Object.keys(containerBps)].pop()
+        if (bp === lastKey) {
+          const maxSize = containerBps[lastKey]
+          const [valMax, unitMax] = splitUnit(maxSize)
+          if (unitMax === '%') {
+            throw node.error(`SPACING: When setMaxForVw is true, the container max cannot be % based.`)
+          }
+          const [valVw, unitVw] = splitUnit(size)
+          const maxVal = valMax / 100 * valVw
+          return `${maxVal}${unitMax}`
+        }
+        return size
+      } else {
+        return size
+      }
+    }
+
     if (size.indexOf('px') !== -1 ||
         size.indexOf('vh') !== -1 ||
-        size.indexOf('vw') !== -1 ||
         size.indexOf('rem') !== -1 ||
         size.indexOf('em') !== -1 ||
         size.indexOf('ch') !== -1 ||

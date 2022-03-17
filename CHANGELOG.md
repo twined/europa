@@ -1,5 +1,40 @@
 # Changelog
 
+### 0.8.0
+
+- Add `setMaxForVw` config option.
+
+If you have a set max size for your largest container, you should enable `setMaxForVw`. This will
+ensure that the largest breakpoint of your vw based sizes will be set to a fixed size.
+
+For instance, if you have:
+```
+{
+  setMaxForVw: true,
+  theme: {
+    container: {
+      maxWidth: {
+        mobile: '100%',
+        tablet: '100%',
+        desktop: '1920px'
+      }
+    },
+    typography: {
+      sizes: {
+        h1: {
+          mobile: '18px',
+          tablet: '4vw',
+          desktop: '4vw'
+        }
+      }
+    }
+  }
+}
+```
+we will replace the desktop key's `4vw` with `1920/100*4` so that the font will not scale
+beyond the container's maxWidth.
+
+
 ### 0.7.0
 
 - There is a slightly nasty Firefox bug with vw columns/gutters:

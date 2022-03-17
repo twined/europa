@@ -179,6 +179,133 @@ const BETWEEN_CFG = {
   }
 }
 
+const MAX_PX_CFG = {
+  setMaxForVw: true,
+  theme: {
+    breakpoints: {
+      mobile: '0',
+      tablet: '740px',
+      desktop: '1024px'
+    },
+
+    breakpointCollections: {
+      $test: 'mobile/tablet'
+    },
+
+    container: {
+      maxWidth: {
+        mobile: '100%',
+        tablet: '100%',
+        desktop: '1920px'
+      },
+
+      padding: {
+        mobile: '15px',
+        tablet: '35px',
+        desktop: '50px'
+      }
+    },
+
+    spacing: {
+      xs: {
+        mobile: '10px',
+        tablet: '20px',
+        desktop: '30px'
+      },
+      md: {
+        mobile: '15px',
+        tablet: '25px',
+        desktop: '50px'
+      },
+      xl: {
+        mobile: '25px',
+        tablet: '50px',
+        desktop: '75px'
+      },
+      var: {
+        mobile: '25px',
+        tablet: 'between(50px-100px)',
+        desktop: '100px'
+      }
+    },
+
+    typography: {
+      base: '16px',
+      lineHeight: {
+        mobile: 1.6,
+        tablet: 1.6,
+        desktop: 1.6
+      },
+      sizes: {
+        xs: {
+          mobile: '10px',
+          tablet: '12px',
+          desktop: '14px'
+        },
+        sm: {
+          mobile: '12px',
+          tablet: '14px',
+          desktop: '16px'
+        },
+        base: {
+          mobile: '14px',
+          tablet: '16px',
+          desktop: '18px'
+        },
+        lg: {
+          mobile: '16px',
+          tablet: '18px',
+          desktop: '20px'
+        },
+        xl: {
+          mobile: '18px',
+          tablet: '20px',
+          desktop: '22px'
+        }
+      }
+    },
+
+    columns: {
+      gutters: {
+        mobile: '20px',
+        tablet: '30px',
+        desktop: '50px'
+      }
+    }
+  }
+}
+
+it('parses vw with maxPx', () => {
+  const input = `
+    body article .test {
+      @space padding-top 5vw;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0){
+      body article .test{
+        padding-top: 5vw
+      }
+    }
+    @media (min-width: 740px){
+      body article .test{
+        padding-top: 5vw
+      }
+    }
+    @media (min-width: 1024px){
+      body article .test{
+        padding-top: 96px
+      }
+    }
+  `
+
+  return run(input, MAX_PX_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
 it('parses @space translateX', () => {
   const input = `
     body article .test {

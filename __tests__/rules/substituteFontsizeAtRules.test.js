@@ -5,6 +5,147 @@ function run (input, opts) {
   return postcss([plugin(opts)]).process(input, { from: undefined })
 }
 
+const MAX_PX_CFG = {
+  setMaxForVw: true,
+  theme: {
+    breakpoints: {
+      mobile: '0',
+      tablet: '740px',
+      desktop: '1024px'
+    },
+
+    breakpointCollections: {
+      $test: 'mobile/tablet'
+    },
+
+    container: {
+      maxWidth: {
+        mobile: '100%',
+        tablet: '100%',
+        desktop: '1920px'
+      },
+
+      padding: {
+        mobile: '15px',
+        tablet: '35px',
+        desktop: '50px'
+      }
+    },
+
+    spacing: {
+      xs: {
+        mobile: '10px',
+        tablet: '20px',
+        desktop: '30px'
+      },
+      md: {
+        mobile: '15px',
+        tablet: '25px',
+        desktop: '50px'
+      },
+      xl: {
+        mobile: '25px',
+        tablet: '50px',
+        desktop: '75px'
+      },
+      var: {
+        mobile: '25px',
+        tablet: 'between(50px-100px)',
+        desktop: '100px'
+      }
+    },
+
+    typography: {
+      base: '16px',
+      lineHeight: {
+        mobile: 1.6,
+        tablet: 1.6,
+        desktop: 1.6
+      },
+      sizes: {
+        xs: {
+          mobile: '10px',
+          tablet: '12px',
+          desktop: '14px'
+        },
+        sm: {
+          mobile: '12px',
+          tablet: '14px',
+          desktop: '16px'
+        },
+        base: {
+          mobile: '14px',
+          tablet: '16px',
+          desktop: '18px'
+        },
+        lg: {
+          mobile: '4vw',
+          tablet: '3vw',
+          desktop: '3vw'
+        },
+        xl: {
+          mobile: '18px',
+          tablet: '20px',
+          desktop: '22px'
+        }
+      }
+    },
+
+    columns: {
+      gutters: {
+        mobile: '20px',
+        tablet: '30px',
+        desktop: '50px'
+      }
+    }
+  }
+}
+
+const MAX_PX_PERCENT = {
+  setMaxForVw: true,
+  theme: {
+    breakpoints: {
+      mobile: '0',
+      tablet: '740px',
+      desktop: '1024px'
+    },
+
+    breakpointCollections: {
+      $test: 'mobile/tablet'
+    },
+
+    container: {
+      maxWidth: {
+        mobile: '100%',
+        tablet: '100%',
+        desktop: '100%'
+      },
+
+      padding: {
+        mobile: '15px',
+        tablet: '35px',
+        desktop: '50px'
+      }
+    },
+
+    typography: {
+      base: '16px',
+      lineHeight: {
+        mobile: 1.6,
+        tablet: 1.6,
+        desktop: 1.6
+      },
+      sizes: {        
+        lg: {
+          mobile: '4vw',
+          tablet: '3vw',
+          desktop: '3vw'
+        }
+      }
+    }
+  }
+}
+
 it('fails on root', () => {
   const input = `
     @fontsize base;
@@ -13,6 +154,81 @@ it('fails on root', () => {
   expect.assertions(1)
   return run(input).catch(e => {
     expect(e).toMatchObject({ name: 'CssSyntaxError' })
+  })
+})
+
+it('parses @fontsize with max px', () => {
+  const input = `
+    article {
+      @fontsize lg;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0){
+      article{
+        font-size: calc(4vw * var(--ec-zoom))
+      }
+    }
+    @media (min-width: 740px){
+      article{
+        font-size: calc(3vw * var(--ec-zoom))
+      }
+    }
+    @media (min-width: 1024px){
+      article{
+        font-size: 57.599999999999994px
+      }
+    }
+  `
+
+  return run(input, MAX_PX_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('fails @fontsize with max px and percentage based max container size', () => {
+  const input = `
+    article {
+      @fontsize lg;
+    }
+  `
+
+  expect.assertions(1)
+  return run(input, MAX_PX_PERCENT).catch(e => {
+    expect(e).toMatchObject({ name: 'CssSyntaxError' })
+  })
+})
+
+it('parses @fontsize without max px', () => {
+  const input = `
+    article {
+      @fontsize lg;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0){
+      article{
+        font-size: calc(4vw * var(--ec-zoom))
+      }
+    }
+    @media (min-width: 740px){
+      article{
+        font-size: calc(3vw * var(--ec-zoom))
+      }
+    }
+    @media (min-width: 1024px){
+      article{
+        font-size: calc(3vw * var(--ec-zoom))
+      }
+    }
+  `
+
+  return run(input, {...MAX_PX_CFG, setMaxForVw: false }).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
   })
 })
 
