@@ -66,13 +66,17 @@ export default function parseSize (node, config, size, bp) {
     return '0'
   }
 
+  if (size.startsWith('var(--')) {
+    return size;
+  }
+
   // first check if we have it in our config spacing map
   // if we do, we extract it and run it through the normal checks
   if (_.has(config.theme.spacing, size)) {
     size = config.theme.spacing[size][bp]
   }
 
-  if (size.indexOf('vertical-rhythm(') !== -1) {
+  if (size && size.indexOf('vertical-rhythm(') !== -1) {
     const params = size.match(/vertical-rhythm\((.*)\)/)[1]
     const [key, lineHeight = config.theme.typography.lineHeight[bp]] = params.split(',').map(p => p.trim())
     const obj = _.get(config, key.split('.'))
@@ -98,11 +102,11 @@ export default function parseSize (node, config, size, bp) {
     return `calc(${fs} * ${lineHeight})`
   }
 
-  if (size.indexOf('between(') > -1) {
+  if (size && size.indexOf('between(') > -1) {
     return processBetween(size, config, bp, node)
   }
 
-  if (size === '-container/2') {
+  if (size && size === '-container/2') {
     // get size from container.padding
     if (!_.has(config.theme.container.padding, bp)) {
       throw node.error(`SPACING: No \`${bp}\` breakpoint found in \`theme.container.padding\`.`, { name: bp })
@@ -112,7 +116,7 @@ export default function parseSize (node, config, size, bp) {
     return `-${val / 2}${unit}`
   }
 
-  if (size === '-container') {
+  if (size && size === '-container') {
     // get size from container.padding
     if (!_.has(config.theme.container.padding, bp)) {
       throw node.error(`SPACING: No \`${bp}\` breakpoint found in \`theme.container.padding\`.`, { name: bp })
@@ -121,7 +125,7 @@ export default function parseSize (node, config, size, bp) {
     return '-' + config.theme.container.padding[bp]
   }
 
-  if (size === 'container/2') {
+  if (size && size === 'container/2') {
     // get size from container.padding
     if (!_.has(config.theme.container.padding, bp)) {
       throw node.error(`SPACING: No \`${bp}\` breakpoint found in \`theme.container.padding\`.`, { name: bp })
@@ -131,7 +135,7 @@ export default function parseSize (node, config, size, bp) {
     return `${val / 2}${unit}`
   }
 
-  if (size === 'container') {
+  if (size && size === 'container') {
     // get size from container.padding
     if (!_.has(config.theme.container.padding, bp)) {
       throw node.error(`SPACING: No \`${bp}\` breakpoint found in \`theme.container.padding\`.`, { name: bp })
@@ -139,7 +143,7 @@ export default function parseSize (node, config, size, bp) {
     return config.theme.container.padding[bp]
   }
 
-  if (!_.has(config.theme.spacing, size)) {
+  if (size && !_.has(config.theme.spacing, size)) {
     // size is not found in spacingMap, treat it as a value
     if (size.indexOf('calc') > -1) {
       if (!bp) {
@@ -162,7 +166,7 @@ export default function parseSize (node, config, size, bp) {
       return stripNestedCalcs(size)
     }
 
-    if (size.indexOf('/') !== -1) {
+    if (size && size.indexOf('/') !== -1) {
       // it's a fraction, check if the first part is a spacing key
       const [head, tail] = size.split('/')
       if (!_.has(config.theme.spacing, head)) {
@@ -204,7 +208,7 @@ export default function parseSize (node, config, size, bp) {
       return `calc(${config.theme.spacing[head][bp]}/${tail})`
     }
 
-    if (size.indexOf('*') !== -1) {
+    if (size && size.indexOf('*') !== -1) {
       // it's *, check if the first part is a spacing key
       const [head, tail] = size.split('*')
 
@@ -219,7 +223,7 @@ export default function parseSize (node, config, size, bp) {
       return `calc(${config.theme.spacing[head][bp]}*${tail})`
     }
 
-    if (size.indexOf('vw') !== -1) {
+    if (size && size.indexOf('vw') !== -1) {
       if (config.hasOwnProperty('setMaxForVw') && config.setMaxForVw === true) {
         // get the max container size
         const containerBps = config.theme.container.maxWidth
@@ -240,13 +244,15 @@ export default function parseSize (node, config, size, bp) {
       }
     }
 
-    if (size.indexOf('px') !== -1 ||
-        size.indexOf('vh') !== -1 ||
-        size.indexOf('rem') !== -1 ||
-        size.indexOf('em') !== -1 ||
-        size.indexOf('ch') !== -1 ||
-        size.indexOf('%') !== -1) {
-      return size
+    if (size) {
+      if (size.indexOf('px') !== -1 ||
+          size.indexOf('vh') !== -1 ||
+          size.indexOf('rem') !== -1 ||
+          size.indexOf('em') !== -1 ||
+          size.indexOf('ch') !== -1 ||
+          size.indexOf('%') !== -1) {
+        return size
+      }
     }
 
     // it's a number. we treat regular numbers as a multiplier of col gutter.

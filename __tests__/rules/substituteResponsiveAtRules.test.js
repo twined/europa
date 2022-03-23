@@ -281,7 +281,7 @@ it('fails without params', () => {
 it('parses advanced nesting', () => {
   const input = `
     header[data-nav] {
-      @container;
+      @space container;
       @unpack theme.header.padding.large;
 
       nav {
@@ -304,7 +304,13 @@ it('parses advanced nesting', () => {
   `
 
   const output = `
-    @media (min-width: 0) {
+    header[data-nav] nav {
+      color: pink;
+    }
+    header[data-nav] nav figure.brand {
+      z-index: 5;
+    }
+    @media (min-width: 0){
       header[data-nav] {
         padding-left: 15px;
         padding-right: 15px;
@@ -314,7 +320,7 @@ it('parses advanced nesting', () => {
         width: 100%;
       }
     }
-    @media (min-width: 740px) {
+    @media (min-width: 740px){
       header[data-nav] {
         padding-left: 35px;
         padding-right: 35px;
@@ -324,7 +330,7 @@ it('parses advanced nesting', () => {
         width: 100%;
       }
     }
-    @media (min-width: 1024px) {
+    @media (min-width: 1024px){
       header[data-nav] {
         padding-left: 50px;
         padding-right: 50px;
@@ -334,7 +340,7 @@ it('parses advanced nesting', () => {
         width: 100%;
       }
     }
-    @media (min-width: 1399px) {
+    @media (min-width: 1399px){
       header[data-nav] {
         padding-left: 100px;
         padding-right: 100px;
@@ -344,7 +350,7 @@ it('parses advanced nesting', () => {
         width: 100%;
       }
     }
-    @media (min-width: 1900px) {
+    @media (min-width: 1900px){
       header[data-nav] {
         padding-left: 100px;
         padding-right: 100px;
@@ -353,12 +359,6 @@ it('parses advanced nesting', () => {
         margin-right: auto;
         width: 100%;
       }
-    }
-    header[data-nav] nav {
-      color: pink;
-    }
-    header[data-nav] nav figure.brand {
-      z-index: 5;
     }
     @media (min-width: 0) {
       header[data-nav] {

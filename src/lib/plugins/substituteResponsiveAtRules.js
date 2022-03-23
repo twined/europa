@@ -1,7 +1,6 @@
 import _ from 'lodash'
 import postcss from 'postcss'
 import cloneNodes from '../../util/cloneNodes'
-import buildMediaQuery from '../../util/buildMediaQuery'
 import buildMediaQueryQ from '../../util/buildMediaQueryQ';
 
 export default postcss.plugin('europacss-responsive', getConfig => {

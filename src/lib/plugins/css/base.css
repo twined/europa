@@ -327,7 +327,7 @@ img[data-srcset] {
 */
 
 .dbg-grid {
-  @container;
+  @space container;
   display: none;
   user-select: none;
   pointer-events: none;

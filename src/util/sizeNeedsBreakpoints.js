@@ -1,6 +1,15 @@
 import _ from 'lodash'
 
 export default function sizeNeedsBreakpoints (spacingMap, size) {
+  if (!size) {
+    return true
+  }
+
+  // Leave css vars as single breakpoint
+  if (size.startsWith('var(--')) {
+    return false
+  }
+  
   // Zero stays the same across all breakpoints
   if (size === 0 || size === '0') {
     return false

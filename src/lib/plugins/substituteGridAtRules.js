@@ -1,6 +1,4 @@
-
 import _ from 'lodash'
-import cloneNodes from '../../util/cloneNodes'
 import postcss from 'postcss'
 import buildDecl from '../../util/buildDecl'
 

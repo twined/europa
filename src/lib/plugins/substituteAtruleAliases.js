@@ -1,8 +1,6 @@
 
 import _ from 'lodash'
-import cloneNodes from '../../util/cloneNodes'
 import postcss from 'postcss'
-import buildDecl from '../../util/buildDecl'
 
 /**
  * Aliases and shortcuts to other at-rules

@@ -8,91 +8,61 @@
 
 @media (min-width: 0){
   .button-one {
-    padding-left: 35px;
-    padding-right: 35px;
-    padding-top: 35px;
-    padding-bottom: 35px;
+    padding: 35px;
   }
 }
 
 @media (min-width: 740px){
   .button-one {
-    padding-left: 40px;
-    padding-right: 40px;
-    padding-top: 40px;
-    padding-bottom: 40px;
+    padding: 40px;
   }
 }
 
 @media (min-width: 1024px){
   .button-one {
-    padding-left: 50px;
-    padding-right: 50px;
-    padding-top: 50px;
-    padding-bottom: 50px;
+    padding: 50px;
   }
 }
 
 @media (min-width: 1399px){
   .button-one {
-    padding-left: 50px;
-    padding-right: 50px;
-    padding-top: 50px;
-    padding-bottom: 50px;
+    padding: 50px;
   }
 }
 
 @media (min-width: 1900px){
   .button-one {
-    padding-left: 70px;
-    padding-right: 70px;
-    padding-top: 70px;
-    padding-bottom: 70px;
+    padding: 70px;
   }
 }
 
 @media (min-width: 0){
   .button-two {
-    padding-left: 35px;
-    padding-right: 35px;
-    padding-top: 35px;
-    padding-bottom: 35px;
+    padding: 35px;
   }
 }
 
 @media (min-width: 740px){
   .button-two {
-    padding-left: 40px;
-    padding-right: 40px;
-    padding-top: 40px;
-    padding-bottom: 40px;
+    padding: 40px;
   }
 }
 
 @media (min-width: 1024px){
   .button-two {
-    padding-left: 50px;
-    padding-right: 50px;
-    padding-top: 50px;
-    padding-bottom: 50px;
+    padding: 50px;
   }
 }
 
 @media (min-width: 1399px){
   .button-two {
-    padding-left: 50px;
-    padding-right: 50px;
-    padding-top: 50px;
-    padding-bottom: 50px;
+    padding: 50px;
   }
 }
 
 @media (min-width: 1900px){
   .button-two {
-    padding-left: 70px;
-    padding-right: 70px;
-    padding-top: 70px;
-    padding-bottom: 70px;
+    padding: 70px;
   }
 }
 

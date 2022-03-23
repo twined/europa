@@ -1159,10 +1159,7 @@ it('parses @space shortcuts margin', () => {
 
   const output = `
     article {
-      margin-left: 0;
-      margin-right: 0;
-      margin-top: 0;
-      margin-bottom: 0;
+      margin: 0;
     }
   `
 
@@ -1181,10 +1178,7 @@ it('parses @space shortcuts padding', () => {
 
   const output = `
     article {
-      padding-left: 0;
-      padding-right: 0;
-      padding-top: 0;
-      padding-bottom: 0;
+      padding: 0;
     }
   `
 
@@ -1582,6 +1576,46 @@ it('parses @space with > * under responsive!', () => {
        margin-left: 0;
      }
    }
+  `
+
+  return run(input, DEFAULT_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @space with var(--)', () => {
+  const input = `
+    article {
+      @space margin-left var(--my-variable);
+    }
+  `
+
+  const output = `
+    article {
+      margin-left: var(--my-variable);
+    }
+  `
+
+  return run(input, DEFAULT_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @space with var(--) and specified breakpoint', () => {
+  const input = `
+    article {
+      @space margin-left var(--my-variable) tablet;
+    }
+  `
+
+  const output = `
+    @media (min-width: 740px) and (max-width: 1023px){
+      article{
+        margin-left: var(--my-variable)
+      }
+    }
   `
 
   return run(input, DEFAULT_CFG).then(result => {

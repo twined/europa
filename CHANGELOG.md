@@ -1,5 +1,13 @@
 # Changelog
 
+### 0.9.0
+
+- Allow passing `var(--whatever)` to `@space`.
+- Soft deprecate `@container`. Since `@container` will be part of the CSS spec, we better 
+get out of the way. You can use `@space container` instead. Also `@space container desktop_md` to
+lock to breakpoint.
+
+
 ### 0.8.0
 
 - Add `setMaxForVw` config option.

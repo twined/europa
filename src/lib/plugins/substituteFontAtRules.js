@@ -1,8 +1,5 @@
-
 import _ from 'lodash'
 import postcss from 'postcss'
-import fs from 'fs'
-import updateSource from '../../util/updateSource'
 import buildDecl from '../../util/buildDecl'
 
 /**

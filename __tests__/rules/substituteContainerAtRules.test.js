@@ -7,7 +7,7 @@ function run (input, opts) {
 
 it('fails on root', () => {
   const input = `
-    @container;
+    @space container;
   `
 
   expect.assertions(1)
@@ -16,16 +16,16 @@ it('fails on root', () => {
   })
 })
 
-it('parses @container with no other decls', () => {
+it('parses @space container with no other decls', () => {
   const input = `
     article {
-      @container;
+      @space container;
     }
   `
 
   const output = `
-    @media (min-width: 0) {
-      article {
+    @media (min-width: 0){
+      article{
         padding-left: 15px;
         padding-right: 15px;
         max-width: 740px;
@@ -34,8 +34,8 @@ it('parses @container with no other decls', () => {
         width: 100%
       }
     }
-    @media (min-width: 740px) {
-      article {
+    @media (min-width: 740px){
+      article{
         padding-left: 35px;
         padding-right: 35px;
         max-width: 1024px;
@@ -44,8 +44,8 @@ it('parses @container with no other decls', () => {
         width: 100%
       }
     }
-    @media (min-width: 1024px) {
-      article {
+    @media (min-width: 1024px){
+      article{
         padding-left: 50px;
         padding-right: 50px;
         max-width: 100%;
@@ -54,8 +54,8 @@ it('parses @container with no other decls', () => {
         width: 100%
       }
     }
-    @media (min-width: 1399px) {
-      article {
+    @media (min-width: 1399px){
+      article{
         padding-left: 100px;
         padding-right: 100px;
         max-width: 100%;
@@ -64,8 +64,8 @@ it('parses @container with no other decls', () => {
         width: 100%
       }
     }
-    @media (min-width: 1900px) {
-      article {
+    @media (min-width: 1900px){
+      article{
         padding-left: 100px;
         padding-right: 100px;
         max-width: 100%;
@@ -82,10 +82,10 @@ it('parses @container with no other decls', () => {
   })
 })
 
-it('parses @container with other decls', () => {
+it('parses container with other decls', () => {
   const input = `
     article {
-      @container;
+      @space container;
       background-color: red;
       padding-bottom: 50px;
     }
@@ -96,7 +96,7 @@ it('parses @container with other decls', () => {
       background-color: red;
       padding-bottom: 50px;
     }
-    @media (min-width: 0) {
+    @media (min-width: 0){
       article {
         padding-left: 15px;
         padding-right: 15px;
@@ -106,7 +106,7 @@ it('parses @container with other decls', () => {
         width: 100%;
       }
     }
-    @media (min-width: 740px) {
+    @media (min-width: 740px){
       article {
         padding-left: 35px;
         padding-right: 35px;
@@ -116,7 +116,7 @@ it('parses @container with other decls', () => {
         width: 100%;
       }
     }
-    @media (min-width: 1024px) {
+    @media (min-width: 1024px){
       article {
         padding-left: 50px;
         padding-right: 50px;
@@ -126,7 +126,7 @@ it('parses @container with other decls', () => {
         width: 100%;
       }
     }
-    @media (min-width: 1399px) {
+    @media (min-width: 1399px){
       article {
         padding-left: 100px;
         padding-right: 100px;
@@ -136,7 +136,7 @@ it('parses @container with other decls', () => {
         width: 100%;
       }
     }
-    @media (min-width: 1900px) {
+    @media (min-width: 1900px){
       article {
         padding-left: 100px;
         padding-right: 100px;
@@ -154,10 +154,10 @@ it('parses @container with other decls', () => {
   })
 })
 
-it('parses @container for specific breakpoints', () => {
+it('parses @space container for specific breakpoints', () => {
   const input = `
     article {
-      @container xs/sm/xl;
+      @space container xs/sm/xl;
       background-color: red;
       padding-bottom: 50px;
     }
@@ -168,7 +168,7 @@ it('parses @container for specific breakpoints', () => {
       background-color: red;
       padding-bottom: 50px;
     }
-    @media (min-width: 0) and (max-width: 739px) {
+    @media (min-width: 0) and (max-width: 739px){
       article {
         padding-left: 15px;
         padding-right: 15px;
@@ -178,7 +178,7 @@ it('parses @container for specific breakpoints', () => {
         width: 100%;
       }
     }
-    @media (min-width: 740px) and (max-width: 1023px) {
+    @media (min-width: 740px) and (max-width: 1023px){
       article {
         padding-left: 35px;
         padding-right: 35px;
@@ -188,7 +188,7 @@ it('parses @container for specific breakpoints', () => {
         width: 100%;
       }
     }
-    @media (min-width: 1900px) {
+    @media (min-width: 1900px){
       article {
         padding-left: 100px;
         padding-right: 100px;
@@ -210,7 +210,7 @@ it('runs correctly inside @responsive', () => {
   const input = `
     article {
       @responsive xs {
-        @container;
+        @space container;
       }
 
       background-color: red;
@@ -223,7 +223,7 @@ it('runs correctly inside @responsive', () => {
       background-color: red;
       padding-bottom: 50px;
     }
-    @media (min-width: 0) and (max-width: 739px) {
+    @media (min-width: 0) and (max-width: 739px){
       article {
         padding-left: 15px;
         padding-right: 15px;
@@ -244,14 +244,14 @@ it('runs correctly inside @responsive', () => {
 it('parses @container for specific breakpoints', () => {
   const input = `
     article {
-      @container xs;
-      @container sm;
+      @space container xs;
+      @space container sm;
     }
   `
 
   const output = `
-  @media (min-width: 0) and (max-width: 739px) {
-    article {
+  @media (min-width: 0) and (max-width: 739px){
+    article{
       padding-left: 15px;
       padding-right: 15px;
       max-width: 740px;
@@ -260,8 +260,8 @@ it('parses @container for specific breakpoints', () => {
       width: 100%
     }
   }
-  @media (min-width: 740px) and (max-width: 1023px) {
-    article {
+  @media (min-width: 740px) and (max-width: 1023px){
+    article{
       padding-left: 35px;
       padding-right: 35px;
       max-width: 1024px;

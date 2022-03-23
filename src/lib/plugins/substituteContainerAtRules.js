@@ -2,11 +2,9 @@
 import _ from 'lodash'
 import buildMediaQuery from '../../util/buildMediaQuery'
 import buildMediaQueryQ from '../../util/buildMediaQueryQ'
-import cloneNodes from '../../util/cloneNodes'
 import postcss from 'postcss'
 import extractBreakpointKeys from '../../util/extractBreakpointKeys';
 import buildDecl from '../../util/buildDecl'
-import splitUnit from '../../util/splitUnit'
 
 /**
  * CONTAINER
@@ -18,7 +16,7 @@ import splitUnit from '../../util/splitUnit'
  */
 
 export default postcss.plugin('europacss-container', getConfig => {
-  return function (css) {
+  return function (css, result) {
     const { theme: { breakpoints, breakpointCollections, container } } = getConfig()
     const finalRules = []
 
@@ -28,6 +26,15 @@ export default postcss.plugin('europacss-container', getConfig => {
       let exact = false
       const parent = atRule.parent
       const src = atRule.source
+
+      atRule.warn(
+        result,
+        `DEPRECATED: @container is deprecated. Use \`@space container;\` instead`,
+        {
+          name: '@container',
+          plugin: 'europacss'
+        }
+      )
 
       if (atRule.parent.type === 'root') {
         throw atRule.error(`CONTAINER: Can only be used inside a rule, not on root.`)

@@ -1,10 +1,5 @@
-
 import _ from 'lodash'
 import postcss from 'postcss'
-import buildMediaQueryQ from '../../util/buildMediaQueryQ'
-import extractBreakpointKeys from '../../util/extractBreakpointKeys'
-import fs from 'fs'
-import updateSource from '../../util/updateSource'
 import buildDecl from '../../util/buildDecl'
 
 /**

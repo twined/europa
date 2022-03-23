@@ -1,14 +1,11 @@
-
 import _ from 'lodash'
 import buildMediaQuery from '../../util/buildMediaQuery'
 import buildMediaQueryQ from '../../util/buildMediaQueryQ'
-import cloneNodes from '../../util/cloneNodes'
 import postcss from 'postcss'
 import extractBreakpointKeys from '../../util/extractBreakpointKeys'
 import buildDecl from '../../util/buildDecl'
 import parseSize from '../../util/parseSize'
 import sizeNeedsBreakpoints from '../../util/sizeNeedsBreakpoints'
-import updateSource from '../../util/updateSource'
 
 /**
  * SPACE
@@ -54,6 +51,11 @@ function processRule(atRule, config, finalRules, flagAsImportant) {
   // we still need some data from the original.
   let clonedRule = atRule.clone()
   let [prop, size, bpQuery] = postcss.list.space(clonedRule.params)
+  if (prop === 'container') {
+    bpQuery = size
+    size = null
+  }
+
   let parent = atRule.parent
   let grandParent = atRule.parent.parent
 
@@ -103,8 +105,11 @@ function processRule(atRule, config, finalRules, flagAsImportant) {
     const affectedBreakpoints = extractBreakpointKeys({ breakpoints, breakpointCollections }, bpQuery)
 
     _.each(affectedBreakpoints, bp => {
-      let parsedSize = parseSize(clonedRule, config, size, bp)
-      const sizeDecls = buildDecl(prop, parsedSize, flagAsImportant)
+      let parsedSize = null
+      if (size) {
+        parsedSize = parseSize(clonedRule, config, size, bp)
+      }
+      const sizeDecls = buildDecl(prop, parsedSize, flagAsImportant, config, bp)
 
       const mediaRule = clonedRule.clone({
         name: 'media',
@@ -125,9 +130,12 @@ function processRule(atRule, config, finalRules, flagAsImportant) {
   } else {
     if (sizeNeedsBreakpoints(spacing, size)) {
       _.keys(breakpoints).forEach(bp => {
-        const parsedSize = parseSize(clonedRule, config, size, bp)
+        let parsedSize = null
+        if (size) {
+          parsedSize = parseSize(clonedRule, config, size, bp)
+        }
         const mediaRule = clonedRule.clone({ name: 'media', params: buildMediaQuery(breakpoints, bp) })
-        const sizeDecls = buildDecl(prop, parsedSize, flagAsImportant)
+        const sizeDecls = buildDecl(prop, parsedSize, flagAsImportant, config, bp)
         const originalRule = postcss.rule({ selector: parent.selector }).append(sizeDecls)
         originalRule.source = src
         mediaRule.append(originalRule)

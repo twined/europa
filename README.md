@@ -260,6 +260,7 @@ If no params are given, only the first child gets a margin-left of 0.
 **PARAMS**:
 
 `{decl}`
+  - `container` (does not accept `sizeQuery`, only `[breakpointQuery]`)
   - `margin-x`, `margin-y`, `padding-x`, `padding-y`
   - `translateX`, `translateY`, `translateZ`, `scale`
   - Any prop that accepts the values you give it.

@@ -1,13 +1,10 @@
-
 import _ from 'lodash'
 import buildMediaQuery from '../../util/buildMediaQuery'
 import buildMediaQueryQ from '../../util/buildMediaQueryQ'
-import cloneNodes from '../../util/cloneNodes'
 import postcss from 'postcss'
 import extractBreakpointKeys from '../../util/extractBreakpointKeys'
 import buildDecl from '../../util/buildDecl'
 import parseFontSizeQuery from '../../util/parseFontSizeQuery'
-import sizeNeedsBreakpoints from '../../util/sizeNeedsBreakpoints'
 
 /**
  * FONTSIZE

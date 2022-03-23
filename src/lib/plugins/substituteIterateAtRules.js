@@ -1,7 +1,5 @@
 import _ from 'lodash'
 import postcss from 'postcss'
-import cloneNodes from '../../util/cloneNodes'
-import updateSource from '../../util/updateSource'
 
 export default postcss.plugin('europacss-iterate', getConfig => {
   return function (css) {
