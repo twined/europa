@@ -103,7 +103,7 @@ function processRule(atRule, config, finalRules) {
   const spaceParams = 'margin-left 1'
   const spaceRule = postcss.atRule({ name: 'space', params: spaceParams})
 
-  const decendentChildren = postcss.rule({ selector: '> *' })
+  const decendentChildren = postcss.rule({ selector: '& > *' })
   const nthChild = postcss.rule({ selector: `&:nth-child(${childSpec})` })
   nthChild.append(buildDecl('margin-left', '0'))
 

@@ -1,6 +1,6 @@
 import { isEqual } from 'lodash'
 import { matcherHint, printReceived, printExpected } from 'jest-matcher-utils'
-import diff from 'jest-diff'
+import { diff } from 'jest-diff'
 
 // const replaceWhitespace = replace(/\s+/g, ` `)
 // const compressWhitespace = map(replaceWhitespace)
