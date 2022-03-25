@@ -5,6 +5,43 @@ function run (input, opts) {
   return postcss([plugin(opts)]).process(input, { from: undefined })
 }
 
+const VW_CFG = {
+  setMaxForVw: true,
+  theme: {
+    breakpoints: {
+      xs: '0',
+      sm: '740px',
+      md: '1024px'
+    },
+    container: {
+      maxWidth: {
+        xs: '100%',
+        sm: '100%',
+        md: '1024px',
+      },
+      padding: {
+        xs: '4vw',
+        sm: '4vw',
+        md: '4vw'
+      }
+    },
+    spacing: {
+      md: {
+        xs: '5vw',
+        sm: '10vw',
+        md: '15vw'
+      }
+    },
+    columns: {
+      gutters: {
+        xs: '2vw',
+        sm: '2vw',
+        md: '2vw'
+      }
+    }
+  }
+}
+
 it('fails on root', () => {
   const input = `
     @space container;
@@ -149,6 +186,98 @@ it('parses container with other decls', () => {
   `
 
   return run(input).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @space container with vws and setMax', () => {
+  const input = `
+    article {
+      @space container;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0){
+      article{
+        padding-left: 4vw;
+        padding-right: 4vw;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%
+      }
+    }
+    @media (min-width: 740px){
+      article{
+        padding-left: 4vw;
+        padding-right: 4vw;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%
+      }
+    }
+    @media (min-width: 1024px){
+      article{
+        padding-left: 40.96px;
+        padding-right: 40.96px;
+        max-width: 1024px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%
+      }
+    }
+  `
+
+  return run(input, VW_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @space container with vws without setMax', () => {
+  const input = `
+    article {
+      @space container;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0){
+      article{
+        padding-left: 4vw;
+        padding-right: 4vw;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%
+      }
+    }
+    @media (min-width: 740px){
+      article{
+        padding-left: 4vw;
+        padding-right: 4vw;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%
+      }
+    }
+    @media (min-width: 1024px){
+      article{
+        padding-left: 4vw;
+        padding-right: 4vw;
+        max-width: 1024px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%
+      }
+    }
+  `
+
+  return run(input, {...VW_CFG, setMaxForVw: false }).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })

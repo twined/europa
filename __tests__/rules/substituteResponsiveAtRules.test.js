@@ -550,7 +550,7 @@ it('parses multiple breakpoints slashed', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(33.333333333333336% - 46.66666666666667px);
-        max-width: calc(33.333333333333336% - 46.66666666666667px - 0.002vw)
+        max-width: calc(33.333333333333336% - 46.66666666666667px)
       }
     }
     @media (min-width: 1200px) and (max-width: 1559px){
@@ -559,7 +559,7 @@ it('parses multiple breakpoints slashed', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(33.333333333333336% - 53.333333333333336px);
-        max-width: calc(33.333333333333336% - 53.333333333333336px - 0.002vw)
+        max-width: calc(33.333333333333336% - 53.333333333333336px)
       }
     }
     @media (min-width: 1560px) and (max-width: 1919px){
@@ -568,7 +568,7 @@ it('parses multiple breakpoints slashed', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(33.333333333333336% - 66.66666666666667px);
-        max-width: calc(33.333333333333336% - 66.66666666666667px - 0.002vw)
+        max-width: calc(33.333333333333336% - 66.66666666666667px)
       }
     }
     @media (min-width: 1920px){
@@ -577,7 +577,7 @@ it('parses multiple breakpoints slashed', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(33.333333333333336% - 80px);
-        max-width: calc(33.333333333333336% - 80px - 0.002vw)
+        max-width: calc(33.333333333333336% - 80px)
       }
     }
   `

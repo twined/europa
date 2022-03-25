@@ -48,11 +48,6 @@ export default postcss.plugin('europacss-column', getConfig => {
       let [suppliedSize, suppliedBreakpoint] = postcss.list.space(atRule.params)
       let needsBreakpoints = false
       let alreadyResponsive = false
-      let flexSize
-      let wantedColumns
-      let totalColumns
-      let fraction
-      let gutterMultiplier
       let flexDecls = []
 
       if (atRule.parent.type === 'root') {
@@ -98,7 +93,7 @@ export default postcss.plugin('europacss-column', getConfig => {
           && grandParent.type === 'atrule'
           && grandParent.name === 'responsive') {
         if (suppliedBreakpoint) {
-          throw atRule.error(`COLUMN: When nesting @column under  responsive, we do not accept a breakpoints query.`, { name: suppliedBreakpoint })
+          throw atRule.error(`COLUMN: When nesting @column under responsive, we do not accept a breakpoints query.`, { name: suppliedBreakpoint })
         }
 
         suppliedBreakpoint = grandParent.params
@@ -178,7 +173,8 @@ import reduceCSSCalc from 'reduce-css-calc'
 
 function createFlexDecls(flexDecls, flexSize) {
   let maxWidth
-  if (FIX_FIREFOX_FLEX_VW_BUG) {
+  
+  if (flexSize.includes('vw') && FIX_FIREFOX_FLEX_VW_BUG) {
     maxWidth = reduceCSSCalc(`calc(${flexSize} - 0.002vw)`, 150)
   } else {
     maxWidth = flexSize

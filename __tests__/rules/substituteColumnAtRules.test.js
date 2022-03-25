@@ -29,6 +29,38 @@ const DEFAULT_CFG = {
   }
 }
 
+const VW_CFG = {
+  setMaxForVw: true,
+  theme: {
+    breakpoints: {
+      xs: '0',
+      sm: '740px',
+      md: '1024px'
+    },
+    container: {
+      maxWidth: {
+        xs: '100%',
+        sm: '100%',
+        md: '1024px',
+      }
+    },
+    spacing: {
+      md: {
+        xs: '5vw',
+        sm: '10vw',
+        md: '15vw'
+      }
+    },
+    columns: {
+      gutters: {
+        xs: '2vw',
+        sm: '2vw',
+        md: '2vw'
+      }
+    }
+  }
+}
+
 it('fails on root', () => {
   const input = `
     @column 3/4;
@@ -54,7 +86,7 @@ it('parses regular @column', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(75% - 5px);
-        max-width: calc(75% - 5px - 0.002vw)
+        max-width: calc(75% - 5px)
       }
     }
     @media (min-width: 740px) {
@@ -63,7 +95,7 @@ it('parses regular @column', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(75% - 7.5px);
-        max-width: calc(75% - 7.5px - 0.002vw)
+        max-width: calc(75% - 7.5px)
       }
     }
     @media (min-width: 1024px) {
@@ -72,12 +104,55 @@ it('parses regular @column', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(75% - 12.5px);
-        max-width: calc(75% - 12.5px - 0.002vw)
+        max-width: calc(75% - 12.5px)
       }
     }
   `
 
   return run(input, DEFAULT_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses vw @column', () => {
+  const input = `
+    article {
+      @column 3/4;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0) {
+      article {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(75% - 0.5vw);
+        max-width: calc(75% - 0.502vw)
+      }
+    }
+    @media (min-width: 740px) {
+      article {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(75% - 0.5vw);
+        max-width: calc(75% - 0.502vw)
+      }
+    }
+    @media (min-width: 1024px) {
+      article {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(75% - 5.120000000000001px);
+        max-width: calc(75% - 5.120000000000001px)
+      }
+    }
+  `
+
+  return run(input, VW_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
@@ -140,7 +215,7 @@ it('parses regular @column + gutter', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(75% + 15px);
-        max-width: calc(75% + 15px - 0.002vw)
+        max-width: calc(75% + 15px)
       }
     }
     @media (min-width: 740px) {
@@ -149,7 +224,7 @@ it('parses regular @column + gutter', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(75% + 22.5px);
-        max-width: calc(75% + 22.5px - 0.002vw)
+        max-width: calc(75% + 22.5px)
       }
     }
     @media (min-width: 1024px) {
@@ -158,7 +233,7 @@ it('parses regular @column + gutter', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(75% + 37.5px);
-        max-width: calc(75% + 37.5px - 0.002vw)
+        max-width: calc(75% + 37.5px)
       }
     }
   `
@@ -183,7 +258,7 @@ it('parses regular @column + half gutter', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(75% + 5px);
-        max-width: calc(75% + 5px - 0.002vw)
+        max-width: calc(75% + 5px)
       }
     }
     @media (min-width: 740px) {
@@ -192,7 +267,7 @@ it('parses regular @column + half gutter', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(75% + 7.5px);
-        max-width: calc(75% + 7.5px - 0.002vw)
+        max-width: calc(75% + 7.5px)
       }
     }
     @media (min-width: 1024px) {
@@ -201,7 +276,7 @@ it('parses regular @column + half gutter', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(75% + 12.5px);
-        max-width: calc(75% + 12.5px - 0.002vw)
+        max-width: calc(75% + 12.5px)
       }
     }
   `
@@ -239,7 +314,7 @@ it('parses @column for single bp', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(75% - 5px);
-        max-width: calc(75% - 5px - 0.002vw)
+        max-width: calc(75% - 5px)
       }
     }
   `
@@ -266,7 +341,7 @@ it('parses multiple @column for different bp', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(75% - 6.25px);
-        max-width: calc(75% - 6.25px - 0.002vw)
+        max-width: calc(75% - 6.25px)
       }
     }
     @media (min-width: 740px) and (max-width: 1023px) {
@@ -275,7 +350,7 @@ it('parses multiple @column for different bp', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(60% - 14px);
-        max-width: calc(60% - 14px - 0.002vw)
+        max-width: calc(60% - 14px)
       }
     }
     @media (min-width: 1024px) and (max-width: 1398px) {
@@ -284,7 +359,7 @@ it('parses multiple @column for different bp', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: 100%;
-        max-width: calc(100% - 0.002vw)
+        max-width: 100%
       }
     }
   `
@@ -311,7 +386,7 @@ it('runs correctly inside @responsive', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(50% - 10px);
-        max-width: calc(50% - 10px - 0.002vw)
+        max-width: calc(50% - 10px)
       }
     }
   `
@@ -368,7 +443,7 @@ it('runs nested under advanced breakpoint', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(50% + 25px);
-        max-width: calc(50% + 25px - 0.002vw)
+        max-width: calc(50% + 25px)
       }
     }
     @media (min-width: 1250px) and (max-width: 1919px) {
@@ -377,7 +452,7 @@ it('runs nested under advanced breakpoint', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(50% + 35px);
-        max-width: calc(50% + 35px - 0.002vw)
+        max-width: calc(50% + 35px)
       }
     }
     @media (min-width: 1920px) {
@@ -386,7 +461,7 @@ it('runs nested under advanced breakpoint', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(50% + 45px);
-        max-width: calc(50% + 45px - 0.002vw)
+        max-width: calc(50% + 45px)
       }
     }
   `
@@ -441,7 +516,7 @@ it('runs with advanced breakpoint', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(50% + 25px);
-        max-width: calc(50% + 25px - 0.002vw)
+        max-width: calc(50% + 25px)
       }
     }
     @media (min-width: 1250px) and (max-width: 1919px) {
@@ -450,7 +525,7 @@ it('runs with advanced breakpoint', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(50% + 35px);
-        max-width: calc(50% + 35px - 0.002vw)
+        max-width: calc(50% + 35px)
       }
     }
     @media (min-width: 1920px) {
@@ -459,7 +534,7 @@ it('runs with advanced breakpoint', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(50% + 45px);
-        max-width: calc(50% + 45px - 0.002vw)
+        max-width: calc(50% + 45px)
       }
     }
   `
@@ -484,7 +559,7 @@ it('runs with gutters and breakpoint', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(50% + 10px);
-        max-width: calc(50% + 10px - 0.002vw)
+        max-width: calc(50% + 10px)
       }
     }
   `
@@ -523,7 +598,7 @@ it('parses 12/12', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: 100%;
-        max-width: calc(100% - 0.002vw)
+        max-width: 100%
       }
     }
     @media (min-width: 740px) {
@@ -532,7 +607,7 @@ it('parses 12/12', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: 100%;
-        max-width: calc(100% - 0.002vw)
+        max-width: 100%
       }
     }
     @media (min-width: 1024px) {
@@ -541,7 +616,7 @@ it('parses 12/12', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: 100%;
-        max-width: calc(100% - 0.002vw)
+        max-width: 100%
       }
     }
   `
@@ -567,7 +642,7 @@ it('parses properly with multiple @column in a row', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: 100%;
-        max-width: calc(100% - 0.002vw)
+        max-width: 100%
       }
     }
     @media (min-width: 740px) and (max-width: 1023px) {
@@ -576,7 +651,7 @@ it('parses properly with multiple @column in a row', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(50% - 15px);
-        max-width: calc(50% - 15px - 0.002vw)
+        max-width: calc(50% - 15px)
       }
     }
     @media (min-width: 1024px) {
@@ -585,7 +660,7 @@ it('parses properly with multiple @column in a row', () => {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: calc(50% - 25px);
-        max-width: calc(50% - 25px - 0.002vw)
+        max-width: calc(50% - 25px)
       }
     }
   `

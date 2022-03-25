@@ -43,9 +43,20 @@ export default function parseFontSizeQuery (node, config, fontSizeQuery, breakpo
 
   if (!modifier) {
     if (_.isString(resolvedFontsize)) {
-      return {
-        ...{ 'font-size': resolvedFontsize },
-        ...(lineHeight && { 'line-height': lineHeight })
+      if (resolvedFontsize.endsWith('vw')) {
+        if (lineHeight && lineHeight.endsWith('vw')) {
+          return parseVWQuery(node, config, resolvedFontsize, lineHeight, breakpoint, false)
+        } else {
+          return {
+            ...{ 'font-size': parseVWQuery(node, config, resolvedFontsize, lineHeight, breakpoint, true) },
+            ...(lineHeight && { 'line-height': lineHeight })
+          }
+        }
+      } else {
+        return {
+          ...{ 'font-size': resolvedFontsize },
+          ...(lineHeight && { 'line-height': lineHeight })
+        }
       }
     }
     if (_.isObject(resolvedFontsize[breakpoint])) {

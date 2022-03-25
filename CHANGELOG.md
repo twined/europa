@@ -1,5 +1,13 @@
 # Changelog
 
+### 0.10.0
+
+- Allow `setMaxForVw` to work with hard vw fontsize values: `@fontsize 4vw/4vw`.
+- Use `setMaxForVw` for line height.
+- Use `setMaxForVw` for column gutters.
+- Set `ec-zoom` calculations for line heights with vw.
+- Only apply firefox vw fix if flexSize has vw.
+
 ### 0.9.0
 
 - Allow passing `var(--whatever)` to `@space`.

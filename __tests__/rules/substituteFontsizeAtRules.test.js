@@ -157,7 +157,7 @@ it('fails on root', () => {
   })
 })
 
-it('parses @fontsize with max px', () => {
+it('parses @fontsize config with max px', () => {
   const input = `
     article {
       @fontsize lg;
@@ -178,6 +178,71 @@ it('parses @fontsize with max px', () => {
     @media (min-width: 1024px){
       article{
         font-size: 57.599999999999994px
+      }
+    }
+  `
+
+  return run(input, MAX_PX_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @fontsize vw with max px', () => {
+  const input = `
+    article {
+      @fontsize 4vw;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0){
+      article{
+        font-size: calc(4vw * var(--ec-zoom))
+      }
+    }
+    @media (min-width: 740px){
+      article{
+        font-size: calc(4vw * var(--ec-zoom))
+      }
+    }
+    @media (min-width: 1024px){
+      article{
+        font-size: 76.8px
+      }
+    }
+  `
+
+  return run(input, MAX_PX_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @fontsize vw with max px and vw lineheight', () => {
+  const input = `
+    article {
+      @fontsize 4vw/4vw;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0){
+      article{
+        font-size: calc(4vw * var(--ec-zoom));
+        line-height: calc(4vw * var(--ec-zoom))
+      }
+    }
+    @media (min-width: 740px){
+      article{
+        font-size: calc(4vw * var(--ec-zoom));
+        line-height: calc(4vw * var(--ec-zoom))
+      }
+    }
+    @media (min-width: 1024px){
+      article{
+        font-size: 76.8px;
+        line-height: 76.8px
       }
     }
   `

@@ -142,7 +142,7 @@
     flex-grow: 0;
     flex-shrink: 0;
     flex-basis: calc(58.333333333333336% - 14.583333333333334px);
-    max-width: calc(58.333333333333336% - 14.583333333333334px - 0.002vw)
+    max-width: calc(58.333333333333336% - 14.583333333333334px)
   }
 }
 @media (min-width: 1024px) and (max-width: 1398px){
@@ -151,6 +151,6 @@
     flex-grow: 0;
     flex-shrink: 0;
     flex-basis: calc(58.333333333333336% - 20.833333333333336px);
-    max-width: calc(58.333333333333336% - 20.833333333333336px - 0.002vw)
+    max-width: calc(58.333333333333336% - 20.833333333333336px)
   }
 }

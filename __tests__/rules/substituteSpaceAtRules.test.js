@@ -200,9 +200,9 @@ const MAX_PX_CFG = {
       },
 
       padding: {
-        mobile: '15px',
-        tablet: '35px',
-        desktop: '50px'
+        mobile: '2vw',
+        tablet: '2vw',
+        desktop: '2vw'
       }
     },
 
@@ -267,9 +267,9 @@ const MAX_PX_CFG = {
 
     columns: {
       gutters: {
-        mobile: '20px',
-        tablet: '30px',
-        desktop: '50px'
+        mobile: '2vw',
+        tablet: '2vw',
+        desktop: '2vw'
       }
     }
   }
@@ -296,6 +296,37 @@ it('parses vw with maxPx', () => {
     @media (min-width: 1024px){
       body article .test{
         padding-top: 96px
+      }
+    }
+  `
+
+  return run(input, MAX_PX_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses gutter with maxPx', () => {
+  const input = `
+    body article .test {
+      @space padding-top 1;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0){
+      body article .test{
+        padding-top: 2vw
+      }
+    }
+    @media (min-width: 740px){
+      body article .test{
+        padding-top: 2vw
+      }
+    }
+    @media (min-width: 1024px){
+      body article .test{
+        padding-top: 38.4px
       }
     }
   `

@@ -339,13 +339,8 @@ img[data-srcset] {
   right: 0;
   height: 100%;
 
+  @space grid-column-gap 1;
   grid-template-rows: 1fr;
-
-  @iterate theme.columns.gutters {
-    @responsive $key {
-      grid-column-gap: $value;
-    }
-  }
 
   @iterate theme.columns.count {
     @responsive $key {

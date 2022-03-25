@@ -1,4 +1,7 @@
 import postcss from 'postcss'
+import getLargestContainer from './getLargestContainer'
+import isLargestBreakpoint from './isLargestBreakpoint'
+import splitUnit from './splitUnit'
 
 export default function buildDecl (p, value, important = false, config, bp) {
   const props = []
@@ -49,7 +52,14 @@ export default function buildDecl (p, value, important = false, config, bp) {
       break
 
     case 'container':
-      const paddingValue = config.theme.container.padding[bp]
+      let paddingValue = config.theme.container.padding[bp]
+
+      if (config.setMaxForVw && paddingValue.endsWith('vw') && isLargestBreakpoint(config, bp)) {
+        const maxVW = getLargestContainer(config)
+        const [maxVal, maxUnit] = splitUnit(maxVW)
+        const [paddingVal] = splitUnit(paddingValue)
+        paddingValue = `${maxVal / 100 * paddingVal}${maxUnit}`
+      }
       const maxWidth = config.theme.container.maxWidth[bp]
 
       props.push({ prop: 'padding-left', value: paddingValue })

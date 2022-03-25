@@ -1,23 +1,34 @@
 import splitUnit from './splitUnit'
+import isLargestBreakpoint from './isLargestBreakpoint'
+import getLargestContainer from './getLargestContainer'
 
 export default function parseVWQuery (node, config, fontSizeQuery, lineHeight, breakpoint, onlyFontsize) {
   let renderedFontSize
+  let renderedLineHeight
+
   if (config.hasOwnProperty('setMaxForVw') && config.setMaxForVw === true) {
-    const containerBps = config.theme.container.maxWidth
-    const lastKey = [...Object.keys(containerBps)].pop()
-    if (breakpoint === lastKey) {
-      const maxSize = containerBps[lastKey]
+    if (isLargestBreakpoint(config, breakpoint)) {
+      const maxSize = getLargestContainer(config)
       const [valMax, unitMax] = splitUnit(maxSize)
       if (unitMax === '%') {
         throw node.error(`SPACING: When setMaxForVw is true, the container max cannot be % based.`)
       }
-      const [valVw, unitVw] = splitUnit(fontSizeQuery)
-      const maxVal = valMax / 100 * valVw
-      renderedFontSize = `${maxVal}${unitMax}`
+      const [valVw] = splitUnit(fontSizeQuery)
+      renderedFontSize = `${valMax / 100 * valVw}${unitMax}`
+      if (!onlyFontsize && lineHeight && lineHeight.endsWith('vw')) {
+        const [lineHeightVw] = splitUnit(lineHeight)
+        renderedLineHeight = `${valMax / 100 * lineHeightVw}${unitMax}`
+      }
     } else {
+      if (!onlyFontsize && lineHeight && lineHeight.endsWith('vw')) {
+        renderedLineHeight = `calc(${lineHeight} * var(--ec-zoom))`  
+      }
       renderedFontSize = `calc(${fontSizeQuery} * var(--ec-zoom))`  
     }
   } else {
+    if (!onlyFontsize && lineHeight && lineHeight.endsWith('vw')) {
+      renderedLineHeight = `calc(${lineHeight} * var(--ec-zoom))`  
+    }
     renderedFontSize = `calc(${fontSizeQuery} * var(--ec-zoom))`
   }
 
@@ -27,6 +38,6 @@ export default function parseVWQuery (node, config, fontSizeQuery, lineHeight, b
 
   return {
     ...{ 'font-size': renderedFontSize },
-    ...(lineHeight && { 'line-height': lineHeight })
+    ...(renderedLineHeight && { 'line-height': renderedLineHeight })
   }
 }

@@ -1,10 +1,14 @@
 import _ from 'lodash'
+import renderCalc from './renderCalc'
 import renderCalcWithRounder from './renderCalcWithRounder'
 import calcMinFromBreakpoint from './calcMinFromBreakpoint'
 import calcMaxFromBreakpoint from './calcMaxFromBreakpoint'
 import getUnit from './getUnit'
 import splitUnit from './splitUnit'
 import stripNestedCalcs from './stripNestedCalcs'
+import isLargestBreakpoint from './isLargestBreakpoint'
+import getLargestContainer from './getLargestContainer'
+import reduceCSSCalc from 'reduce-css-calc'
 
 const processBetween = (size, config, bp, node) => {
   size = size.match(/between\((.*)\)/)[1]
@@ -62,6 +66,8 @@ const processBetween = (size, config, bp, node) => {
 }
 
 export default function parseSize (node, config, size, bp) {
+  let maxVWCol = false
+
   if (size === '0') {
     return '0'
   }
@@ -185,11 +191,23 @@ export default function parseSize (node, config, size, bp) {
         }
 
         const gutterSize = config.theme.columns.gutters[bp]
-        const [gutterValue, gutterUnit] = splitUnit(gutterSize)
+        let [gutterValue, gutterUnit] = splitUnit(gutterSize)
+
+        if (config.setMaxForVw && gutterUnit == 'vw' && isLargestBreakpoint(config, bp)) {
+          const maxSize = getLargestContainer(config)
+          
+          const [valMax, unitMax] = splitUnit(maxSize)
+          if (unitMax === '%') {
+            throw node.error(`SPACING: When setMaxForVw is true, the container max cannot be % based.`)
+          }
+
+          gutterValue = valMax / 100 * gutterValue
+          gutterUnit = unitMax
+        }
 
         if (wantedColumns / totalColumns === 1) {
           sizeMath = '100%'
-        } else {
+        } else {          
           sizeMath = `${wantedColumns}/${totalColumns} - (${gutterValue}${gutterUnit} - 1/${totalColumns} * ${gutterValue * wantedColumns}${gutterUnit})`
         }
 
@@ -197,7 +215,11 @@ export default function parseSize (node, config, size, bp) {
           const gutterMultiplierValue = gutterValue * gutterMultiplier
           return renderCalcWithRounder(`${sizeMath} + ${gutterMultiplierValue}${gutterUnit}`)
         } else {
-          return sizeMath === '100%' ? sizeMath : renderCalcWithRounder(sizeMath)
+          if (sizeMath === '100%') {
+            return sizeMath
+          }
+
+          return renderCalcWithRounder(sizeMath)
         }
       }
 
@@ -264,14 +286,21 @@ export default function parseSize (node, config, size, bp) {
   }
 }
 
-function renderColGutterMultiplier (node, multiplier, bp, { theme }) {
+function renderColGutterMultiplier (node, multiplier, bp, config) {
   // grab gutter for this breakpoint
-  if (!_.has(theme.columns.gutters, bp)) {
+  if (!_.has(config.theme.columns.gutters, bp)) {
     throw node.error(`parseSize: No \`${bp}\` breakpoint found in gutter map.`, { name: bp })
   }
 
-  const gutter = theme.columns.gutters[bp]
+  const gutter = config.theme.columns.gutters[bp]
   const [val, unit] = splitUnit(gutter)
+
+  if (unit === 'vw' && config.setMaxForVw && isLargestBreakpoint(config, bp)) {
+    const maxSize = getLargestContainer(config)
+    const [valMax, unitMax] = splitUnit(maxSize)
+    const gutterInPixels = valMax / 100 * val
+    return `${(gutterInPixels * multiplier)}${unitMax}`
+  }
 
   return `${(val * multiplier)}${unit}`
 }
