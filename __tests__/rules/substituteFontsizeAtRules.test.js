@@ -146,6 +146,52 @@ const MAX_PX_PERCENT = {
   }
 }
 
+const WILDCARD_CFG = {
+  theme: {
+    breakpoints: {
+      mobile: '0',
+      tablet: '740px',
+      desktop: '1024px'
+    },
+
+    breakpointCollections: {
+      $test: 'mobile/tablet'
+    },
+
+    container: {
+      maxWidth: {
+        mobile: '100%',
+        tablet: '100%',
+        desktop: '1920px'
+      },
+
+      padding: {
+        mobile: '15px',
+        tablet: '35px',
+        desktop: '50px'
+      }
+    },
+
+    typography: {
+      base: '16px',
+      lineHeight: {
+        mobile: 1.6,
+        tablet: 1.6,
+        desktop: 1.6
+      },
+      sizes: {
+        h1: {
+          '*': '4vw',
+          desktop: '3.5vw'
+        },
+        h2: {
+          '*': '3vw',
+        }
+      }
+    }
+  }
+}
+
 it('fails on root', () => {
   const input = `
     @fontsize base;
@@ -154,6 +200,68 @@ it('fails on root', () => {
   expect.assertions(1)
   return run(input).catch(e => {
     expect(e).toMatchObject({ name: 'CssSyntaxError' })
+  })
+})
+
+it('parses @fontsize config with wildcards and regular prop', () => {
+  const input = `
+    article {
+      @fontsize h1;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0){
+      article{
+        font-size: calc(4vw * var(--ec-zoom))
+      }
+    }
+    @media (min-width: 740px){
+      article{
+        font-size: calc(4vw * var(--ec-zoom))
+      }
+    }
+    @media (min-width: 1024px){
+      article{
+        font-size: calc(3.5vw * var(--ec-zoom))
+      }
+    }
+  `
+
+  return run(input, WILDCARD_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @fontsize config with only wildcards', () => {
+  const input = `
+    article {
+      @fontsize h2;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0){
+      article{
+        font-size: calc(3vw * var(--ec-zoom))
+      }
+    }
+    @media (min-width: 740px){
+      article{
+        font-size: calc(3vw * var(--ec-zoom))
+      }
+    }
+    @media (min-width: 1024px){
+      article{
+        font-size: calc(3vw * var(--ec-zoom))
+      }
+    }
+  `
+
+  return run(input, WILDCARD_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
   })
 })
 

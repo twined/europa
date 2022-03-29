@@ -275,6 +275,49 @@ const MAX_PX_CFG = {
   }
 }
 
+const WILDCARD_CFG = {
+  theme: {
+    breakpoints: {
+      mobile: '0',
+      tablet: '740px',
+      desktop: '1024px'
+    },
+
+    breakpointCollections: {
+      $test: 'mobile/tablet'
+    },
+
+    container: {
+      maxWidth: {
+        mobile: '100%',
+        tablet: '100%',
+        desktop: '1920px'
+      },
+
+      padding: {
+        mobile: '2vw',
+        tablet: '2vw',
+        desktop: '2vw'
+      }
+    },
+
+    spacing: {
+      sm: {
+        '*': '2vw',
+        desktop: '3vw'
+      }
+    },
+
+    columns: {
+      gutters: {
+        mobile: '2vw',
+        tablet: '2vw',
+        desktop: '2vw'
+      }
+    }
+  }
+}
+
 it('parses vw with maxPx', () => {
   const input = `
     body article .test {
@@ -332,6 +375,37 @@ it('parses gutter with maxPx', () => {
   `
 
   return run(input, MAX_PX_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses with wildcards', () => {
+  const input = `
+    body article .test {
+      @space padding-top sm;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0){
+      body article .test{
+        padding-top: 2vw
+      }
+    }
+    @media (min-width: 740px){
+      body article .test{
+        padding-top: 2vw
+      }
+    }
+    @media (min-width: 1024px){
+      body article .test{
+        padding-top: 3vw
+      }
+    }
+  `
+
+  return run(input, WILDCARD_CFG).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })

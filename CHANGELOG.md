@@ -2,6 +2,15 @@
 
 ### 0.10.0
 
+- Add wildcards to `sizing` and `typography.sizes`:
+  ```
+  sizing: {
+    block: {
+      '*': '4vw',
+      desktop_xl: '3vw'
+    }
+  }
+  ```
 - Allow `setMaxForVw` to work with hard vw fontsize values: `@fontsize 4vw/4vw`.
 - Use `setMaxForVw` for line height.
 - Use `setMaxForVw` for column gutters.

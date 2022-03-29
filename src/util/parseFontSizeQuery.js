@@ -2,6 +2,7 @@ import _ from 'lodash'
 import splitUnit from './splitUnit'
 import parseRFSQuery from './parseRFSQuery'
 import parseVWQuery from './parseVWQuery'
+import replaceWildcards from './replaceWildcards'
 
 export default function parseFontSizeQuery (node, config, fontSizeQuery, breakpoint) {
   let lineHeight
@@ -31,6 +32,7 @@ export default function parseFontSizeQuery (node, config, fontSizeQuery, breakpo
   }
 
   if (!_.isString(resolvedFontsize)) {
+    resolvedFontsize = replaceWildcards(resolvedFontsize, config)
     if (!_.has(resolvedFontsize, breakpoint)) {
       throw node.error(`FONTSIZE: No breakpoint \`${breakpoint}\` found in theme.typography.sizes.${fontSize}`, { name: breakpoint })
     }

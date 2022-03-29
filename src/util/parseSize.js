@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import renderCalc from './renderCalc'
 import renderCalcWithRounder from './renderCalcWithRounder'
 import calcMinFromBreakpoint from './calcMinFromBreakpoint'
 import calcMaxFromBreakpoint from './calcMaxFromBreakpoint'
@@ -8,7 +7,7 @@ import splitUnit from './splitUnit'
 import stripNestedCalcs from './stripNestedCalcs'
 import isLargestBreakpoint from './isLargestBreakpoint'
 import getLargestContainer from './getLargestContainer'
-import reduceCSSCalc from 'reduce-css-calc'
+import replaceWildcards from './replaceWildcards'
 
 const processBetween = (size, config, bp, node) => {
   size = size.match(/between\((.*)\)/)[1]
@@ -66,7 +65,7 @@ const processBetween = (size, config, bp, node) => {
 }
 
 export default function parseSize (node, config, size, bp) {
-  let maxVWCol = false
+  let sizeMap
 
   if (size === '0') {
     return '0'
@@ -79,7 +78,8 @@ export default function parseSize (node, config, size, bp) {
   // first check if we have it in our config spacing map
   // if we do, we extract it and run it through the normal checks
   if (_.has(config.theme.spacing, size)) {
-    size = config.theme.spacing[size][bp]
+    sizeMap = replaceWildcards(config.theme.spacing[size], config)
+    size = sizeMap[bp]
   }
 
   if (size && size.indexOf('vertical-rhythm(') !== -1) {
