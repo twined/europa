@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.10.1
+
+- Fix dist build
+
+
 ### 0.10.0
 
 - Add wildcards to `sizing` and `typography.sizes`:
