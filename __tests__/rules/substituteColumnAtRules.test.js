@@ -287,6 +287,49 @@ it('parses regular @column + half gutter', () => {
   })
 })
 
+it('parses regular @column + gutter + total gutter', () => {
+  const input = `
+    article {
+      @column 3:1/10:1;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0) {
+      article {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(75% + 15px);
+        max-width: calc(75% + 15px)
+      }
+    }
+    @media (min-width: 740px) {
+      article {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(75% + 22.5px);
+        max-width: calc(75% + 22.5px)
+      }
+    }
+    @media (min-width: 1024px) {
+      article {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(75% + 37.5px);
+        max-width: calc(75% + 37.5px)
+      }
+    }
+  `
+
+  return run(input, DEFAULT_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
 it('fails on old format', () => {
   const input = `
     article {

@@ -1,5 +1,13 @@
 # Changelog
 
+### 0.11.0
+
+- Allow using gutter selector in column "canvas":
+  ```
+  @column 8/8:1
+  ```
+  
+
 ### 0.10.1
 
 - Fix dist build
