@@ -212,37 +212,27 @@ export default function parseSize (node, config, size, bp) {
           gutterUnit = unitMax
         }
 
-        if (wantedColumns / totalColumns === 1) {
+        if (wantedColumns / totalColumns === 1 && gutterMultiplier === totalGutterMultiplier) {
           if (gutterMultiplier && !totalGutterMultiplier) {
             // if we have a gutter multiplier, but wanted and total columns are equal,
             // we are overflowing (@column 8:1/8)
             throw node.error(`SPACING: Overflowing columns. wantedColumns + gutterMultiplier is more than totalColumns (@column ${wantedColumns}:${gutterMultiplier}/${wantedColumns})`)
           }
 
-          if (gutterMultiplier === totalGutterMultiplier) {
-            sizeMath = '100%'
-          }
+          sizeMath = '100%'
+          return sizeMath
         } else {          
-          sizeMath = `${wantedColumns}/${totalColumns} - (${gutterValue}${gutterUnit} - 1/${totalColumns} * ${gutterValue * wantedColumns}${gutterUnit})`
+          if (totalGutterMultiplier) {
+            sizeMath = `${wantedColumns}/${totalColumns} - (${gutterValue}${gutterUnit} - 1/${totalColumns} * ${gutterValue * wantedColumns}${gutterUnit}) - ${gutterValue * totalGutterMultiplier}${gutterUnit} + (${gutterValue}${gutterUnit} - 1/${totalColumns} * ${gutterValue * wantedColumns}${gutterUnit})`
+          } else {
+            sizeMath = `${wantedColumns}/${totalColumns} - (${gutterValue}${gutterUnit} - 1/${totalColumns} * ${gutterValue * wantedColumns}${gutterUnit})`
+          }
         }
 
         if (gutterMultiplier) {
           sizeMath = `${sizeMath} + ${gutterValue * gutterMultiplier}${gutterUnit}`
-
-          if (totalGutterMultiplier) {
-            console.log('totalGutterMultiplier!!')
-            sizeMath = `${sizeMath} - ${gutterValue * totalGutterMultiplier}${gutterUnit}`
-          }
           return renderCalcWithRounder(sizeMath)
         } else {
-          if (totalGutterMultiplier) {
-            console.log('totalGutterMultiplier without reg gutter multi')
-            console.log('sizeMath', sizeMath)
-            sizeMath = `${sizeMath} - ${gutterValue * totalGutterMultiplier}${gutterUnit}`
-            console.log('sizeMath after', sizeMath)
-            return renderCalcWithRounder(sizeMath)
-          }
-
           if (sizeMath === '100%') {
             return sizeMath
           }

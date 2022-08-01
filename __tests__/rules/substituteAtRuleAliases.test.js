@@ -15,27 +15,27 @@ it('aliases @column-offset', () => {
   const output = `
     @media (min-width: 0){
       article{
-        margin-left: calc(8.333333333333334% - 22.916666666666668px)
+        margin-left: calc(8.333333% - 22.916667px)
       }
     }
     @media (min-width: 740px){
       article{
-        margin-left: calc(8.333333333333334% - 32.083333333333336px)
+        margin-left: calc(8.333333% - 32.083333px)
       }
     }
     @media (min-width: 1024px){
       article{
-        margin-left: calc(8.333333333333334% - 45.833333333333336px)
+        margin-left: calc(8.333333% - 45.833333px)
       }
     }
     @media (min-width: 1399px){
       article{
-        margin-left: calc(8.333333333333334% - 45.833333333333336px)
+        margin-left: calc(8.333333% - 45.833333px)
       }
     }
     @media (min-width: 1900px){
       article{
-        margin-left: calc(8.333333333333334% - 54.99999999999999px)
+        margin-left: calc(8.333333% - 55px)
       }
     }
   `
@@ -56,27 +56,27 @@ it('aliases @column-offset negative value', () => {
   const output = `
     @media (min-width: 0){
       article{
-        margin-left: calc(-8.333333333333334% - 27.083333333333332px)
+        margin-left: calc(-8.333333% - 27.083333px)
       }
     }
     @media (min-width: 740px){
       article{
-        margin-left: calc(-8.333333333333334% - 37.916666666666664px)
+        margin-left: calc(-8.333333% - 37.916667px)
       }
     }
     @media (min-width: 1024px){
       article{
-        margin-left: calc(-8.333333333333334% - 54.166666666666664px)
+        margin-left: calc(-8.333333% - 54.166667px)
       }
     }
     @media (min-width: 1399px){
       article{
-        margin-left: calc(-8.333333333333334% - 54.166666666666664px)
+        margin-left: calc(-8.333333% - 54.166667px)
       }
     }
     @media (min-width: 1900px){
       article{
-        margin-left: calc(-8.333333333333334% - 65px)
+        margin-left: calc(-8.333333% - 65px)
       }
     }
   `
@@ -97,7 +97,7 @@ it('aliases @column-offset for single bp', () => {
   const output = `
     @media (min-width: 0) and (max-width: 739px){
       article{
-        margin-left: calc(8.333333333333334% - 22.916666666666668px)
+        margin-left: calc(8.333333% - 22.916667px)
       }
     }
     

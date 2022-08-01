@@ -175,7 +175,7 @@ function createFlexDecls(flexDecls, flexSize) {
   let maxWidth
   
   if (flexSize.includes('vw') && FIX_FIREFOX_FLEX_VW_BUG) {
-    maxWidth = reduceCSSCalc(`calc(${flexSize} - 0.002vw)`, 150)
+    maxWidth = reduceCSSCalc(`calc(${flexSize} - 0.002vw)`, 6)
   } else {
     maxWidth = flexSize
   }

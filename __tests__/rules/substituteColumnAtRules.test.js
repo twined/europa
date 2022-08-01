@@ -146,8 +146,8 @@ it('parses vw @column', () => {
         position: relative;
         flex-grow: 0;
         flex-shrink: 0;
-        flex-basis: calc(75% - 5.120000000000001px);
-        max-width: calc(75% - 5.120000000000001px)
+        flex-basis: calc(75% - 5.12px);
+        max-width: calc(75% - 5.12px)
       }
     }
   `
@@ -290,7 +290,22 @@ it('parses regular @column + half gutter', () => {
 it('parses regular @column + gutter + total gutter', () => {
   const input = `
     article {
-      @column 3:1/10:1;
+      @column 10:1/12;
+      .inner {
+        @column 2/10:1;
+      }
+      
+      .inner2 {
+        @column 2:1/10:1;
+      }
+
+      .inner3 {
+        @column 10/10:1;
+      }
+
+      .inner4 {
+        @column 10:1/10:1;
+      }
     }
   `
 
@@ -300,8 +315,8 @@ it('parses regular @column + gutter + total gutter', () => {
         position: relative;
         flex-grow: 0;
         flex-shrink: 0;
-        flex-basis: calc(75% + 15px);
-        max-width: calc(75% + 15px)
+        flex-basis: calc(83.333333% + 16.666667px);
+        max-width: calc(83.333333% + 16.666667px)
       }
     }
     @media (min-width: 740px) {
@@ -309,8 +324,8 @@ it('parses regular @column + gutter + total gutter', () => {
         position: relative;
         flex-grow: 0;
         flex-shrink: 0;
-        flex-basis: calc(75% + 22.5px);
-        max-width: calc(75% + 22.5px)
+        flex-basis: calc(83.333333% + 25px);
+        max-width: calc(83.333333% + 25px)
       }
     }
     @media (min-width: 1024px) {
@@ -318,8 +333,116 @@ it('parses regular @column + gutter + total gutter', () => {
         position: relative;
         flex-grow: 0;
         flex-shrink: 0;
-        flex-basis: calc(75% + 37.5px);
-        max-width: calc(75% + 37.5px)
+        flex-basis: calc(83.333333% + 41.666667px);
+        max-width: calc(83.333333% + 41.666667px)
+      }
+    }
+    @media (min-width: 0) {
+      article .inner {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(20% - 20px);
+        max-width: calc(20% - 20px)
+      }
+    }
+    @media (min-width: 740px) {
+      article .inner {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(20% - 30px);
+        max-width: calc(20% - 30px)
+      }
+    }
+    @media (min-width: 1024px) {
+      article .inner {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(20% - 50px);
+        max-width: calc(20% - 50px)
+      }
+    }
+    @media (min-width: 0) {
+      article .inner2 {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 20%;
+        max-width: 20%
+      }
+    }
+    @media (min-width: 740px) {
+      article .inner2 {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 20%;
+        max-width: 20%
+      }
+    }
+    @media (min-width: 1024px) {
+      article .inner2 {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 20%;
+        max-width: 20%
+      }
+    }
+    @media (min-width: 0) {
+      article .inner3 {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(100% - 20px);
+        max-width: calc(100% - 20px)
+      }
+    }
+    @media (min-width: 740px) {
+      article .inner3 {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(100% - 30px);
+        max-width: calc(100% - 30px)
+      }
+    }
+    @media (min-width: 1024px) {
+      article .inner3 {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: calc(100% - 50px);
+        max-width: calc(100% - 50px)
+      }
+    }
+    @media (min-width: 0) {
+      article .inner4 {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 100%;
+        max-width: 100%
+      }
+    }
+    @media (min-width: 740px) {
+      article .inner4 {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 100%;
+        max-width: 100%
+      }
+    }
+    @media (min-width: 1024px) {
+      article .inner4 {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 100%;
+        max-width: 100%
       }
     }
   `
