@@ -5,6 +5,8 @@
     --breakpoint-$key: $value
   }
   --ec-zoom: 1.0;
+  --font-base-px: theme('typography.base');
+  --font-base-vw: theme('typography.base');
   @unpack containerPadding;
 }
 
