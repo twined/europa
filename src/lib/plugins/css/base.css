@@ -5,6 +5,7 @@
     --breakpoint-$key: $value
   }
   --ec-zoom: 1.0;
+  @unpack containerPadding;
 }
 
 /**

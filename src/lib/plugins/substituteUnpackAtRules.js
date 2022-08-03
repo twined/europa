@@ -11,17 +11,41 @@ export default postcss.plugin('europacss-unpack', getConfig => {
       const src = atRule.source
       const parent = atRule.parent
 
-      if (parent.type === 'root') {
-        throw atRule.error(`UNPACK: Cannot run from root`, { word: 'unpack' })
-      }
-
       const params = atRule.params
       if (!params) {
         throw atRule.error(`UNPACK: Must include iterable parameter`, { word: 'unpack' })
       }
 
+      if (params === 'containerPadding') {
+        // unpack container values to css vars
+        const obj = _.get(config, ['theme', 'container', 'padding'])
+        if (!obj) {
+          throw atRule.error(`UNPACK: iterable not found: \`${params}\``, { word: params })
+        }
+
+        // iterate through breakpoints
+        _.keys(obj).forEach(breakpoint => {
+          let value = obj[breakpoint]
+
+          // build decls for each k/v
+          const decls = [buildDecl('--container-padding', value)]
+
+          // build a responsive rule with these decls
+          const responsiveRule = postcss.atRule({ name: 'responsive', params: breakpoint })
+          responsiveRule.source = src
+          responsiveRule.append(...decls)
+          atRule.parent.append(responsiveRule)
+        })
+        atRule.remove()
+        return
+      }
+
       if (params.indexOf('.') === -1) {
         throw atRule.error(`UNPACK: Can't unpack theme object. Supply a path: \`spacing.md\``, { word: 'unpack' })
+      }
+
+      if (parent.type === 'root') {
+        throw atRule.error(`UNPACK: Cannot run from root`, { word: 'unpack' })
       }
 
       // get the wanted object

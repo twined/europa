@@ -12,6 +12,13 @@ const cfg = {
       sm: '740px',
       md: '1024px'
     },
+    container: {
+      padding: {
+        xs: '25px',
+        sm: '5.555556vw',
+        md: '5.555556vw'
+      }
+    },
     typography: {
       sections: {
         navigation: {
@@ -66,6 +73,29 @@ it('parses @unpack', () => {
         line-height: 12px;
         letter-spacing: 0.12rem
       }
+    }
+  `
+
+  return run(input, cfg).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @unpack containerPadding', () => {
+  const input = `
+  @unpack containerPadding;
+  `
+
+  const output = `
+    @media (min-width: 0) and (max-width: 739px) {
+      --container-padding: 25px
+    }
+    @media (min-width: 740px) and (max-width: 1023px) {
+      --container-padding: 5.555556vw
+    }
+    @media (min-width: 1024px) {
+      --container-padding: 5.555556vw
     }
   `
 
