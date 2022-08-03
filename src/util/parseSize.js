@@ -312,8 +312,8 @@ function renderColGutterMultiplier (node, multiplier, bp, config) {
 
   const gutter = config.theme.columns.gutters[bp]
   const [val, unit] = splitUnit(gutter)
-
-  if (unit === 'vw' && config.setMaxForVw && isLargestBreakpoint(config, bp)) {
+  
+  if (unit === 'vw' && (config.hasOwnProperty('setMaxForVw') && config.setMaxForVw === true) && isLargestBreakpoint(config, bp)) {
     const maxSize = getLargestContainer(config)
     const [valMax, unitMax] = splitUnit(maxSize)
     const gutterInPixels = valMax / 100 * val

@@ -25,25 +25,48 @@ export default postcss.plugin('europacss-color', getConfig => {
       const path = color.split('.')
 
       const resolvedColor = _.get(config, theme.concat(path))
-
-      if (!resolvedColor) {
-        throw atRule.error(`COLOR: color not found: \`${color}\``, { word: color })
-      }
-
+      
       let decl
 
       switch (target) {
         case 'fg':
-          decl = buildDecl('color', resolvedColor)
+          decl = buildDecl('color', resolvedColor || color)
           break
 
         case 'bg':
-          decl = buildDecl('background-color', resolvedColor)
+          decl = buildDecl('background-color', resolvedColor || color)
+          break
+
+        case 'fill':
+          decl = buildDecl('fill', resolvedColor || color)
+          break
+
+        case 'stroke':
+          decl = buildDecl('stroke', resolvedColor || color)
+          break
+
+        case 'border':
+          decl = buildDecl('border-color', resolvedColor || color)
+          break
+
+        case 'border-top':
+          decl = buildDecl('border-top-color', resolvedColor || color)
+          break
+
+        case 'border-bottom':
+          decl = buildDecl('border-bottom-color', resolvedColor || color)
+          break
+        
+        case 'border-left':
+          decl = buildDecl('border-left-color', resolvedColor || color)
+          break
+
+        case 'border-right':
+          decl = buildDecl('border-right-color', resolvedColor || color)
           break
 
         default:
-          throw atRule.error(`COLOR: target must be fg or bg. Got \`${target}\``, { word: target })
-
+          throw atRule.error(`COLOR: target must be fg, bg, fill, stroke, border or border-[top|bottom|right|left]. Got \`${target}\``, { word: target })
       }
 
       atRule.parent.append(decl)
