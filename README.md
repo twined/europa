@@ -143,15 +143,16 @@ todo
 ```
 
 
-### `@color {fg/bg} {colorName}`
+### `@color {fg/bg/stroke/fill/border/border-[top|bottom|left|right]} {colorName/hex}`
 
-Gets `colorName` from `theme.colors`
+Tries to get `colorName` from `theme.colors`, otherwise passes the color through
 
 **EXAMPLE**:
 
 ```
 h2 {
   @color fg headings.h2;
+  @color bg transparent;
 }
 ```
 

@@ -6,7 +6,10 @@
   ```
   @column 8/8:1
   ```
-  
+- Add base font-size to `html`
+- Add `--container-padding` css var to `:root` with breakpoints
+- Allow passing colors/transparent to `@color`
+
 
 ### 0.10.1
 

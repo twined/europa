@@ -5,6 +5,7 @@
     --breakpoint-$key: $value
   }
   --ec-zoom: 1.0;
+  @unpack containerPadding;
 }
 
 /**
@@ -22,12 +23,12 @@
 html {
   box-sizing: border-box; /* 1 */
   font-family: sans-serif; /* 2 */
+  font-size: theme('typography.base');
   height: 100%;
 }
 
 body {
   font-family: theme('typography.families.main');
-  font-size: theme('typography.base');
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
