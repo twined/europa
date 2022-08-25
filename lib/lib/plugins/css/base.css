@@ -27,6 +27,10 @@ html {
   font-family: sans-serif; /* 2 */
   font-size: theme('typography.base');
   height: 100%;
+
+  &[data-loading] {
+    cursor: wait;
+  }
 }
 
 body {

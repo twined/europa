@@ -219,7 +219,7 @@ it('parses @fontsize config with line-height', () => {
     @media (min-width: 0){
       article{
         font-size: calc(8vw * var(--ec-zoom));
-        line-height: calc(12vw * var(--ec-zoom));
+        line-height: calc(12vw * var(--ec-zoom))
       }
     }
     @media (min-width: 740px){
