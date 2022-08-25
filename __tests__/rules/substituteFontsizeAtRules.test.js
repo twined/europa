@@ -62,7 +62,7 @@ const MAX_PX_CFG = {
         tablet: 1.6,
         desktop: 1.6
       },
-      sizes: {
+      sizes: {        
         xs: {
           mobile: '10px',
           tablet: '12px',
@@ -180,6 +180,11 @@ const WILDCARD_CFG = {
         desktop: 1.6
       },
       sizes: {
+        h0: {
+          mobile: '8vw/12vw',
+          '*': '4vw/1.2'
+        },
+
         h1: {
           '*': '4vw',
           desktop: '3.5vw'
@@ -200,6 +205,40 @@ it('fails on root', () => {
   expect.assertions(1)
   return run(input).catch(e => {
     expect(e).toMatchObject({ name: 'CssSyntaxError' })
+  })
+})
+
+it('parses @fontsize config with line-height', () => {
+  const input = `
+    article {
+      @fontsize h0;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0){
+      article{
+        font-size: calc(8vw * var(--ec-zoom));
+        line-height: calc(12vw * var(--ec-zoom));
+      }
+    }
+    @media (min-width: 740px){
+      article{
+        font-size: calc(4vw * var(--ec-zoom));
+        line-height: 1.2
+      }
+    }
+    @media (min-width: 1024px){
+      article{
+        font-size: calc(4vw * var(--ec-zoom));
+        line-height: 1.2
+      }
+    }
+  `
+
+  return run(input, WILDCARD_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
   })
 })
 

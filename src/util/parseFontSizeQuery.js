@@ -45,6 +45,11 @@ export default function parseFontSizeQuery (node, config, fontSizeQuery, breakpo
 
   if (!modifier) {
     if (_.isString(resolvedFontsize)) {
+      if (!lineHeight && resolvedFontsize.indexOf('/') !== -1) {
+        // if the resolvedFontsize has a lineHeight ie `iphone: '4vw/12vw'`
+        [resolvedFontsize, lineHeight] = resolvedFontsize.split('/')
+      }
+
       if (resolvedFontsize.endsWith('vw')) {
         if (lineHeight && lineHeight.endsWith('vw')) {
           return parseVWQuery(node, config, resolvedFontsize, lineHeight, breakpoint, false)
@@ -61,29 +66,43 @@ export default function parseFontSizeQuery (node, config, fontSizeQuery, breakpo
         }
       }
     }
-    if (_.isObject(resolvedFontsize[breakpoint])) {
+    let bpFS = resolvedFontsize[breakpoint]
+    if (_.isObject(bpFS)) {
       const props = {}
-      _.keys(resolvedFontsize[breakpoint]).forEach(key => {
-        const v = resolvedFontsize[breakpoint][key]
+      _.keys(bpFS).forEach(key => {
+        const v = bpFS[key]
+        
         if (v.endsWith('vw')) {
-          props[key] = parseVWQuery(node, config, resolvedFontsize[breakpoint][key], lineHeight, breakpoint, true)
+          props[key] = parseVWQuery(node, config, bpFS[key], lineHeight, breakpoint, true)
         } else {
-          props[key] = resolvedFontsize[breakpoint][key]
+          props[key] = bpFS[key]
         }
       })
       return props
     } else {
-      if (resolvedFontsize[breakpoint].indexOf('between(') !== -1) {
-        // responsive font size
-        return parseRFSQuery(node, config, resolvedFontsize[breakpoint], lineHeight, breakpoint)
+      if (!lineHeight && bpFS.indexOf('/') !== -1) {
+        // if the resolvedFontsize has a lineHeight ie `iphone: '4vw/12vw'`
+        [bpFS, lineHeight] = bpFS.split('/')
       }
 
-      if (resolvedFontsize[breakpoint].endsWith('vw')) {
-        return parseVWQuery(node, config, resolvedFontsize[breakpoint], lineHeight, breakpoint)
+      if (bpFS.indexOf('between(') !== -1) {
+        // responsive font size
+        return parseRFSQuery(node, config, bpFS, lineHeight, breakpoint)
+      }
+
+      if (bpFS.endsWith('vw')) {
+        if (lineHeight && lineHeight.endsWith('vw')) {
+          return parseVWQuery(node, config, bpFS, lineHeight, breakpoint, false)
+        } else {
+          return {
+            ...{ 'font-size': parseVWQuery(node, config, bpFS, lineHeight, breakpoint, true) },
+            ...(lineHeight && { 'line-height': lineHeight })
+          }
+        }
       }
 
       return {
-        ...{ 'font-size': resolvedFontsize[breakpoint] },
+        ...{ 'font-size': bpFS },
         ...(lineHeight && { 'line-height': lineHeight })
       }
     }
