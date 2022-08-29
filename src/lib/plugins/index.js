@@ -1,4 +1,3 @@
-import lintAtRules from './lintAtRules'
 import evaluateEuropaFunctions from './evaluateEuropaFunctions'
 import substituteIfAtRules from './substituteIfAtRules'
 import substituteColorAtRules from './substituteColorAtRules'
@@ -15,12 +14,9 @@ import substituteFontsizeAtRules from './substituteFontsizeAtRules'
 import substituteColumnAtRules from './substituteColumnAtRules'
 import substituteResponsiveAtRules from './substituteResponsiveAtRules'
 import substituteEmbedResponsiveAtRules from './substituteEmbedResponsiveAtRules'
-import substituteRowAtRules from './substituteRowAtRules'
 import substituteGridAtRules from './substituteGridAtRules'
-import postcssExtend from 'postcss-extend-rule'
 
 export default [
-  lintAtRules,
   substituteEuropaAtRules,
   substituteIfAtRules,
   substituteColorAtRules,
