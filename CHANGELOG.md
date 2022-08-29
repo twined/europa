@@ -9,6 +9,13 @@
 - Add base font-size to `html`
 - Add `--container-padding` css var to `:root` with breakpoints
 - Allow passing colors/transparent to `@color`
+- Allow passing font-size and line-height to size keys:
+  ````
+  h1: {
+    iphone: '8vw/10vw',
+    '*': '4vw/1.2'
+  }
+  ```
 
 
 ### 0.10.1
