@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.11.1
+
+- Add `data-moonwalk-section-ready` with opacity 1 to base.
+
+
 ### 0.11.0
 
 - Allow using gutter selector in column "canvas":

@@ -234,7 +234,6 @@ video {
   border: 0 !important;
  }
 
-
 /**
 * Moonwalk
 */
@@ -244,6 +243,10 @@ html.moonwalk {
   [data-moonwalk-section],
   [data-moonwalk-run] {
     opacity: 0;
+  }
+
+  [data-moonwalk-section][data-moonwalk-section-ready] {
+    opacity: 1;
   }
 }
 
