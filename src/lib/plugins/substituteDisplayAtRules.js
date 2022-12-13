@@ -1,29 +1,17 @@
-
 import _ from 'lodash'
 import postcss from 'postcss'
-import buildMediaQueryQ from '../../util/buildMediaQueryQ'
-import extractBreakpointKeys from '../../util/extractBreakpointKeys'
-import fs from 'fs'
-import updateSource from '../../util/updateSource'
 import buildDecl from '../../util/buildDecl'
 
 /**
  * Display. Basically a shortcut for responsive display rules
  */
 
-export default postcss.plugin('europacss-display', getConfig => {
-  const config = getConfig()
-  const { theme: { breakpoints, breakpointCollections }} = config
-
+export default postcss.plugin('europacss-display', () => {
   return function (css) {
-    const finalRules = []
-
     css.walkAtRules('display', atRule => {
       const src = atRule.source
       let selector
       let wrapInResponsive = false
-      let wrapRow = 'nowrap'
-      let gap = null
       const parent = atRule.parent
       let grandParent = atRule.parent.parent
 
@@ -48,7 +36,10 @@ export default postcss.plugin('europacss-display', getConfig => {
       // accept a query param for @space
       if (parent.type === 'atrule' && parent.name === 'responsive') {
         if (bpQuery) {
-          throw clonedRule.error(`DISPLAY: When nesting @display under @responsive, we do not accept a breakpoints query.`, { name: bpQuery })
+          throw clonedRule.error(
+            `DISPLAY: When nesting @display under @responsive, we do not accept a breakpoints query.`,
+            { name: bpQuery }
+          )
         }
 
         bpQuery = parent.params
@@ -59,7 +50,10 @@ export default postcss.plugin('europacss-display', getConfig => {
       } else if (grandParent.name === 'responsive') {
         // check if grandparent is @responsive
         if (bpQuery) {
-          throw clonedRule.error(`DISPLAY: When nesting @display under @responsive, we do not accept a breakpoints query.`, { name: bpQuery })
+          throw clonedRule.error(
+            `DISPLAY: When nesting @display under @responsive, we do not accept a breakpoints query.`,
+            { name: bpQuery }
+          )
         }
 
         bpQuery = grandParent.params
@@ -77,9 +71,7 @@ export default postcss.plugin('europacss-display', getConfig => {
 
       let [displayParam, flexDirection, flexWrap] = displayQ.split('/')
 
-      const decls = [
-        buildDecl('display', displayParam)
-      ]
+      const decls = [buildDecl('display', displayParam)]
 
       if (flexDirection) {
         decls.push(buildDecl('flex-direction', flexDirection))

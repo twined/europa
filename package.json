@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "dev": "babel src --out-dir lib --copy-files && yalc push",
-    "test": "jest __tests__ && eslint src/*.js",
+    "test": "jest __tests__",
     "coverage": "jest __tests__ --coverage",
     "prebuild": "rimraf lib",
     "build": "babel src --out-dir lib --copy-files"

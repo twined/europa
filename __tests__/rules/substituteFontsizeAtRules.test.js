@@ -1,7 +1,7 @@
 const postcss = require('postcss')
 const plugin = require('../../src')
 
-function run (input, opts) {
+function run(input, opts) {
   return postcss([plugin(opts)]).process(input, { from: undefined })
 }
 
@@ -62,7 +62,7 @@ const MAX_PX_CFG = {
         tablet: 1.6,
         desktop: 1.6
       },
-      sizes: {        
+      sizes: {
         xs: {
           mobile: '10px',
           tablet: '12px',
@@ -135,7 +135,7 @@ const MAX_PX_PERCENT = {
         tablet: 1.6,
         desktop: 1.6
       },
-      sizes: {        
+      sizes: {
         lg: {
           mobile: '4vw',
           tablet: '3vw',
@@ -190,12 +190,117 @@ const WILDCARD_CFG = {
           desktop: '3.5vw'
         },
         h2: {
-          '*': '3vw',
+          '*': '3vw'
         }
       }
     }
   }
 }
+
+const DPX_CFG = {
+  theme: {
+    breakpoints: {
+      mobile: '0',
+      tablet: '740px',
+      desktop: '1024px'
+    },
+
+    breakpointCollections: {
+      $test: 'mobile/tablet'
+    },
+
+    container: {
+      maxWidth: {
+        mobile: '100%',
+        tablet: '100%',
+        desktop: '1920px'
+      },
+
+      padding: {
+        mobile: '15px',
+        tablet: '35px',
+        desktop: '50px'
+      }
+    },
+
+    typography: {
+      base: '16px',
+      lineHeight: {
+        mobile: 1.6,
+        tablet: 1.6,
+        desktop: 1.6
+      },
+      sizes: {
+        h0: {
+          mobile: '50dpx/1.2',
+          '*': '95dpx/1.2'
+        },
+        h2: {
+          mobile: '25dpx',
+          tablet: '35dpx',
+          desktop: '45dpx'
+        }
+      }
+    }
+  }
+}
+
+it('parses @fontsize dpx', () => {
+  const input = `
+    article {
+      h1 {
+        @fontsize h0;
+      }
+
+      h2 {
+        @fontsize h2 mobile;
+        @fontsize h2 tablet;
+        @fontsize h2 desktop;
+      }
+    }
+  `
+
+  const output = `
+    @media (min-width: 0){
+      article h1{
+        font-size: calc(6.76590vw * var(--ec-zoom));
+        line-height: 1.2
+      }
+    }
+    @media (min-width: 740px){
+      article h1{
+        font-size: calc(12.83784vw * var(--ec-zoom));
+        line-height: 1.2
+      }
+    }
+    @media (min-width: 1024px){
+      article h1{
+        font-size: calc(9.27734vw * var(--ec-zoom));
+        line-height: 1.2
+      }
+    }
+    @media (min-width: 0) and (max-width: 739px){
+      article h2{
+        font-size: calc(3.38295vw * var(--ec-zoom))
+      }
+    }
+    @media (min-width: 740px) and (max-width: 1023px){
+      article h2{
+        font-size: calc(4.72973vw * var(--ec-zoom))
+      }
+    }
+    @media (min-width: 1024px){
+      article h2{
+        font-size: calc(4.39453vw * var(--ec-zoom))
+      }
+    }
+  `
+
+  return run(input, DPX_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
 
 it('fails on root', () => {
   const input = `
@@ -438,7 +543,7 @@ it('parses @fontsize without max px', () => {
     }
   `
 
-  return run(input, {...MAX_PX_CFG, setMaxForVw: false }).then(result => {
+  return run(input, { ...MAX_PX_CFG, setMaxForVw: false }).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })
