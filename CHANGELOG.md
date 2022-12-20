@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.12.0
+
+- Support .cjs configs
+
+
 ### 0.11.1
 
 - Add `data-moonwalk-section-ready` with opacity 1 to base.

@@ -1,9 +1,9 @@
 import fs from 'fs'
 import _ from 'lodash'
 import path from 'path'
-import { defaultConfigFile } from '../constants'
+import { defaultConfigFile, cjsConfigFile } from '../constants'
 
-export default function resolveConfigPath (filePath) {
+export default function resolveConfigPath(filePath) {
   if (_.isObject(filePath)) {
     return undefined
   }
@@ -12,11 +12,11 @@ export default function resolveConfigPath (filePath) {
     return path.resolve(filePath)
   }
 
-  try {
-    const defaultConfigPath = path.resolve(defaultConfigFile)
-    fs.accessSync(defaultConfigPath)
-    return defaultConfigPath
-  } catch (err) {
-    return undefined
+  for (const configFile of [defaultConfigFile, cjsConfigFile]) {
+    try {
+      const configPath = path.resolve(configFile)
+      fs.accessSync(configPath)
+      return configPath
+    } catch (err) {}
   }
 }
