@@ -1,7 +1,7 @@
 const postcss = require('postcss')
 const plugin = require('../../src')
 
-function run (input, opts) {
+function run(input, opts) {
   return postcss([plugin(opts)]).process(input, { from: undefined })
 }
 
@@ -128,6 +128,37 @@ it('parses @font with size and breakpoints', () => {
         line-height: 1.53;
       }
     }
+  `
+
+  return run(input).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @font with size in pixels and breakpoints', () => {
+  const input = `
+    article {
+      @font serif 18px/1.25 >=lg;
+    }
+  `
+
+  const output = `
+  article {
+    font-family: Georgia,Cambria,\"Times New Roman\",Times,serif;
+  }
+  @media (min-width: 1399px) and (max-width: 1899px) {
+    article {
+      font-size: 18px;
+      line-height: 1.25;
+    }
+  }
+  @media (min-width: 1900px) {
+    article {
+      font-size: 18px;
+      line-height: 1.25;
+    }
+  }
   `
 
   return run(input).then(result => {

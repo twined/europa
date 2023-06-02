@@ -1105,7 +1105,7 @@ it('parses a selector path', () => {
   })
 })
 
-it('parses between()', () => {
+it('parses between() with line height', () => {
   const cfg = {
     theme: {
       breakpoints: {
@@ -1127,6 +1127,37 @@ it('parses between()', () => {
       article{
         font-size: calc(12px + 4 * ((100vw - 740px) / 283));
         line-height: 2.0
+      }
+    }
+  `
+
+  return run(input, cfg).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses between() without line height', () => {
+  const cfg = {
+    theme: {
+      breakpoints: {
+        xs: '0',
+        sm: '740px',
+        md: '1024px'
+      }
+    }
+  }
+
+  const input = `
+    article {
+      @fontsize between(12px-16px) sm;
+    }
+  `
+
+  const output = `
+    @media (min-width: 740px) and (max-width: 1023px){
+      article{
+        font-size: calc(12px + 4 * ((100vw - 740px) / 283))
       }
     }
   `
