@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.12.1
+
+- Add grid gutters as css vars
+
+
 ### 0.12.0
 
 - Support .cjs configs
