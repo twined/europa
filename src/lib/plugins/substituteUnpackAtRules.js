@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import postcss from 'postcss'
-import buildDecl from '../../util/buildDecl';
+import buildDecl from '../../util/buildDecl'
 
 export default postcss.plugin('europacss-unpack', getConfig => {
   return function (css) {
@@ -40,8 +40,34 @@ export default postcss.plugin('europacss-unpack', getConfig => {
         return
       }
 
+      if (params === 'gridGutter') {
+        // unpack container values to css vars
+        const obj = _.get(config, ['theme', 'columns', 'gutters'])
+        if (!obj) {
+          throw atRule.error(`UNPACK: iterable not found: \`${params}\``, { word: params })
+        }
+
+        // iterate through breakpoints
+        _.keys(obj).forEach(breakpoint => {
+          let value = obj[breakpoint]
+
+          // build decls for each k/v
+          const decls = [buildDecl('--grid-gutter', value)]
+
+          // build a responsive rule with these decls
+          const responsiveRule = postcss.atRule({ name: 'responsive', params: breakpoint })
+          responsiveRule.source = src
+          responsiveRule.append(...decls)
+          atRule.parent.append(responsiveRule)
+        })
+        atRule.remove()
+        return
+      }
+
       if (params.indexOf('.') === -1) {
-        throw atRule.error(`UNPACK: Can't unpack theme object. Supply a path: \`spacing.md\``, { word: 'unpack' })
+        throw atRule.error(`UNPACK: Can't unpack theme object. Supply a path: \`spacing.md\``, {
+          word: 'unpack'
+        })
       }
 
       if (parent.type === 'root') {
@@ -56,7 +82,9 @@ export default postcss.plugin('europacss-unpack', getConfig => {
       }
 
       if (typeof obj !== 'object') {
-        throw atRule.error(`UNPACK: iterable must be an object of breakpoints \`${params}\``, { word: params })
+        throw atRule.error(`UNPACK: iterable must be an object of breakpoints \`${params}\``, {
+          word: params
+        })
       }
 
       // iterate through breakpoints

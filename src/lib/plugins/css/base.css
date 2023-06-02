@@ -8,6 +8,7 @@
   --font-base-px: theme('typography.base');
   --font-base-vw: theme('typography.base');
   @unpack containerPadding;
+  @unpack gridGutter;
 }
 
 /**
