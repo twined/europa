@@ -1,5 +1,11 @@
 # Changelog
 
+### 0.12.2
+
+- Add text-size-adjust rule
+- Fix grid gutters css var
+
+
 ### 0.12.1
 
 - Add grid gutters as css vars
