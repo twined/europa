@@ -1,7 +1,7 @@
 const postcss = require('postcss')
 const plugin = require('../../src')
 
-function run (input, opts) {
+function run(input, opts) {
   return postcss([plugin(opts)]).process(input, { from: undefined })
 }
 
@@ -17,6 +17,18 @@ const cfg = {
         xs: '25px',
         sm: '5.555556vw',
         md: '5.555556vw'
+      }
+    },
+    columns: {
+      count: {
+        xs: 4,
+        sm: 6,
+        md: 12
+      },
+      gutters: {
+        xs: '15px',
+        sm: '40px',
+        md: '4.1667vw'
       }
     },
     typography: {
@@ -96,6 +108,29 @@ it('parses @unpack containerPadding', () => {
     }
     @media (min-width: 1024px) {
       --container-padding: 5.555556vw
+    }
+  `
+
+  return run(input, cfg).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @unpack gridGutter', () => {
+  const input = `
+  @unpack gridGutter;
+  `
+
+  const output = `
+    @media (min-width: 0) and (max-width: 739px) {
+      --grid-gutter: 15px
+    }
+    @media (min-width: 740px) and (max-width: 1023px) {
+      --grid-gutter: 40px
+    }
+    @media (min-width: 1024px) {
+      --grid-gutter: 4.1667vw
     }
   `
 

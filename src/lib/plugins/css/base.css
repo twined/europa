@@ -7,8 +7,8 @@
   --ec-zoom: 1.0;
   --font-base-px: theme('typography.base');
   --font-base-vw: theme('typography.base');
-  @unpack containerPadding;
   @unpack gridGutter;
+  @unpack containerPadding;
 }
 
 /**
@@ -28,6 +28,9 @@ html {
   font-family: sans-serif; /* 2 */
   font-size: theme('typography.base');
   height: 100%;
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
 
   &[data-loading] {
     cursor: wait;
