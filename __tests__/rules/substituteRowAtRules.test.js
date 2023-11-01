@@ -1,7 +1,7 @@
 const postcss = require('postcss')
 const plugin = require('../../src')
 
-function run (input, opts) {
+function run(input, opts) {
   return postcss([plugin(opts)]).process(input, { from: undefined })
 }
 
@@ -20,22 +20,22 @@ it('parses @row', () => {
     article > *:nth-child(1) {
       margin-left: 0;
     }
-    @media (min-width: 0) {
+    @media (min-width: 0) and (max-width: 739px) {
       article > * {
         margin-left: 25px;
       }
     }
-    @media (min-width: 740px) {
+    @media (min-width: 740px) and (max-width: 1023px) {
       article > * {
         margin-left: 35px;
       }
     }
-    @media (min-width: 1024px) {
+    @media (min-width: 1024px) and (max-width: 1398px) {
       article > * {
         margin-left: 50px;
       }
     }
-    @media (min-width: 1399px) {
+    @media (min-width: 1399px) and (max-width: 1899px) {
       article > * {
         margin-left: 50px;
       }
@@ -68,22 +68,22 @@ it('parses @row with specified children count', () => {
     article > *:nth-child(3n+1) {
       margin-left: 0;
     }
-    @media (min-width: 0) {
+    @media (min-width: 0) and (max-width: 739px) {
       article > * {
         margin-left: 25px;
       }
     }
-    @media (min-width: 740px) {
+    @media (min-width: 740px) and (max-width: 1023px) {
       article > * {
         margin-left: 35px;
       }
     }
-    @media (min-width: 1024px) {
+    @media (min-width: 1024px) and (max-width: 1398px) {
       article > * {
         margin-left: 50px;
       }
     }
-    @media (min-width: 1399px) {
+    @media (min-width: 1399px) and (max-width: 1899px) {
       article > * {
         margin-left: 50px;
       }
@@ -116,22 +116,22 @@ it('parses @row with specified children count and wrap specifier', () => {
     article > *:nth-child(3n+1) {
       margin-left: 0;
     }
-    @media (min-width: 0) {
+    @media (min-width: 0) and (max-width: 739px) {
       article > * {
         margin-left: 25px;
       }
     }
-    @media (min-width: 740px) {
+    @media (min-width: 740px) and (max-width: 1023px) {
       article > * {
         margin-left: 35px;
       }
     }
-    @media (min-width: 1024px) {
+    @media (min-width: 1024px) and (max-width: 1398px) {
       article > * {
         margin-left: 50px;
       }
     }
-    @media (min-width: 1399px) {
+    @media (min-width: 1399px) and (max-width: 1899px) {
       article > * {
         margin-left: 50px;
       }
@@ -164,22 +164,22 @@ it('parses @row with specified children count and wrap specifier nowrap', () => 
     article > *:nth-child(3n+1) {
       margin-left: 0;
     }
-    @media (min-width: 0) {
+    @media (min-width: 0) and (max-width: 739px) {
       article > * {
         margin-left: 25px;
       }
     }
-    @media (min-width: 740px) {
+    @media (min-width: 740px) and (max-width: 1023px) {
       article > * {
         margin-left: 35px;
       }
     }
-    @media (min-width: 1024px) {
+    @media (min-width: 1024px) and (max-width: 1398px) {
       article > * {
         margin-left: 50px;
       }
     }
-    @media (min-width: 1399px) {
+    @media (min-width: 1399px) and (max-width: 1899px) {
       article > * {
         margin-left: 50px;
       }
@@ -215,22 +215,22 @@ it('parses @row with specified children count, wrap specifier and gap', () => {
     article > *:nth-child(1), article > *:nth-child(2), article > *:nth-child(3) {
       margin-top: 0;
     }
-    @media (min-width: 0) {
+    @media (min-width: 0) and (max-width: 739px) {
       article > * {
         margin-left: 25px;
       }
     }
-    @media (min-width: 740px) {
+    @media (min-width: 740px) and (max-width: 1023px) {
       article > * {
         margin-left: 35px;
       }
     }
-    @media (min-width: 1024px) {
+    @media (min-width: 1024px) and (max-width: 1398px) {
       article > * {
         margin-left: 50px;
       }
     }
-    @media (min-width: 1399px) {
+    @media (min-width: 1399px) and (max-width: 1899px) {
       article > * {
         margin-left: 50px;
       }
@@ -240,22 +240,22 @@ it('parses @row with specified children count, wrap specifier and gap', () => {
         margin-left: 60px;
       }
     }
-    @media (min-width: 0) {
+    @media (min-width: 0) and (max-width: 739px) {
       article > * {
         margin-top: 20px;
       }
     }
-    @media (min-width: 740px) {
+    @media (min-width: 740px) and (max-width: 1023px) {
       article > * {
         margin-top: 25px;
       }
     }
-    @media (min-width: 1024px) {
+    @media (min-width: 1024px) and (max-width: 1398px) {
       article > * {
         margin-top: 30px;
       }
     }
-    @media (min-width: 1399px) {
+    @media (min-width: 1399px) and (max-width: 1899px) {
       article > * {
         margin-top: 30px;
       }

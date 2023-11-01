@@ -99,7 +99,7 @@ export default postcss.plugin('europacss-unpack', getConfig => {
         })
 
         // build a responsive rule with these decls
-        const responsiveRule = postcss.atRule({ name: 'responsive', params: `>=${breakpoint}` })
+        const responsiveRule = postcss.atRule({ name: 'responsive', params: breakpoint })
         responsiveRule.source = src
         responsiveRule.append(...decls)
         atRule.parent.append(responsiveRule)

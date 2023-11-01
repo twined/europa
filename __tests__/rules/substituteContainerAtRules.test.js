@@ -1,7 +1,7 @@
 const postcss = require('postcss')
 const plugin = require('../../src')
 
-function run (input, opts) {
+function run(input, opts) {
   return postcss([plugin(opts)]).process(input, { from: undefined })
 }
 
@@ -17,7 +17,7 @@ const VW_CFG = {
       maxWidth: {
         xs: '100%',
         sm: '100%',
-        md: '1024px',
+        md: '1024px'
       },
       padding: {
         xs: '4vw',
@@ -61,7 +61,7 @@ it('parses @space container with no other decls', () => {
   `
 
   const output = `
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       article{
         padding-left: 15px;
         padding-right: 15px;
@@ -71,7 +71,7 @@ it('parses @space container with no other decls', () => {
         width: 100%
       }
     }
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       article{
         padding-left: 35px;
         padding-right: 35px;
@@ -81,7 +81,7 @@ it('parses @space container with no other decls', () => {
         width: 100%
       }
     }
-    @media (min-width: 1024px){
+    @media (min-width: 1024px) and (max-width: 1398px){
       article{
         padding-left: 50px;
         padding-right: 50px;
@@ -91,7 +91,7 @@ it('parses @space container with no other decls', () => {
         width: 100%
       }
     }
-    @media (min-width: 1399px){
+    @media (min-width: 1399px) and (max-width: 1899px){
       article{
         padding-left: 100px;
         padding-right: 100px;
@@ -133,7 +133,7 @@ it('parses container with other decls', () => {
       background-color: red;
       padding-bottom: 50px;
     }
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       article {
         padding-left: 15px;
         padding-right: 15px;
@@ -143,7 +143,7 @@ it('parses container with other decls', () => {
         width: 100%;
       }
     }
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       article {
         padding-left: 35px;
         padding-right: 35px;
@@ -153,7 +153,7 @@ it('parses container with other decls', () => {
         width: 100%;
       }
     }
-    @media (min-width: 1024px){
+    @media (min-width: 1024px) and (max-width: 1398px){
       article {
         padding-left: 50px;
         padding-right: 50px;
@@ -163,7 +163,7 @@ it('parses container with other decls', () => {
         width: 100%;
       }
     }
-    @media (min-width: 1399px){
+    @media (min-width: 1399px) and (max-width: 1899px){
       article {
         padding-left: 100px;
         padding-right: 100px;
@@ -199,7 +199,7 @@ it('parses @space container with vws and setMax', () => {
   `
 
   const output = `
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       article{
         padding-left: 4vw;
         padding-right: 4vw;
@@ -209,7 +209,7 @@ it('parses @space container with vws and setMax', () => {
         width: 100%
       }
     }
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       article{
         padding-left: 4vw;
         padding-right: 4vw;
@@ -245,7 +245,7 @@ it('parses @space container with vws without setMax', () => {
   `
 
   const output = `
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       article{
         padding-left: 4vw;
         padding-right: 4vw;
@@ -255,7 +255,7 @@ it('parses @space container with vws without setMax', () => {
         width: 100%
       }
     }
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       article{
         padding-left: 4vw;
         padding-right: 4vw;
@@ -277,7 +277,7 @@ it('parses @space container with vws without setMax', () => {
     }
   `
 
-  return run(input, {...VW_CFG, setMaxForVw: false }).then(result => {
+  return run(input, { ...VW_CFG, setMaxForVw: false }).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })

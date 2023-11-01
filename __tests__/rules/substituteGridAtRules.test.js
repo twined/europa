@@ -1,7 +1,7 @@
 const postcss = require('postcss')
 const plugin = require('../../src')
 
-function run (input, opts) {
+function run(input, opts) {
   return postcss([plugin(opts)]).process(input, { from: undefined })
 }
 
@@ -18,22 +18,22 @@ it('sets column gap and display grid', () => {
       display: grid;
       color: blue;
     }
-    @media(min-width: 0){
+    @media(min-width: 0) and (max-width: 739px){
       article {
         grid-column-gap: 25px;
       }
     }
-    @media(min-width: 740px){
+    @media(min-width: 740px) and (max-width: 1023px){
       article {
         grid-column-gap: 35px;
       }
     }
-    @media(min-width: 1024px){
+    @media(min-width: 1024px) and (max-width: 1398px){
       article {
         grid-column-gap: 50px;
       }
     }
-    @media(min-width: 1399px){
+    @media(min-width: 1399px) and (max-width: 1899px){
       article {
         grid-column-gap: 50px;
       }

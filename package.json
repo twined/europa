@@ -1,6 +1,6 @@
 {
   "name": "@brandocms/europacss",
-  "version": "0.12.2",
+  "version": "0.13.0",
   "description": "Europa CSS system",
   "main": "lib/index.js",
   "keywords": [

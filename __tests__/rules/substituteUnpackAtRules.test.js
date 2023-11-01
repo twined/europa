@@ -63,7 +63,7 @@ it('parses @unpack', () => {
   `
 
   const output = `
-    @media (min-width: 0) {
+    @media (min-width: 0) and (max-width: 739px) {
       article {
         font-size: 17px;
         line-height: 17px;
@@ -71,7 +71,7 @@ it('parses @unpack', () => {
       }
     }
 
-    @media (min-width: 740px) {
+    @media (min-width: 740px) and (max-width: 1023px) {
       article {
         font-size: 17px;
         line-height: 17px;
@@ -199,7 +199,7 @@ it('parses advanced @unpack', () => {
       color: blue;
     }
 
-    @media (min-width: 0) {
+    @media (min-width: 0) and (max-width: 739px) {
       article {
         font-size: 17px;
         line-height: 17px;
@@ -207,7 +207,7 @@ it('parses advanced @unpack', () => {
       }
     }
 
-    @media (min-width: 740px) {
+    @media (min-width: 740px) and (max-width: 1023px) {
       article {
         font-size: 17px;
         line-height: 17px;
@@ -223,13 +223,13 @@ it('parses advanced @unpack', () => {
       }
     }
 
-    @media (min-width: 0) {
+    @media (min-width: 0) and (max-width: 739px) {
       article h1 {
         color: red;
       }
     }
 
-    @media (min-width: 740px) {
+    @media (min-width: 740px) and (max-width: 1023px) {
       article h1 {
         color: green;
       }

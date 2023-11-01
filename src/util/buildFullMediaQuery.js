@@ -1,14 +1,12 @@
 import _ from 'lodash'
+import calcMaxFromBreakpoint from './calcMaxFromBreakpoint'
 
-// builds with MIN only. Fine for when iterating through all breakpoints
-// for single breakpoints, use buildSpecificMediaQuery
+// builds with MIN AND MAX
 
-export default function buildMediaQuery(breakpoints, breakpoint) {
-  let screens = breakpoints[breakpoint]
-
-  if (_.isString(screens)) {
-    screens = { min: screens }
-  }
+export default function buildFullMediaQuery(breakpoints, breakpoint) {
+  const min = breakpoints[breakpoint]
+  const max = calcMaxFromBreakpoint(breakpoints, breakpoint)
+  let screens = { min, ...(max && { max }) }
 
   if (!Array.isArray(screens)) {
     screens = [screens]

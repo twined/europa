@@ -261,39 +261,39 @@ it('parses @fontsize dpx', () => {
   `
 
   const output = `
-    @media (min-width: 0){
-      article h1{
-        font-size: calc(6.76590vw * var(--ec-zoom));
-        line-height: 1.2
-      }
+  @media (min-width: 0) and (max-width: 739px){
+    article h1{
+      font-size: calc(6.76590vw * var(--ec-zoom));
+      line-height: 1.2
     }
-    @media (min-width: 740px){
-      article h1{
-        font-size: calc(12.83784vw * var(--ec-zoom));
-        line-height: 1.2
-      }
+  }
+  @media (min-width: 740px) and (max-width: 1023px){
+    article h1{
+      font-size: calc(12.83784vw * var(--ec-zoom));
+      line-height: 1.2
     }
-    @media (min-width: 1024px){
-      article h1{
-        font-size: calc(9.27734vw * var(--ec-zoom));
-        line-height: 1.2
-      }
+  }
+  @media (min-width: 1024px){
+    article h1{
+      font-size: calc(9.27734vw * var(--ec-zoom));
+      line-height: 1.2
     }
-    @media (min-width: 0) and (max-width: 739px){
-      article h2{
-        font-size: calc(3.38295vw * var(--ec-zoom))
-      }
+  }
+  @media (min-width: 0) and (max-width: 739px){
+    article h2{
+      font-size: calc(3.38295vw * var(--ec-zoom))
     }
-    @media (min-width: 740px) and (max-width: 1023px){
-      article h2{
-        font-size: calc(4.72973vw * var(--ec-zoom))
-      }
+  }
+  @media (min-width: 740px) and (max-width: 1023px){
+    article h2{
+      font-size: calc(4.72973vw * var(--ec-zoom))
     }
-    @media (min-width: 1024px){
-      article h2{
-        font-size: calc(4.39453vw * var(--ec-zoom))
-      }
+  }
+  @media (min-width: 1024px){
+    article h2{
+      font-size: calc(4.39453vw * var(--ec-zoom))
     }
+  }
   `
 
   return run(input, DPX_CFG).then(result => {
@@ -321,13 +321,13 @@ it('parses @fontsize config with line-height', () => {
   `
 
   const output = `
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       article{
         font-size: calc(8vw * var(--ec-zoom));
         line-height: calc(12vw * var(--ec-zoom))
       }
     }
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       article{
         font-size: calc(4vw * var(--ec-zoom));
         line-height: 1.2
@@ -355,12 +355,12 @@ it('parses @fontsize config with wildcards and regular prop', () => {
   `
 
   const output = `
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       article{
         font-size: calc(4vw * var(--ec-zoom))
       }
     }
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       article{
         font-size: calc(4vw * var(--ec-zoom))
       }
@@ -386,12 +386,12 @@ it('parses @fontsize config with only wildcards', () => {
   `
 
   const output = `
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       article{
         font-size: calc(3vw * var(--ec-zoom))
       }
     }
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       article{
         font-size: calc(3vw * var(--ec-zoom))
       }
@@ -417,12 +417,12 @@ it('parses @fontsize config with max px', () => {
   `
 
   const output = `
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       article{
         font-size: calc(4vw * var(--ec-zoom))
       }
     }
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       article{
         font-size: calc(3vw * var(--ec-zoom))
       }
@@ -448,12 +448,12 @@ it('parses @fontsize vw with max px', () => {
   `
 
   const output = `
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       article{
         font-size: calc(4vw * var(--ec-zoom))
       }
     }
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       article{
         font-size: calc(4vw * var(--ec-zoom))
       }
@@ -479,13 +479,13 @@ it('parses @fontsize vw with max px and vw lineheight', () => {
   `
 
   const output = `
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       article{
         font-size: calc(4vw * var(--ec-zoom));
         line-height: calc(4vw * var(--ec-zoom))
       }
     }
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       article{
         font-size: calc(4vw * var(--ec-zoom));
         line-height: calc(4vw * var(--ec-zoom))
@@ -526,12 +526,12 @@ it('parses @fontsize without max px', () => {
   `
 
   const output = `
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       article{
         font-size: calc(4vw * var(--ec-zoom))
       }
     }
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       article{
         font-size: calc(3vw * var(--ec-zoom))
       }
@@ -557,25 +557,25 @@ it('parses regular @fontsize for all breakpoints', () => {
   `
 
   const output = `
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       article{
         font-size: 19px
       }
     }
 
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       article{
         font-size: 21px
       }
     }
 
-    @media (min-width: 1024px){
+    @media (min-width: 1024px) and (max-width: 1398px){
       article{
         font-size: 21px
       }
     }
 
-    @media (min-width: 1399px){
+    @media (min-width: 1399px) and (max-width: 1899px){
       article{
         font-size: 21px
       }
@@ -688,28 +688,28 @@ it('parses regular @fontsize for all breakpoints with line-height and modifier',
   `
 
   const output = `
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       article{
         font-size: 38px;
         line-height: 2.0
       }
     }
 
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       article{
         font-size: 42px;
         line-height: 2.0
       }
     }
 
-    @media (min-width: 1024px){
+    @media (min-width: 1024px) and (max-width: 1398px){
       article{
         font-size: 42px;
         line-height: 2.0
       }
     }
 
-    @media (min-width: 1399px){
+    @media (min-width: 1399px) and (max-width: 1899px){
       article{
         font-size: 42px;
         line-height: 2.0
@@ -738,22 +738,22 @@ it('parses regular @fontsize for all breakpoints with modifier and no line-heigh
   `
 
   const output = `
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       article{
         font-size: 38px
       }
     }
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       article{
         font-size: 42px
       }
     }
-    @media (min-width: 1024px){
+    @media (min-width: 1024px) and (max-width: 1398px){
       article{
         font-size: 42px
       }
     }
-    @media (min-width: 1399px){
+    @media (min-width: 1399px) and (max-width: 1899px){
       article{
         font-size: 42px
       }
@@ -1163,6 +1163,53 @@ it('parses between() without line height', () => {
   `
 
   return run(input, cfg).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('can mix @fontsize with and without breakpoint', () => {
+  const input = `
+    article {
+      @fontsize xl;
+      @fontsize 8vw xs;
+    }
+  `
+
+  const output = `
+    @media (min-width: 0) and (max-width: 739px){
+      article{
+        font-size: 20px
+      }
+    }
+    @media (min-width: 740px) and (max-width: 1023px){
+      article{
+        font-size: 25px
+      }
+    }
+    @media (min-width: 1024px) and (max-width: 1398px){
+      article{
+        font-size: 28px
+      }
+    }
+    @media (min-width: 1399px) and (max-width: 1899px){
+      article{
+        font-size: 28px
+      }
+    }
+    @media (min-width: 1900px){
+      article{
+        font-size: 38px
+      }
+    }
+    @media (min-width: 0) and (max-width: 739px){
+      article{
+        font-size: calc(8vw * var(--ec-zoom))
+      }
+    }
+  `
+
+  return run(input).then(result => {
     expect(result.css).toMatchCSS(output)
     expect(result.warnings().length).toBe(0)
   })

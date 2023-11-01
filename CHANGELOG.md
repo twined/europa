@@ -1,5 +1,14 @@
 # Changelog
 
+### 0.13.0
+
+- Specify each breakpoint's min-max when using plugins without breakpoint. This will
+  grant us a bit more predictable overrides when doing i.e.
+
+      @fontsize xl;
+      @fontsize 16px $mobile;
+
+
 ### 0.12.2
 
 - Add text-size-adjust rule

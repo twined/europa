@@ -2,7 +2,7 @@ import postcss from 'postcss'
 
 const plugin = require('../../src')
 
-function run (input, opts) {
+function run(input, opts) {
   return postcss([plugin(opts)]).process(input, { from: undefined })
 }
 
@@ -326,12 +326,12 @@ it('parses vw with maxPx', () => {
   `
 
   const output = `
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       body article .test{
         padding-top: 5vw
       }
     }
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       body article .test{
         padding-top: 5vw
       }
@@ -357,12 +357,12 @@ it('parses gutter with maxPx', () => {
   `
 
   const output = `
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       body article .test{
         padding-top: 2vw
       }
     }
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       body article .test{
         padding-top: 2vw
       }
@@ -388,12 +388,12 @@ it('parses with wildcards', () => {
   `
 
   const output = `
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       body article .test{
         padding-top: 2vw
       }
     }
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       body article .test{
         padding-top: 2vw
       }
@@ -423,12 +423,12 @@ it('parses @space translateX', () => {
     body article .test {
       font-size: 18px;
     }
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       body article .test {
         transform: translateX(calc(100vw - 15px + 20px));
       }
     }
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       body article .test {
         transform: translateX(calc(100vw - 35px + 30px));
       }
@@ -458,12 +458,12 @@ it('parses @space calced', () => {
     body article .test {
       font-size: 18px;
     }
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       body article .test {
         width: calc(100vw - 15px + 20px);
       }
     }
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       body article .test {
         width: calc(100vw - 35px + 30px);
       }
@@ -494,13 +494,13 @@ it('parses @space per mq size', () => {
       font-size: 18px;
     }
 
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       body article .test {
         margin-top: 15px;
       }
     }
 
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       body article .test {
         margin-top: 25px;
       }
@@ -846,12 +846,12 @@ it('parses @space for fraction with gutter multiplier', () => {
     article {
       font-size: 18px;
     }
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       article {
         margin-top: calc(50% - 30px);
       }
     }
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       article {
         margin-top: calc(50% - 45px);
       }
@@ -1037,13 +1037,13 @@ it('parses @space for fraction of breakpoint key for all breakpoints', () => {
       font-size: 18px;
     }
 
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       article {
         margin-top: calc(10px/2);
       }
     }
 
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       article {
         margin-top: calc(20px/2);
       }
@@ -1074,12 +1074,12 @@ it('@space with fraction and no breakpointQuery', () => {
     article {
       font-size: 18px;
     }
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       article {
         margin-left: calc(50% - 10px);
       }
     }
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       article {
         margin-left: calc(50% - 15px);
       }
@@ -1162,13 +1162,13 @@ it('parses @space as gutter multiplier for regular number across bps', () => {
       font-size: 18px;
     }
 
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       article {
         padding-left: 20px;
       }
     }
 
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       article {
         padding-left: 30px;
       }
@@ -1371,13 +1371,13 @@ it('parses @space with > *', () => {
       margin-left: 0;
     }
 
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       article > * {
         margin-left: 40px;
       }
     }
 
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       article > * {
         margin-left: 60px;
       }
@@ -1435,14 +1435,14 @@ it('parses @space per mq size with shortcuts', () => {
     }
   `
   const output = `
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       body{
         margin-top: 25px;
         margin-bottom: 25px
       }
     }
 
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       body{
         margin-top: 50px;
         margin-bottom: 50px

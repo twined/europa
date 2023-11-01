@@ -1,7 +1,7 @@
 const postcss = require('postcss')
 const plugin = require('../../src')
 
-function run (input, opts) {
+function run(input, opts) {
   return postcss([plugin(opts)]).process(input, { from: undefined })
 }
 
@@ -310,7 +310,7 @@ it('parses advanced nesting', () => {
     header[data-nav] nav figure.brand {
       z-index: 5;
     }
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       header[data-nav] {
         padding-left: 15px;
         padding-right: 15px;
@@ -320,7 +320,7 @@ it('parses advanced nesting', () => {
         width: 100%;
       }
     }
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       header[data-nav] {
         padding-left: 35px;
         padding-right: 35px;
@@ -330,7 +330,7 @@ it('parses advanced nesting', () => {
         width: 100%;
       }
     }
-    @media (min-width: 1024px){
+    @media (min-width: 1024px) and (max-width: 1398px){
       header[data-nav] {
         padding-left: 50px;
         padding-right: 50px;
@@ -340,7 +340,7 @@ it('parses advanced nesting', () => {
         width: 100%;
       }
     }
-    @media (min-width: 1399px){
+    @media (min-width: 1399px) and (max-width: 1899px){
       header[data-nav] {
         padding-left: 100px;
         padding-right: 100px;
@@ -360,25 +360,25 @@ it('parses advanced nesting', () => {
         width: 100%;
       }
     }
-    @media (min-width: 0) {
+    @media (min-width: 0) and (max-width: 739px) {
       header[data-nav] {
         padding-top: 15px;
         padding-bottom: 15px;
       }
     }
-    @media (min-width: 740px) {
+    @media (min-width: 740px) and (max-width: 1023px) {
       header[data-nav] {
         padding-top: 40px;
         padding-bottom: 40px;
       }
     }
-    @media (min-width: 1024px) {
+    @media (min-width: 1024px) and (max-width: 1398px) {
       header[data-nav] {
         padding-top: 40px;
         padding-bottom: 40px;
       }
     }
-    @media (min-width: 1399px) {
+    @media (min-width: 1399px) and (max-width: 1899px) {
       header[data-nav] {
         padding-top: 70px;
         padding-bottom: 70px;
@@ -395,28 +395,28 @@ it('parses advanced nesting', () => {
         align-items: flex-start;
       }
     }
-    @media (min-width: 0) {
+    @media (min-width: 0) and (max-width: 739px) {
       header[data-nav] nav figure.brand svg {
         font-size: 17px;
         line-height: 17px;
         letter-spacing: 0.12rem;
       }
     }
-    @media (min-width: 740px) {
+    @media (min-width: 740px) and (max-width: 1023px) {
       header[data-nav] nav figure.brand svg {
         font-size: 17px;
         line-height: 17px;
         letter-spacing: 0.12rem;
       }
     }
-    @media (min-width: 1024px) {
+    @media (min-width: 1024px) and (max-width: 1398px) {
       header[data-nav] nav figure.brand svg {
         font-size: 12px;
         line-height: 12px;
         letter-spacing: 0.12rem;
       }
     }
-    @media (min-width: 1399px) {
+    @media (min-width: 1399px) and (max-width: 1899px) {
       header[data-nav] nav figure.brand svg {
         font-size: 12px;
         line-height: 12px;

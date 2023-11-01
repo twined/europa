@@ -58,22 +58,22 @@ it('parses @font with size', () => {
     article {
       font-family: Georgia,Cambria,"Times New Roman",Times,serif;
     }
-    @media (min-width: 0) {
+    @media (min-width: 0) and (max-width: 739px) {
       article {
         font-size: 12px;
       }
     }
-    @media (min-width: 740px) {
+    @media (min-width: 740px) and (max-width: 1023px) {
       article {
         font-size: 12px;
       }
     }
-    @media (min-width: 1024px) {
+    @media (min-width: 1024px) and (max-width: 1398px) {
       article {
         font-size: 12px;
       }
     }
-    @media (min-width: 1399px) {
+    @media (min-width: 1399px) and (max-width: 1899px) {
       article {
         font-size: 12px;
       }

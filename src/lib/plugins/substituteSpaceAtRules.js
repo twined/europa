@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import buildMediaQuery from '../../util/buildMediaQuery'
+import buildFullMediaQuery from '../../util/buildFullMediaQuery'
 import buildMediaQueryQ from '../../util/buildMediaQueryQ'
 import postcss from 'postcss'
 import extractBreakpointKeys from '../../util/extractBreakpointKeys'
@@ -45,7 +45,9 @@ function processRule(atRule, config, finalRules, flagAsImportant) {
     throw atRule.error(`SPACING: Spacing should not include children.`)
   }
 
-  const { theme: { breakpoints, breakpointCollections, spacing } } = config
+  const {
+    theme: { breakpoints, breakpointCollections, spacing }
+  } = config
 
   // Clone rule to act upon. We remove the atRule from DOM later, but
   // we still need some data from the original.
@@ -64,7 +66,10 @@ function processRule(atRule, config, finalRules, flagAsImportant) {
   // accept a query param for @space
   if (parent.type === 'atrule' && parent.name === 'responsive') {
     if (bpQuery) {
-      throw clonedRule.error(`SPACING: When nesting @space under @responsive, we do not accept a breakpoints query.`, { name: bpQuery })
+      throw clonedRule.error(
+        `SPACING: When nesting @space under @responsive, we do not accept a breakpoints query.`,
+        { name: bpQuery }
+      )
     }
 
     bpQuery = parent.params
@@ -75,7 +80,10 @@ function processRule(atRule, config, finalRules, flagAsImportant) {
   } else if (grandParent.name === 'responsive') {
     // check if grandparent is @responsive
     if (bpQuery) {
-      throw clonedRule.error(`SPACING: When nesting @space under @responsive, we do not accept a breakpoints query.`, { name: bpQuery })
+      throw clonedRule.error(
+        `SPACING: When nesting @space under @responsive, we do not accept a breakpoints query.`,
+        { name: bpQuery }
+      )
     }
 
     bpQuery = grandParent.params
@@ -102,7 +110,10 @@ function processRule(atRule, config, finalRules, flagAsImportant) {
     // we need media queries for. Since there is a breakpoint query, we
     // HAVE to generate breakpoints even if the sizeQuery doesn't
     // call for it.
-    const affectedBreakpoints = extractBreakpointKeys({ breakpoints, breakpointCollections }, bpQuery)
+    const affectedBreakpoints = extractBreakpointKeys(
+      { breakpoints, breakpointCollections },
+      bpQuery
+    )
 
     _.each(affectedBreakpoints, bp => {
       let parsedSize = null
@@ -134,7 +145,10 @@ function processRule(atRule, config, finalRules, flagAsImportant) {
         if (size) {
           parsedSize = parseSize(clonedRule, config, size, bp)
         }
-        const mediaRule = clonedRule.clone({ name: 'media', params: buildMediaQuery(breakpoints, bp) })
+        const mediaRule = clonedRule.clone({
+          name: 'media',
+          params: buildFullMediaQuery(breakpoints, bp)
+        })
         const sizeDecls = buildDecl(prop, parsedSize, flagAsImportant, config, bp)
         const originalRule = postcss.rule({ selector: parent.selector }).append(sizeDecls)
         originalRule.source = src

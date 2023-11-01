@@ -1,6 +1,5 @@
-
 import _ from 'lodash'
-import buildMediaQuery from '../../util/buildMediaQuery'
+import buildFullMediaQuery from '../../util/buildFullMediaQuery'
 import buildMediaQueryQ from '../../util/buildMediaQueryQ'
 import postcss from 'postcss'
 import extractBreakpointKeys from '../../util/extractBreakpointKeys'
@@ -39,7 +38,9 @@ const FIX_FIREFOX_FLEX_VW_BUG = true
 export default postcss.plugin('europacss-column', getConfig => {
   return function (css) {
     const config = getConfig()
-    const { theme: { breakpoints, breakpointCollections, spacing, columns } } = config
+    const {
+      theme: { breakpoints, breakpointCollections, spacing, columns }
+    } = config
     const responsiveRules = postcss.root()
     const finalRules = []
 
@@ -66,12 +67,18 @@ export default postcss.plugin('europacss-column', getConfig => {
       // accept a query param for @space
       if (parent.type === 'atrule' && parent.name === 'responsive') {
         if (suppliedBreakpoint) {
-          throw atRule.error(`COLUMN: When nesting @column under @responsive, we do not accept a breakpoints query.`, { name: suppliedBreakpoint })
+          throw atRule.error(
+            `COLUMN: When nesting @column under @responsive, we do not accept a breakpoints query.`,
+            { name: suppliedBreakpoint }
+          )
         }
         // try to grab the breakpoint
         if (advancedBreakpointQuery(parent.params)) {
           // parse the breakpoints
-          suppliedBreakpoint = extractBreakpointKeys({ breakpoints, breakpointCollections }, parent.params).join('/')
+          suppliedBreakpoint = extractBreakpointKeys(
+            { breakpoints, breakpointCollections },
+            parent.params
+          ).join('/')
         } else {
           suppliedBreakpoint = parent.params
         }
@@ -89,18 +96,26 @@ export default postcss.plugin('europacss-column', getConfig => {
       }
 
       // what if the parent's parent is @responsive?
-      if (!['atrule', 'root'].includes(parent.type)
-          && grandParent.type === 'atrule'
-          && grandParent.name === 'responsive') {
+      if (
+        !['atrule', 'root'].includes(parent.type) &&
+        grandParent.type === 'atrule' &&
+        grandParent.name === 'responsive'
+      ) {
         if (suppliedBreakpoint) {
-          throw atRule.error(`COLUMN: When nesting @column under responsive, we do not accept a breakpoints query.`, { name: suppliedBreakpoint })
+          throw atRule.error(
+            `COLUMN: When nesting @column under responsive, we do not accept a breakpoints query.`,
+            { name: suppliedBreakpoint }
+          )
         }
 
         suppliedBreakpoint = grandParent.params
       }
 
       if (suppliedBreakpoint && advancedBreakpointQuery(suppliedBreakpoint)) {
-        suppliedBreakpoint = extractBreakpointKeys({ breakpoints, breakpointCollections }, suppliedBreakpoint).join('/')
+        suppliedBreakpoint = extractBreakpointKeys(
+          { breakpoints, breakpointCollections },
+          suppliedBreakpoint
+        ).join('/')
       }
 
       if (needsBreakpoints) {
@@ -113,7 +128,10 @@ export default postcss.plugin('europacss-column', getConfig => {
           const originalRule = postcss.rule({ selector: parent.selector })
           originalRule.source = src
           originalRule.append(...flexDecls)
-          const mediaRule = postcss.atRule({ name: 'media', params: buildMediaQuery(breakpoints, bp) })
+          const mediaRule = postcss.atRule({
+            name: 'media',
+            params: buildFullMediaQuery(breakpoints, bp)
+          })
           mediaRule.append(originalRule)
           finalRules.push(mediaRule)
         })
@@ -142,7 +160,10 @@ export default postcss.plugin('europacss-column', getConfig => {
             originalRule.source = src
             originalRule.append(...flexDecls)
 
-            const mediaRule = postcss.atRule({ name: 'media', params: buildMediaQueryQ({ breakpoints, breakpointCollections }, bp) })
+            const mediaRule = postcss.atRule({
+              name: 'media',
+              params: buildMediaQueryQ({ breakpoints, breakpointCollections }, bp)
+            })
             mediaRule.source = src
             mediaRule.append(originalRule)
             finalRules.push(mediaRule)
@@ -173,7 +194,7 @@ import reduceCSSCalc from 'reduce-css-calc'
 
 function createFlexDecls(flexDecls, flexSize) {
   let maxWidth
-  
+
   if (flexSize.includes('vw') && FIX_FIREFOX_FLEX_VW_BUG) {
     maxWidth = reduceCSSCalc(`calc(${flexSize} - 0.002vw)`, 6)
   } else {

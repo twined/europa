@@ -1,7 +1,7 @@
 const postcss = require('postcss')
 const plugin = require('../../src')
 
-function run (input, opts) {
+function run(input, opts) {
   return postcss([plugin(opts)]).process(input, { from: undefined })
 }
 
@@ -13,22 +13,22 @@ it('aliases @column-offset', () => {
   `
 
   const output = `
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       article{
         margin-left: calc(8.333333% - 22.916667px)
       }
     }
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       article{
         margin-left: calc(8.333333% - 32.083333px)
       }
     }
-    @media (min-width: 1024px){
+    @media (min-width: 1024px) and (max-width: 1398px){
       article{
         margin-left: calc(8.333333% - 45.833333px)
       }
     }
-    @media (min-width: 1399px){
+    @media (min-width: 1399px) and (max-width: 1899px){
       article{
         margin-left: calc(8.333333% - 45.833333px)
       }
@@ -54,22 +54,22 @@ it('aliases @column-offset negative value', () => {
   `
 
   const output = `
-    @media (min-width: 0){
+    @media (min-width: 0) and (max-width: 739px){
       article{
         margin-left: calc(-8.333333% - 27.083333px)
       }
     }
-    @media (min-width: 740px){
+    @media (min-width: 740px) and (max-width: 1023px){
       article{
         margin-left: calc(-8.333333% - 37.916667px)
       }
     }
-    @media (min-width: 1024px){
+    @media (min-width: 1024px) and (max-width: 1398px){
       article{
         margin-left: calc(-8.333333% - 54.166667px)
       }
     }
-    @media (min-width: 1399px){
+    @media (min-width: 1399px) and (max-width: 1899px){
       article{
         margin-left: calc(-8.333333% - 54.166667px)
       }

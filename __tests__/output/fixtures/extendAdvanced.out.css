@@ -1,89 +1,74 @@
 .button-one {
   font-family: Arial;
 }
-
 .button-two {
   font-family: Helvetica;
 }
-
-@media (min-width: 0){
+@media (min-width: 0) and (max-width: 739px){
   .button-one {
     padding: 35px;
   }
 }
-
-@media (min-width: 740px){
+@media (min-width: 740px) and (max-width: 1023px){
   .button-one {
     padding: 40px;
   }
 }
-
-@media (min-width: 1024px){
+@media (min-width: 1024px) and (max-width: 1398px){
   .button-one {
     padding: 50px;
   }
 }
-
-@media (min-width: 1399px){
+@media (min-width: 1399px) and (max-width: 1899px){
   .button-one {
     padding: 50px;
   }
 }
-
 @media (min-width: 1900px){
   .button-one {
     padding: 70px;
   }
 }
-
-@media (min-width: 0){
+@media (min-width: 0) and (max-width: 739px){
   .button-two {
     padding: 35px;
   }
 }
-
-@media (min-width: 740px){
+@media (min-width: 740px) and (max-width: 1023px){
   .button-two {
     padding: 40px;
   }
 }
-
-@media (min-width: 1024px){
+@media (min-width: 1024px) and (max-width: 1398px){
   .button-two {
     padding: 50px;
   }
 }
-
-@media (min-width: 1399px){
+@media (min-width: 1399px) and (max-width: 1899px){
   .button-two {
     padding: 50px;
   }
 }
-
 @media (min-width: 1900px){
   .button-two {
     padding: 70px;
   }
 }
-
 @media (min-width: 0) and (max-width: 739px) {
   .button-one {
     color: pink;
   }
 }
-
 @media (min-width: 740px) {
   .button-one {
     color: blue;
   }
 }
-
 @media (min-width: 0) and (max-width: 739px) {
   .button-two {
     color: pink;
   }
 }
-
 @media (min-width: 740px) {
   .button-two {
     color: blue;

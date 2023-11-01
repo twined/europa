@@ -1,7 +1,7 @@
 const postcss = require('postcss')
 const plugin = require('../../src')
 
-function run (input, opts) {
+function run(input, opts) {
   return postcss([plugin(opts)]).process(input, { from: undefined })
 }
 
@@ -41,7 +41,7 @@ const VW_CFG = {
       maxWidth: {
         xs: '100%',
         sm: '100%',
-        md: '1024px',
+        md: '1024px'
       }
     },
     spacing: {
@@ -80,7 +80,7 @@ it('parses regular @column', () => {
   `
 
   const output = `
-    @media (min-width: 0) {
+    @media (min-width: 0) and (max-width: 739px) {
       article {
         position: relative;
         flex-grow: 0;
@@ -89,7 +89,7 @@ it('parses regular @column', () => {
         max-width: calc(75% - 5px)
       }
     }
-    @media (min-width: 740px) {
+    @media (min-width: 740px) and (max-width: 1023px) {
       article {
         position: relative;
         flex-grow: 0;
@@ -123,7 +123,7 @@ it('parses vw @column', () => {
   `
 
   const output = `
-    @media (min-width: 0) {
+    @media (min-width: 0) and (max-width: 739px) {
       article {
         position: relative;
         flex-grow: 0;
@@ -132,7 +132,7 @@ it('parses vw @column', () => {
         max-width: calc(75% - 0.502vw)
       }
     }
-    @media (min-width: 740px) {
+    @media (min-width: 740px) and (max-width: 1023px) {
       article {
         position: relative;
         flex-grow: 0;
@@ -166,7 +166,7 @@ it('parses calc()ed @column', () => {
   `
 
   const output = `
-    @media (min-width: 0) {
+    @media (min-width: 0) and (max-width: 739px) {
       article {
         position: relative;
         flex-grow: 0;
@@ -175,7 +175,7 @@ it('parses calc()ed @column', () => {
         max-width: calc(100vw - 75% + 5px - 0.002vw)
       }
     }
-    @media (min-width: 740px) {
+    @media (min-width: 740px) and (max-width: 1023px) {
       article {
         position: relative;
         flex-grow: 0;
@@ -209,7 +209,7 @@ it('parses regular @column + gutter', () => {
   `
 
   const output = `
-    @media (min-width: 0) {
+    @media (min-width: 0) and (max-width: 739px) {
       article {
         position: relative;
         flex-grow: 0;
@@ -218,7 +218,7 @@ it('parses regular @column + gutter', () => {
         max-width: calc(75% + 15px)
       }
     }
-    @media (min-width: 740px) {
+    @media (min-width: 740px) and (max-width: 1023px) {
       article {
         position: relative;
         flex-grow: 0;
@@ -252,7 +252,7 @@ it('parses regular @column + half gutter', () => {
   `
 
   const output = `
-    @media (min-width: 0) {
+    @media (min-width: 0) and (max-width: 739px) {
       article {
         position: relative;
         flex-grow: 0;
@@ -261,7 +261,7 @@ it('parses regular @column + half gutter', () => {
         max-width: calc(75% + 5px)
       }
     }
-    @media (min-width: 740px) {
+    @media (min-width: 740px) and (max-width: 1023px) {
       article {
         position: relative;
         flex-grow: 0;
@@ -310,7 +310,7 @@ it('parses regular @column + gutter + total gutter', () => {
   `
 
   const output = `
-    @media (min-width: 0) {
+    @media (min-width: 0) and (max-width: 739px) {
       article {
         position: relative;
         flex-grow: 0;
@@ -319,7 +319,7 @@ it('parses regular @column + gutter + total gutter', () => {
         max-width: calc(83.333333% + 16.666667px)
       }
     }
-    @media (min-width: 740px) {
+    @media (min-width: 740px) and (max-width: 1023px) {
       article {
         position: relative;
         flex-grow: 0;
@@ -337,7 +337,7 @@ it('parses regular @column + gutter + total gutter', () => {
         max-width: calc(83.333333% + 41.666667px)
       }
     }
-    @media (min-width: 0) {
+    @media (min-width: 0) and (max-width: 739px) {
       article .inner {
         position: relative;
         flex-grow: 0;
@@ -346,7 +346,7 @@ it('parses regular @column + gutter + total gutter', () => {
         max-width: calc(20% - 20px)
       }
     }
-    @media (min-width: 740px) {
+    @media (min-width: 740px) and (max-width: 1023px) {
       article .inner {
         position: relative;
         flex-grow: 0;
@@ -364,7 +364,7 @@ it('parses regular @column + gutter + total gutter', () => {
         max-width: calc(20% - 50px)
       }
     }
-    @media (min-width: 0) {
+    @media (min-width: 0) and (max-width: 739px) {
       article .inner2 {
         position: relative;
         flex-grow: 0;
@@ -373,7 +373,7 @@ it('parses regular @column + gutter + total gutter', () => {
         max-width: 20%
       }
     }
-    @media (min-width: 740px) {
+    @media (min-width: 740px) and (max-width: 1023px) {
       article .inner2 {
         position: relative;
         flex-grow: 0;
@@ -391,7 +391,7 @@ it('parses regular @column + gutter + total gutter', () => {
         max-width: 20%
       }
     }
-    @media (min-width: 0) {
+    @media (min-width: 0) and (max-width: 739px) {
       article .inner3 {
         position: relative;
         flex-grow: 0;
@@ -400,7 +400,7 @@ it('parses regular @column + gutter + total gutter', () => {
         max-width: calc(100% - 20px)
       }
     }
-    @media (min-width: 740px) {
+    @media (min-width: 740px) and (max-width: 1023px) {
       article .inner3 {
         position: relative;
         flex-grow: 0;
@@ -418,7 +418,7 @@ it('parses regular @column + gutter + total gutter', () => {
         max-width: calc(100% - 50px)
       }
     }
-    @media (min-width: 0) {
+    @media (min-width: 0) and (max-width: 739px) {
       article .inner4 {
         position: relative;
         flex-grow: 0;
@@ -427,7 +427,7 @@ it('parses regular @column + gutter + total gutter', () => {
         max-width: 100%
       }
     }
-    @media (min-width: 740px) {
+    @media (min-width: 740px) and (max-width: 1023px) {
       article .inner4 {
         position: relative;
         flex-grow: 0;
@@ -758,7 +758,7 @@ it('parses 12/12', () => {
     }
   `
   const output = `
-    @media (min-width: 0) {
+    @media (min-width: 0) and (max-width: 739px) {
       article {
         position: relative;
         flex-grow: 0;
@@ -767,7 +767,7 @@ it('parses 12/12', () => {
         max-width: 100%
       }
     }
-    @media (min-width: 740px) {
+    @media (min-width: 740px) and (max-width: 1023px) {
       article {
         position: relative;
         flex-grow: 0;
