@@ -15,7 +15,8 @@ const MAX_PX_CFG = {
     },
 
     breakpointCollections: {
-      $test: 'mobile/tablet'
+      $test: 'mobile/tablet',
+      $lg: '>=tablet'
     },
 
     container: {
@@ -422,6 +423,32 @@ it('parses @fontsize config with max px', () => {
         font-size: calc(4vw * var(--ec-zoom))
       }
     }
+    @media (min-width: 740px) and (max-width: 1023px){
+      article{
+        font-size: calc(3vw * var(--ec-zoom))
+      }
+    }
+    @media (min-width: 1024px){
+      article{
+        font-size: 57.599999999999994px
+      }
+    }
+  `
+
+  return run(input, MAX_PX_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @fontsize config with max px for largest coll', () => {
+  const input = `
+    article {
+      @fontsize lg $lg;
+    }
+  `
+
+  const output = `
     @media (min-width: 740px) and (max-width: 1023px){
       article{
         font-size: calc(3vw * var(--ec-zoom))
