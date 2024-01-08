@@ -16,6 +16,7 @@ it('sets column gap and display grid', () => {
   const output = `
     article {
       display: grid;
+      grid-template-columns: repeat(12, 1fr);
       color: blue;
     }
     @media(min-width: 0) and (max-width: 739px){

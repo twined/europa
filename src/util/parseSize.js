@@ -13,7 +13,7 @@ const processBetween = (size, config, bp, node) => {
   size = size.match(/between\((.*)\)/)[1]
 
   if (size.indexOf('-') > -1) {
-  // alternative syntax - `minSize-maxSize`
+    // alternative syntax - `minSize-maxSize`
     const [minSize, maxSize] = size.split('-')
     const sizeUnit = getUnit(minSize)
     const maxSizeUnit = getUnit(maxSize)
@@ -64,15 +64,19 @@ const processBetween = (size, config, bp, node) => {
   }
 }
 
-export default function parseSize (node, config, size, bp) {
+export default function parseSize(node, config, size, bp) {
   let sizeMap
 
   if (size === '0') {
     return '0'
   }
 
+  if (size === 'auto') {
+    return 'auto'
+  }
+
   if (size.startsWith('var(--')) {
-    return size;
+    return size
   }
 
   // first check if we have it in our config spacing map
@@ -84,7 +88,9 @@ export default function parseSize (node, config, size, bp) {
 
   if (size && size.indexOf('vertical-rhythm(') !== -1) {
     const params = size.match(/vertical-rhythm\((.*)\)/)[1]
-    const [key, lineHeight = config.theme.typography.lineHeight[bp]] = params.split(',').map(p => p.trim())
+    const [key, lineHeight = config.theme.typography.lineHeight[bp]] = params
+      .split(',')
+      .map(p => p.trim())
     const obj = _.get(config, key.split('.'))
 
     // does it exist?
@@ -115,7 +121,9 @@ export default function parseSize (node, config, size, bp) {
   if (size && size === '-container/2') {
     // get size from container.padding
     if (!_.has(config.theme.container.padding, bp)) {
-      throw node.error(`SPACING: No \`${bp}\` breakpoint found in \`theme.container.padding\`.`, { name: bp })
+      throw node.error(`SPACING: No \`${bp}\` breakpoint found in \`theme.container.padding\`.`, {
+        name: bp
+      })
     }
 
     const [val, unit] = splitUnit(config.theme.container.padding[bp])
@@ -125,7 +133,9 @@ export default function parseSize (node, config, size, bp) {
   if (size && size === '-container') {
     // get size from container.padding
     if (!_.has(config.theme.container.padding, bp)) {
-      throw node.error(`SPACING: No \`${bp}\` breakpoint found in \`theme.container.padding\`.`, { name: bp })
+      throw node.error(`SPACING: No \`${bp}\` breakpoint found in \`theme.container.padding\`.`, {
+        name: bp
+      })
     }
 
     return '-' + config.theme.container.padding[bp]
@@ -134,7 +144,9 @@ export default function parseSize (node, config, size, bp) {
   if (size && size === 'container/2') {
     // get size from container.padding
     if (!_.has(config.theme.container.padding, bp)) {
-      throw node.error(`SPACING: No \`${bp}\` breakpoint found in \`theme.container.padding\`.`, { name: bp })
+      throw node.error(`SPACING: No \`${bp}\` breakpoint found in \`theme.container.padding\`.`, {
+        name: bp
+      })
     }
 
     const [val, unit] = splitUnit(config.theme.container.padding[bp])
@@ -144,7 +156,9 @@ export default function parseSize (node, config, size, bp) {
   if (size && size === 'container') {
     // get size from container.padding
     if (!_.has(config.theme.container.padding, bp)) {
-      throw node.error(`SPACING: No \`${bp}\` breakpoint found in \`theme.container.padding\`.`, { name: bp })
+      throw node.error(`SPACING: No \`${bp}\` breakpoint found in \`theme.container.padding\`.`, {
+        name: bp
+      })
     }
     return config.theme.container.padding[bp]
   }
@@ -153,7 +167,9 @@ export default function parseSize (node, config, size, bp) {
     // size is not found in spacingMap, treat it as a value
     if (size.indexOf('calc') > -1) {
       if (!bp) {
-        throw node.error('SPACING: Calc expressions need a breakpoint due to var calculations', { name: bp })
+        throw node.error('SPACING: Calc expressions need a breakpoint due to var calculations', {
+          name: bp
+        })
       }
       // it's a calc expression. interpolate values and return string
       const regex = /var\[(.*?)\]/g
@@ -177,7 +193,9 @@ export default function parseSize (node, config, size, bp) {
       const [head, tail] = size.split('/')
       if (!_.has(config.theme.spacing, head)) {
         if (!bp) {
-          throw node.error('SPACING: Fractions need a breakpoint due to gutter calculations', { name: bp })
+          throw node.error('SPACING: Fractions need a breakpoint due to gutter calculations', {
+            name: bp
+          })
         }
 
         let gutterMultiplier
@@ -188,13 +206,13 @@ export default function parseSize (node, config, size, bp) {
         if (wantedColumns.indexOf(':') !== -1) {
           // we have a gutter indicator (@column 6:1/12) -- meaning we want X times the gutter to be added
           // first split the fraction
-          [wantedColumns, gutterMultiplier] = wantedColumns.split(':')
+          ;[wantedColumns, gutterMultiplier] = wantedColumns.split(':')
         }
 
         if (totalColumns.indexOf(':') !== -1) {
           // we have a gutter indicator (@column 6/10:1) -- meaning we want X times the gutter to be added
           // first split the fraction
-          [totalColumns, totalGutterMultiplier] = totalColumns.split(':')
+          ;[totalColumns, totalGutterMultiplier] = totalColumns.split(':')
         }
 
         const gutterSize = config.theme.columns.gutters[bp]
@@ -202,13 +220,15 @@ export default function parseSize (node, config, size, bp) {
 
         if (config.setMaxForVw && gutterUnit == 'vw' && isLargestBreakpoint(config, bp)) {
           const maxSize = getLargestContainer(config)
-          
+
           const [valMax, unitMax] = splitUnit(maxSize)
           if (unitMax === '%') {
-            throw node.error(`SPACING: When setMaxForVw is true, the container max cannot be % based.`)
+            throw node.error(
+              `SPACING: When setMaxForVw is true, the container max cannot be % based.`
+            )
           }
 
-          gutterValue = valMax / 100 * gutterValue
+          gutterValue = (valMax / 100) * gutterValue
           gutterUnit = unitMax
         }
 
@@ -216,16 +236,26 @@ export default function parseSize (node, config, size, bp) {
           if (gutterMultiplier && !totalGutterMultiplier) {
             // if we have a gutter multiplier, but wanted and total columns are equal,
             // we are overflowing (@column 8:1/8)
-            throw node.error(`SPACING: Overflowing columns. wantedColumns + gutterMultiplier is more than totalColumns (@column ${wantedColumns}:${gutterMultiplier}/${wantedColumns})`)
+            throw node.error(
+              `SPACING: Overflowing columns. wantedColumns + gutterMultiplier is more than totalColumns (@column ${wantedColumns}:${gutterMultiplier}/${wantedColumns})`
+            )
           }
 
           sizeMath = '100%'
           return sizeMath
-        } else {          
+        } else {
           if (totalGutterMultiplier) {
-            sizeMath = `${wantedColumns}/${totalColumns} - (${gutterValue}${gutterUnit} - 1/${totalColumns} * ${gutterValue * wantedColumns}${gutterUnit}) - ${gutterValue * totalGutterMultiplier}${gutterUnit} + (${gutterValue}${gutterUnit} - 1/${totalColumns} * ${gutterValue * wantedColumns}${gutterUnit})`
+            sizeMath = `${wantedColumns}/${totalColumns} - (${gutterValue}${gutterUnit} - 1/${totalColumns} * ${
+              gutterValue * wantedColumns
+            }${gutterUnit}) - ${
+              gutterValue * totalGutterMultiplier
+            }${gutterUnit} + (${gutterValue}${gutterUnit} - 1/${totalColumns} * ${
+              gutterValue * wantedColumns
+            }${gutterUnit})`
           } else {
-            sizeMath = `${wantedColumns}/${totalColumns} - (${gutterValue}${gutterUnit} - 1/${totalColumns} * ${gutterValue * wantedColumns}${gutterUnit})`
+            sizeMath = `${wantedColumns}/${totalColumns} - (${gutterValue}${gutterUnit} - 1/${totalColumns} * ${
+              gutterValue * wantedColumns
+            }${gutterUnit})`
           }
         }
 
@@ -272,10 +302,12 @@ export default function parseSize (node, config, size, bp) {
           const maxSize = containerBps[lastKey]
           const [valMax, unitMax] = splitUnit(maxSize)
           if (unitMax === '%') {
-            throw node.error(`SPACING: When setMaxForVw is true, the container max cannot be % based.`)
+            throw node.error(
+              `SPACING: When setMaxForVw is true, the container max cannot be % based.`
+            )
           }
           const [valVw, unitVw] = splitUnit(size)
-          const maxVal = valMax / 100 * valVw
+          const maxVal = (valMax / 100) * valVw
           return `${maxVal}${unitMax}`
         }
         return size
@@ -285,12 +317,14 @@ export default function parseSize (node, config, size, bp) {
     }
 
     if (size) {
-      if (size.indexOf('px') !== -1 ||
-          size.indexOf('vh') !== -1 ||
-          size.indexOf('rem') !== -1 ||
-          size.indexOf('em') !== -1 ||
-          size.indexOf('ch') !== -1 ||
-          size.indexOf('%') !== -1) {
+      if (
+        size.indexOf('px') !== -1 ||
+        size.indexOf('vh') !== -1 ||
+        size.indexOf('rem') !== -1 ||
+        size.indexOf('em') !== -1 ||
+        size.indexOf('ch') !== -1 ||
+        size.indexOf('%') !== -1
+      ) {
         return size
       }
     }
@@ -304,7 +338,7 @@ export default function parseSize (node, config, size, bp) {
   }
 }
 
-function renderColGutterMultiplier (node, multiplier, bp, config) {
+function renderColGutterMultiplier(node, multiplier, bp, config) {
   // grab gutter for this breakpoint
   if (!_.has(config.theme.columns.gutters, bp)) {
     throw node.error(`parseSize: No \`${bp}\` breakpoint found in gutter map.`, { name: bp })
@@ -312,17 +346,22 @@ function renderColGutterMultiplier (node, multiplier, bp, config) {
 
   const gutter = config.theme.columns.gutters[bp]
   const [val, unit] = splitUnit(gutter)
-  
-  if (unit === 'vw' && (config.hasOwnProperty('setMaxForVw') && config.setMaxForVw === true) && isLargestBreakpoint(config, bp)) {
+
+  if (
+    unit === 'vw' &&
+    config.hasOwnProperty('setMaxForVw') &&
+    config.setMaxForVw === true &&
+    isLargestBreakpoint(config, bp)
+  ) {
     const maxSize = getLargestContainer(config)
     const [valMax, unitMax] = splitUnit(maxSize)
-    const gutterInPixels = valMax / 100 * val
-    return `${(gutterInPixels * multiplier)}${unitMax}`
+    const gutterInPixels = (valMax / 100) * val
+    return `${gutterInPixels * multiplier}${unitMax}`
   }
 
-  return `${(val * multiplier)}${unit}`
+  return `${val * multiplier}${unit}`
 }
 
-function pxToRem (px, rootSize) {
+function pxToRem(px, rootSize) {
   return parseFloat(px) / parseFloat(rootSize) + 'rem'
 }

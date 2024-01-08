@@ -1728,3 +1728,43 @@ it('parses @space with var(--) and specified breakpoint', () => {
     expect(result.warnings().length).toBe(0)
   })
 })
+
+it('parses @space auto', () => {
+  const input = `
+    article {
+      @space margin-left auto;
+    }
+  `
+
+  const output = `
+    article {
+      margin-left: auto;
+    }
+  `
+
+  return run(input, DEFAULT_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('does not create breakpoints for hard coded values', () => {
+  const input = `
+    article {
+      @space margin-left 10px;
+      @space margin-top 10em;
+    }
+  `
+
+  const output = `
+    article {
+      margin-top: 10em;
+      margin-left: 10px;
+    }
+  `
+
+  return run(input, DEFAULT_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})

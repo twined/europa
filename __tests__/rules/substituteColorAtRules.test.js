@@ -1,7 +1,7 @@
 const postcss = require('postcss')
 const plugin = require('../../src')
 
-function run (input, opts) {
+function run(input, opts) {
   return postcss([plugin(opts)]).process(input, { from: undefined })
 }
 
@@ -36,6 +36,27 @@ it('parses @color', () => {
     article {
       color: #22AA22;
       background-color: #AAFFAA;
+    }
+  `
+
+  return run(input, DEFAULT_CFG).then(result => {
+    expect(result.css).toMatchCSS(output)
+    expect(result.warnings().length).toBe(0)
+  })
+})
+
+it('parses @color! as !important', () => {
+  const input = `
+    article {
+      @color! fg green.dark;
+      @color! bg green.light;
+    }
+  `
+
+  const output = `
+    article {
+      color: #22AA22 !important;
+      background-color: #AAFFAA !important;
     }
   `
 

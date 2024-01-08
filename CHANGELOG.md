@@ -1,5 +1,13 @@
 # Changelog
 
+### 0.13.1
+
+- Add `@color!`
+- Allow passing `auto` to sizes
+- Add more breakpoint overrides for sizes: [px, em, vh]
+- Add 12 default cols to `@grid`
+
+
 ### 0.13.0
 
 - Specify each breakpoint's min-max when using plugins without breakpoint. This will

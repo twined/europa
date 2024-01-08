@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-export default function sizeNeedsBreakpoints (spacingMap, size) {
+export default function sizeNeedsBreakpoints(spacingMap, size) {
   if (!size) {
     return true
   }
@@ -9,9 +9,14 @@ export default function sizeNeedsBreakpoints (spacingMap, size) {
   if (size.startsWith('var(--')) {
     return false
   }
-  
+
   // Zero stays the same across all breakpoints
   if (size === 0 || size === '0') {
+    return false
+  }
+
+  // 'auto' stays the same across all breakpoints
+  if (size === 'auto') {
     return false
   }
 
@@ -23,6 +28,14 @@ export default function sizeNeedsBreakpoints (spacingMap, size) {
   // Size is in spacing map, we need breakpoints
   if (_.has(spacingMap, size)) {
     return true
+  }
+
+  // skip vw here due to maxPx
+  const endingsToCheck = ['px', 'em', 'vh', 'vmin', 'vmax']
+  let endsWithAny = endingsToCheck.some(ending => size.endsWith(ending))
+
+  if (endsWithAny) {
+    return false
   }
 
   // regular numbers are treated as gutter multipliers/dividers, and
